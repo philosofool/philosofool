@@ -12,7 +12,7 @@ Wonder explores facets of human experience in joyous, upbeat nostalgia ("I Wish"
 mournful contemplations ("If It's Magic") and
 layered R&B tours de force that defy pinning to a single emotion or idea ("As").
 
-There are songs that could reach the top of whatever metrics Spotify is using at this moment.
+The album features songs that could reach the top of whatever metrics Spotify is using at this moment.
 If you released it tomorrow on a musical world that had never experienced it,
 the masterful R&B riffing and irresistable hook of "All Day Sucker"
 could seduce a generation that's never fully listened to an album.
@@ -29,4 +29,4 @@ It's a gem of popular music: catchy and accessible, nuanced and moving, composed
 
 
 Rolling Stone placed this album No. 4 in it's all-time album list; Apple placed it No. 7.
-It's a just placement.
+It's a just placement in the view of this admittedly under-listened critic.
