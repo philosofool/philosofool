@@ -2,7 +2,13 @@ import sys
 print()
 print(sys.path)
 
-from feature_engineering.data import _identify_pairs, split_pairs_indices, split_pairs
+from feature_engineering.data import (
+    _identify_pairs,
+    split_pairs_indices,
+    split_pairs,
+    batter_pitcher_matchups
+)
+
 import numpy as np
 import pandas as pd
 
@@ -47,3 +53,12 @@ def test_split_pairs():
         'b': [1, 1, 2, 2, 2, 0, 0]
     })
     train, test = split_pairs(df, 2, 'a', 'b')
+
+
+def test_batter_pitcher_matchups():
+    df = batter_pitcher_matchups()
+    expected_columns = ['pitcher', 'batter', 'home_team', 'label']
+    assert len(df.columns.intersection(expected_columns)) == 4
+    assert len(df.columns) == 4
+    assert all(df[col].dtype == np.int64 for col in df)
+    np.testing.assert_array_equal(np.sort(df['label'].unique()), [0, 1, 2, 3, 4, 5, 6, 7])
