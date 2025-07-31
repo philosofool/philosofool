@@ -1,0 +1,1958 @@
+[
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 5399,
+            "smallest_cluster_size": 3551,
+            "silhouette_score": 0.3739292027869906,
+            "calinski_harabasz_score": 4044.738179651222,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 6073,
+            "smallest_cluster_size": 1205,
+            "silhouette_score": 0.449371527008562,
+            "calinski_harabasz_score": 5314.614587314864,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3907,
+            "smallest_cluster_size": 505,
+            "silhouette_score": 0.4087345856380477,
+            "calinski_harabasz_score": 5808.215901332394,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3454,
+            "smallest_cluster_size": 109,
+            "silhouette_score": 0.4000846296912656,
+            "calinski_harabasz_score": 6058.154234513571,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 5348,
+            "smallest_cluster_size": 3602,
+            "silhouette_score": 0.3438010375624539,
+            "calinski_harabasz_score": 3458.478002938492,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 4716,
+            "smallest_cluster_size": 1334,
+            "silhouette_score": 0.3535917498638374,
+            "calinski_harabasz_score": 3648.4957983385184,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3988,
+            "smallest_cluster_size": 374,
+            "silhouette_score": 0.3702329539844996,
+            "calinski_harabasz_score": 4385.86315071749,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3805,
+            "smallest_cluster_size": 41,
+            "silhouette_score": 0.3662251506012993,
+            "calinski_harabasz_score": 4441.442534868663,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 5249,
+            "smallest_cluster_size": 3701,
+            "silhouette_score": 0.30710560787278307,
+            "calinski_harabasz_score": 2962.5004101052127,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 4563,
+            "smallest_cluster_size": 1256,
+            "silhouette_score": 0.3147584509517743,
+            "calinski_harabasz_score": 2997.8268673283187,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3998,
+            "smallest_cluster_size": 419,
+            "silhouette_score": 0.3238235211905212,
+            "calinski_harabasz_score": 3413.793626237054,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3848,
+            "smallest_cluster_size": 74,
+            "silhouette_score": 0.3117685635545101,
+            "calinski_harabasz_score": 3282.602236046732,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 5289,
+            "smallest_cluster_size": 3661,
+            "silhouette_score": 0.28358118809670085,
+            "calinski_harabasz_score": 2626.570659404502,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 6120,
+            "smallest_cluster_size": 1222,
+            "silhouette_score": 0.31340146013950726,
+            "calinski_harabasz_score": 2636.9736062543434,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3975,
+            "smallest_cluster_size": 431,
+            "silhouette_score": 0.28915725439096224,
+            "calinski_harabasz_score": 2827.692160538103,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3057,
+            "smallest_cluster_size": 340,
+            "silhouette_score": 0.26700043371895726,
+            "calinski_harabasz_score": 2587.1289003235815,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 5218,
+            "smallest_cluster_size": 3732,
+            "silhouette_score": 0.21939724480893918,
+            "calinski_harabasz_score": 1787.2572484448465,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 4562,
+            "smallest_cluster_size": 1239,
+            "silhouette_score": 0.21615420067817287,
+            "calinski_harabasz_score": 1643.4465647539266,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3549,
+            "smallest_cluster_size": 403,
+            "silhouette_score": 0.19711846769971159,
+            "calinski_harabasz_score": 1491.6134567518116,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3711,
+            "smallest_cluster_size": 352,
+            "silhouette_score": 0.22219545670312257,
+            "calinski_harabasz_score": 1500.2676033867072,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 5400,
+            "smallest_cluster_size": 3550,
+            "silhouette_score": 0.3739348710928549,
+            "calinski_harabasz_score": 4044.760946380933,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 6059,
+            "smallest_cluster_size": 1214,
+            "silhouette_score": 0.4489122318888673,
+            "calinski_harabasz_score": 5314.578994471668,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3939,
+            "smallest_cluster_size": 485,
+            "silhouette_score": 0.40853654726898314,
+            "calinski_harabasz_score": 5807.596146386941,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3643,
+            "smallest_cluster_size": 39,
+            "silhouette_score": 0.40677795712288806,
+            "calinski_harabasz_score": 6008.175142855308,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 5334,
+            "smallest_cluster_size": 3616,
+            "silhouette_score": 0.3435553564542954,
+            "calinski_harabasz_score": 3458.7711339309826,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 4348,
+            "smallest_cluster_size": 614,
+            "silhouette_score": 0.3315367595020786,
+            "calinski_harabasz_score": 3629.854946602672,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3912,
+            "smallest_cluster_size": 465,
+            "silhouette_score": 0.36930330617334467,
+            "calinski_harabasz_score": 4384.740154872989,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3139,
+            "smallest_cluster_size": 361,
+            "silhouette_score": 0.3216120330781326,
+            "calinski_harabasz_score": 3977.906153583209,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 5280,
+            "smallest_cluster_size": 3670,
+            "silhouette_score": 0.30767197782787636,
+            "calinski_harabasz_score": 2962.542560831686,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 4573,
+            "smallest_cluster_size": 1305,
+            "silhouette_score": 0.3132516749800021,
+            "calinski_harabasz_score": 2997.8174306322358,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3968,
+            "smallest_cluster_size": 453,
+            "silhouette_score": 0.32271692037508176,
+            "calinski_harabasz_score": 3413.9493006756043,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3942,
+            "smallest_cluster_size": 30,
+            "silhouette_score": 0.32116080681167747,
+            "calinski_harabasz_score": 3307.834558199673,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 7224,
+            "smallest_cluster_size": 1726,
+            "silhouette_score": 0.3521257725411397,
+            "calinski_harabasz_score": 1993.189042242488,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 4547,
+            "smallest_cluster_size": 1257,
+            "silhouette_score": 0.286169228728742,
+            "calinski_harabasz_score": 2586.7308120013136,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 4000,
+            "smallest_cluster_size": 369,
+            "silhouette_score": 0.2903322505639949,
+            "calinski_harabasz_score": 2828.170232515313,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3929,
+            "smallest_cluster_size": 88,
+            "silhouette_score": 0.2848982096762666,
+            "calinski_harabasz_score": 2692.088530941703,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 5219,
+            "smallest_cluster_size": 3731,
+            "silhouette_score": 0.21942517524664235,
+            "calinski_harabasz_score": 1787.2582003903785,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 6118,
+            "smallest_cluster_size": 1225,
+            "silhouette_score": 0.25293355141859486,
+            "calinski_harabasz_score": 1666.763525767919,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 5635,
+            "smallest_cluster_size": 730,
+            "silhouette_score": 0.23469208216571635,
+            "calinski_harabasz_score": 1387.992871202023,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "largest_cluster_size": 3225,
+            "smallest_cluster_size": 234,
+            "silhouette_score": 0.20366651695722468,
+            "calinski_harabasz_score": 1538.787760250454,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.7150837988826816,
+            "largest_cluster_size": 1798,
+            "smallest_cluster_size": 752,
+            "silhouette_score": -0.11715092961377728,
+            "calinski_harabasz_score": 542.9423314060883,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 8,
+            "noise_percent": 0.650949720670391,
+            "largest_cluster_size": 1122,
+            "smallest_cluster_size": 114,
+            "silhouette_score": -0.2547698205519904,
+            "calinski_harabasz_score": 196.3654017377016,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 8,
+            "noise_percent": 0.6618994413407822,
+            "largest_cluster_size": 950,
+            "smallest_cluster_size": 100,
+            "silhouette_score": -0.29248759240759215,
+            "calinski_harabasz_score": 184.56825878077328,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.7737430167597765,
+            "largest_cluster_size": 806,
+            "smallest_cluster_size": 135,
+            "silhouette_score": -0.2505124585584113,
+            "calinski_harabasz_score": 222.95503525681255,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.7437988826815642,
+            "largest_cluster_size": 1645,
+            "smallest_cluster_size": 648,
+            "silhouette_score": -0.14507106400504446,
+            "calinski_harabasz_score": 455.1790605192863,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.5656983240223463,
+            "largest_cluster_size": 1712,
+            "smallest_cluster_size": 1053,
+            "silhouette_score": -0.02451091657010906,
+            "calinski_harabasz_score": 687.2793638786294,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7096089385474861,
+            "largest_cluster_size": 950,
+            "smallest_cluster_size": 731,
+            "silhouette_score": -0.16093860412713384,
+            "calinski_harabasz_score": 398.25680477742964,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7536312849162011,
+            "largest_cluster_size": 806,
+            "smallest_cluster_size": 623,
+            "silhouette_score": -0.21348612156860478,
+            "calinski_harabasz_score": 322.7259287765782,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7262569832402235,
+            "largest_cluster_size": 1615,
+            "smallest_cluster_size": 285,
+            "silhouette_score": -0.12465722046960548,
+            "calinski_harabasz_score": 423.08512980567605,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 6,
+            "noise_percent": 0.7328491620111732,
+            "largest_cluster_size": 874,
+            "smallest_cluster_size": 103,
+            "silhouette_score": -0.22297425370293736,
+            "calinski_harabasz_score": 243.2058206585612,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.6519553072625698,
+            "largest_cluster_size": 1851,
+            "smallest_cluster_size": 171,
+            "silhouette_score": -0.11245527578918642,
+            "calinski_harabasz_score": 411.16808818088714,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.6745251396648044,
+            "largest_cluster_size": 1907,
+            "smallest_cluster_size": 301,
+            "silhouette_score": -0.09535241138211502,
+            "calinski_harabasz_score": 491.17765285641065,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.6217877094972067,
+            "largest_cluster_size": 2511,
+            "smallest_cluster_size": 874,
+            "silhouette_score": -0.019826948038672892,
+            "calinski_harabasz_score": 651.4909427543448,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.6202234636871509,
+            "largest_cluster_size": 2578,
+            "smallest_cluster_size": 821,
+            "silhouette_score": -0.008893364462830892,
+            "calinski_harabasz_score": 767.387724595044,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.7081564245810056,
+            "largest_cluster_size": 1907,
+            "smallest_cluster_size": 705,
+            "silhouette_score": -0.07649274503166903,
+            "calinski_harabasz_score": 535.1849277724458,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7746368715083799,
+            "largest_cluster_size": 1359,
+            "smallest_cluster_size": 194,
+            "silhouette_score": -0.16628564335050938,
+            "calinski_harabasz_score": 313.87340939682116,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.7402234636871509,
+            "largest_cluster_size": 832,
+            "smallest_cluster_size": 134,
+            "silhouette_score": -0.20245087745570828,
+            "calinski_harabasz_score": 242.62740944101887,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.8174301675977653,
+            "largest_cluster_size": 589,
+            "smallest_cluster_size": 230,
+            "silhouette_score": -0.24872755210954675,
+            "calinski_harabasz_score": 216.9456304783497,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.842122905027933,
+            "largest_cluster_size": 550,
+            "smallest_cluster_size": 154,
+            "silhouette_score": -0.27263187138982503,
+            "calinski_harabasz_score": 190.3557473890011,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.6862569832402234,
+            "largest_cluster_size": 2132,
+            "smallest_cluster_size": 676,
+            "silhouette_score": -0.053599364690765816,
+            "calinski_harabasz_score": 582.3955119045747,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.7827932960893855,
+            "largest_cluster_size": 1373,
+            "smallest_cluster_size": 571,
+            "silhouette_score": -0.13346125511310192,
+            "calinski_harabasz_score": 396.2902436303451,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.2335195530726257,
+            "largest_cluster_size": 6723,
+            "smallest_cluster_size": 137,
+            "silhouette_score": 0.29932948526304093,
+            "calinski_harabasz_score": 1201.2250216687498,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.6731843575418994,
+            "largest_cluster_size": 2566,
+            "smallest_cluster_size": 169,
+            "silhouette_score": -0.19074381969268447,
+            "calinski_harabasz_score": 200.79718065337696,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.7454748603351955,
+            "largest_cluster_size": 2107,
+            "smallest_cluster_size": 171,
+            "silhouette_score": -0.1547287479319603,
+            "calinski_harabasz_score": 221.85311185869298,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.8808938547486034,
+            "largest_cluster_size": 906,
+            "smallest_cluster_size": 160,
+            "silhouette_score": -0.29822394081963544,
+            "calinski_harabasz_score": 88.5748562071731,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.777877094972067,
+            "largest_cluster_size": 649,
+            "smallest_cluster_size": 297,
+            "silhouette_score": -0.27870226283517474,
+            "calinski_harabasz_score": 106.5620754393173,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.804804469273743,
+            "largest_cluster_size": 685,
+            "smallest_cluster_size": 190,
+            "silhouette_score": -0.30368266018032625,
+            "calinski_harabasz_score": 95.86901826902796,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.8908379888268156,
+            "largest_cluster_size": 380,
+            "smallest_cluster_size": 125,
+            "silhouette_score": -0.39039036147463885,
+            "calinski_harabasz_score": 54.56202524946761,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.7120670391061452,
+            "largest_cluster_size": 1928,
+            "smallest_cluster_size": 649,
+            "silhouette_score": -0.18637018449825665,
+            "calinski_harabasz_score": 269.70080715714045,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.644804469273743,
+            "largest_cluster_size": 2899,
+            "smallest_cluster_size": 280,
+            "silhouette_score": -0.004644683150903287,
+            "calinski_harabasz_score": 348.2048949939324,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.6974301675977653,
+            "largest_cluster_size": 2091,
+            "smallest_cluster_size": 101,
+            "silhouette_score": -0.17972186257789405,
+            "calinski_harabasz_score": 135.29010544012385,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.6241340782122905,
+            "largest_cluster_size": 2965,
+            "smallest_cluster_size": 123,
+            "silhouette_score": -0.06337493223920314,
+            "calinski_harabasz_score": 261.1930179072338,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.7807821229050279,
+            "largest_cluster_size": 1500,
+            "smallest_cluster_size": 103,
+            "silhouette_score": -0.2264932306382149,
+            "calinski_harabasz_score": 151.12094707133795,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 0,
+            "noise_percent": 1.0,
+            "largest_cluster_size": 0,
+            "smallest_cluster_size": 0,
+            "silhouette_score": 0,
+            "calinski_harabasz_score": 0,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 40,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 6,
+            "noise_percent": 0.12569832402234637,
+            "largest_cluster_size": 6220,
+            "smallest_cluster_size": 113,
+            "silhouette_score": 0.09277983754873276,
+            "calinski_harabasz_score": 818.0845336914062,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 40,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.019664804469273742,
+            "largest_cluster_size": 7978,
+            "smallest_cluster_size": 112,
+            "silhouette_score": 0.026615284383296967,
+            "calinski_harabasz_score": 569.1593627929688,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 40,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 18,
+            "noise_percent": 0.23106145251396648,
+            "largest_cluster_size": 1500,
+            "smallest_cluster_size": 146,
+            "silhouette_score": 0.10803119093179703,
+            "calinski_harabasz_score": 1582.2032470703125,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 40,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.08770949720670392,
+            "largest_cluster_size": 6366,
+            "smallest_cluster_size": 188,
+            "silhouette_score": 0.08997213840484619,
+            "calinski_harabasz_score": 768.2269287109375,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 40,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.6481564245810056,
+            "largest_cluster_size": 2072,
+            "smallest_cluster_size": 1077,
+            "silhouette_score": 0.021509284153580666,
+            "calinski_harabasz_score": 1099.3311767578125,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 40,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.010391061452513967,
+            "largest_cluster_size": 8276,
+            "smallest_cluster_size": 581,
+            "silhouette_score": 0.08330781012773514,
+            "calinski_harabasz_score": 721.5791015625,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 40,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.07743016759776536,
+            "largest_cluster_size": 6401,
+            "smallest_cluster_size": 525,
+            "silhouette_score": 0.19327913224697113,
+            "calinski_harabasz_score": 1416.42626953125,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 40,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.08100558659217877,
+            "largest_cluster_size": 6407,
+            "smallest_cluster_size": 519,
+            "silhouette_score": 0.17443230748176575,
+            "calinski_harabasz_score": 1351.137939453125,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 50,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 6,
+            "noise_percent": 0.13195530726256982,
+            "largest_cluster_size": 6232,
+            "smallest_cluster_size": 103,
+            "silhouette_score": 0.07907446473836899,
+            "calinski_harabasz_score": 842.30908203125,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 50,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.011731843575418994,
+            "largest_cluster_size": 7990,
+            "smallest_cluster_size": 137,
+            "silhouette_score": 0.015611272305250168,
+            "calinski_harabasz_score": 623.1849365234375,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 50,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.013296089385474861,
+            "largest_cluster_size": 7986,
+            "smallest_cluster_size": 282,
+            "silhouette_score": 0.029418103396892548,
+            "calinski_harabasz_score": 815.5570068359375,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 50,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.08592178770949721,
+            "largest_cluster_size": 6359,
+            "smallest_cluster_size": 181,
+            "silhouette_score": 0.08457143604755402,
+            "calinski_harabasz_score": 776.5088500976562,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 50,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.622122905027933,
+            "largest_cluster_size": 2216,
+            "smallest_cluster_size": 1166,
+            "silhouette_score": 0.05578140169382095,
+            "calinski_harabasz_score": 1301.813720703125,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 50,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.010391061452513967,
+            "largest_cluster_size": 8284,
+            "smallest_cluster_size": 573,
+            "silhouette_score": 0.08476229012012482,
+            "calinski_harabasz_score": 738.8043823242188,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 50,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.012737430167597765,
+            "largest_cluster_size": 8257,
+            "smallest_cluster_size": 579,
+            "silhouette_score": 0.08716263622045517,
+            "calinski_harabasz_score": 716.6124877929688,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 50,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.014301675977653631,
+            "largest_cluster_size": 8245,
+            "smallest_cluster_size": 577,
+            "silhouette_score": 0.11987227201461792,
+            "calinski_harabasz_score": 693.0233764648438,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 75,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.09810055865921788,
+            "largest_cluster_size": 6385,
+            "smallest_cluster_size": 142,
+            "silhouette_score": 0.11382800340652466,
+            "calinski_harabasz_score": 981.2869873046875,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 75,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.01217877094972067,
+            "largest_cluster_size": 7879,
+            "smallest_cluster_size": 108,
+            "silhouette_score": -0.029062731191515923,
+            "calinski_harabasz_score": 665.8750610351562,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 75,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 18,
+            "noise_percent": 0.16692737430167598,
+            "largest_cluster_size": 1752,
+            "smallest_cluster_size": 104,
+            "silhouette_score": 0.14546816051006317,
+            "calinski_harabasz_score": 2234.1611328125,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 75,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 100,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.08636871508379888,
+            "largest_cluster_size": 6372,
+            "smallest_cluster_size": 168,
+            "silhouette_score": 0.075297512114048,
+            "calinski_harabasz_score": 735.5524291992188,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 75,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.5937430167597766,
+            "largest_cluster_size": 2376,
+            "smallest_cluster_size": 1260,
+            "silhouette_score": 0.08172023296356201,
+            "calinski_harabasz_score": 1447.8682861328125,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 75,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.042458100558659215,
+            "largest_cluster_size": 7994,
+            "smallest_cluster_size": 576,
+            "silhouette_score": 0.13101568818092346,
+            "calinski_harabasz_score": 869.99755859375,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 75,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.05821229050279329,
+            "largest_cluster_size": 6489,
+            "smallest_cluster_size": 580,
+            "silhouette_score": 0.18292905390262604,
+            "calinski_harabasz_score": 1518.88671875,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 75,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 500,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.07608938547486034,
+            "largest_cluster_size": 6395,
+            "smallest_cluster_size": 563,
+            "silhouette_score": 0.17139701545238495,
+            "calinski_harabasz_score": 1508.551513671875,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__eps": 0.3
+        },
+        "scores": {
+            "n_labels": 10,
+            "noise_percent": 0.03318435754189944,
+            "largest_cluster_size": 8589,
+            "smallest_cluster_size": 3,
+            "silhouette_score": 0.32610027971697403,
+            "calinski_harabasz_score": 282.00002324554146,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__eps": 0.5
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.014972067039106146,
+            "largest_cluster_size": 8801,
+            "smallest_cluster_size": 6,
+            "silhouette_score": 0.6216290423295624,
+            "calinski_harabasz_score": 663.5329121913019,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__eps": 0.75
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.009050279329608939,
+            "largest_cluster_size": 8864,
+            "smallest_cluster_size": 5,
+            "silhouette_score": 0.6625554639388624,
+            "calinski_harabasz_score": 789.1987930577415,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__eps": 1.0
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.006145251396648044,
+            "largest_cluster_size": 8891,
+            "smallest_cluster_size": 4,
+            "silhouette_score": 0.6693998396385861,
+            "calinski_harabasz_score": 714.8065257776816,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__eps": 0.3
+        },
+        "scores": {
+            "n_labels": 30,
+            "noise_percent": 0.15374301675977653,
+            "largest_cluster_size": 7313,
+            "smallest_cluster_size": 3,
+            "silhouette_score": -0.29766606829080705,
+            "calinski_harabasz_score": 85.92995498085669,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__eps": 0.5
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.06335195530726256,
+            "largest_cluster_size": 8337,
+            "smallest_cluster_size": 5,
+            "silhouette_score": 0.09619972119186165,
+            "calinski_harabasz_score": 317.05708927219865,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__eps": 0.75
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.02893854748603352,
+            "largest_cluster_size": 8681,
+            "smallest_cluster_size": 4,
+            "silhouette_score": 0.4413782608044493,
+            "calinski_harabasz_score": 614.5424892224869,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__eps": 1.0
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.017318435754189943,
+            "largest_cluster_size": 8781,
+            "smallest_cluster_size": 7,
+            "silhouette_score": 0.6227051855419052,
+            "calinski_harabasz_score": 556.8301039000057,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__eps": 0.3
+        },
+        "scores": {
+            "n_labels": 55,
+            "noise_percent": 0.3970949720670391,
+            "largest_cluster_size": 4979,
+            "smallest_cluster_size": 4,
+            "silhouette_score": -0.5626063870395335,
+            "calinski_harabasz_score": 28.31954673963873,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__eps": 0.5
+        },
+        "scores": {
+            "n_labels": 31,
+            "noise_percent": 0.1617877094972067,
+            "largest_cluster_size": 7323,
+            "smallest_cluster_size": 3,
+            "silhouette_score": -0.3578094015421836,
+            "calinski_harabasz_score": 60.33651864191524,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__eps": 0.75
+        },
+        "scores": {
+            "n_labels": 6,
+            "noise_percent": 0.07418994413407821,
+            "largest_cluster_size": 8259,
+            "smallest_cluster_size": 5,
+            "silhouette_score": 0.05443425937949402,
+            "calinski_harabasz_score": 274.2466327712452,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__eps": 1.0
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0358659217877095,
+            "largest_cluster_size": 8619,
+            "smallest_cluster_size": 5,
+            "silhouette_score": 0.5694824967325669,
+            "calinski_harabasz_score": 498.61117773477474,
+            "model_name": "db_model"
+        }
+    }
+]
