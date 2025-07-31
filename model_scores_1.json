@@ -1,0 +1,3862 @@
+[
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.3739292027869906,
+            "calinski_harabasz_score": 4044.738179651222,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.44387589715954107,
+            "calinski_harabasz_score": 5315.265850840743,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.4084642092213067,
+            "calinski_harabasz_score": 5807.31848481348,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.4000692841952507,
+            "calinski_harabasz_score": 6058.15703540296,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.34296756437065673,
+            "calinski_harabasz_score": 3458.987902160505,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.3731208242135436,
+            "calinski_harabasz_score": 3788.244424463171,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.36930330617334467,
+            "calinski_harabasz_score": 4384.740154872989,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.36849812445013286,
+            "calinski_harabasz_score": 4454.6372840670265,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.30767197782787636,
+            "calinski_harabasz_score": 2962.542560831686,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.314806731211878,
+            "calinski_harabasz_score": 2997.8252581603747,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.32433084349742203,
+            "calinski_harabasz_score": 3412.0620248754763,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.2731092788937526,
+            "calinski_harabasz_score": 3016.890722348295,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.28349918261114565,
+            "calinski_harabasz_score": 2626.6500120296255,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.286169228728742,
+            "calinski_harabasz_score": 2586.7308120013136,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.28915725439096224,
+            "calinski_harabasz_score": 2827.692160538104,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.2848982096762666,
+            "calinski_harabasz_score": 2692.088530941703,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.2202456905576613,
+            "calinski_harabasz_score": 1787.3385188333611,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.25239391934620814,
+            "calinski_harabasz_score": 1666.750633873613,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.20993437268936138,
+            "calinski_harabasz_score": 1676.9811797980362,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.20565872048581937,
+            "calinski_harabasz_score": 1536.9400060657276,
+            "model_name": "kmeans_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.3736256233031294,
+            "calinski_harabasz_score": 4043.829231952021,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.4489122318888673,
+            "calinski_harabasz_score": 5314.578994471668,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.40870316099821824,
+            "calinski_harabasz_score": 5808.289297565015,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.38119356161164125,
+            "calinski_harabasz_score": 5893.3237156441855,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.3427445456250307,
+            "calinski_harabasz_score": 3458.8116514594817,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.37329571038453296,
+            "calinski_harabasz_score": 3788.255536594805,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.3702329539844996,
+            "calinski_harabasz_score": 4385.86315071749,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.3615728521985679,
+            "calinski_harabasz_score": 4405.094036511217,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.30767197782787636,
+            "calinski_harabasz_score": 2962.542560831686,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.314806731211878,
+            "calinski_harabasz_score": 2997.8252581603747,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.3236247505399834,
+            "calinski_harabasz_score": 3413.8505005312313,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.2783918871565172,
+            "calinski_harabasz_score": 3016.9168776881475,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.2827909445244435,
+            "calinski_harabasz_score": 2626.7608344866985,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.26593673892806013,
+            "calinski_harabasz_score": 2557.1771347704957,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.2892124582554199,
+            "calinski_harabasz_score": 2827.691004083745,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.2848982096762666,
+            "calinski_harabasz_score": 2692.088530941703,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 2
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.21949958956873997,
+            "calinski_harabasz_score": 1787.3056566973305,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.21614519356596362,
+            "calinski_harabasz_score": 1643.449264000194,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 4
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.20776732448744206,
+            "calinski_harabasz_score": 1358.3369444602092,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__n_clusters": 5
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.21396225351513026,
+            "calinski_harabasz_score": 1443.0892756717105,
+            "model_name": "normalize_kmeans"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 431,
+            "noise_percent": 0.4487150837988827,
+            "silhouette_score": -0.16310537580192452,
+            "calinski_harabasz_score": 14.613455720873818,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 637,
+            "noise_percent": 0.25921787709497207,
+            "silhouette_score": 0.048153813314263806,
+            "calinski_harabasz_score": 22.646022024656485,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 293,
+            "noise_percent": 0.5532960893854748,
+            "silhouette_score": -0.3077585072209096,
+            "calinski_harabasz_score": 14.822209999643444,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.04458100558659218,
+            "silhouette_score": 0.5377693398850344,
+            "calinski_harabasz_score": 1351.3102538729984,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.5492737430167598,
+            "silhouette_score": -0.06506539689993114,
+            "calinski_harabasz_score": 655.5863550645345,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 95,
+            "noise_percent": 0.48726256983240224,
+            "silhouette_score": -0.23756613751633246,
+            "calinski_harabasz_score": 34.423313700546245,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.10659217877094972,
+            "silhouette_score": 0.16540426274677614,
+            "calinski_harabasz_score": 1451.4607228354103,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.24547486033519553,
+            "silhouette_score": 0.1260300905221822,
+            "calinski_harabasz_score": 1383.107036139583,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.7629050279329609,
+            "silhouette_score": -0.2888843953552397,
+            "calinski_harabasz_score": 192.45687934664917,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.18335195530726256,
+            "silhouette_score": -0.07810789384492485,
+            "calinski_harabasz_score": 480.7623254599941,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.263463687150838,
+            "silhouette_score": -0.2021781845271575,
+            "calinski_harabasz_score": 569.5497327057155,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.526927374301676,
+            "silhouette_score": -0.047031423232456154,
+            "calinski_harabasz_score": 716.0441993016857,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.7625698324022346,
+            "silhouette_score": -0.28514550099697034,
+            "calinski_harabasz_score": 192.22286407111997,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.19810055865921788,
+            "silhouette_score": 0.12178825285580233,
+            "calinski_harabasz_score": 1054.2696140885503,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.1875977653631285,
+            "silhouette_score": 0.30654721678739477,
+            "calinski_harabasz_score": 1549.1536099264235,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.526927374301676,
+            "silhouette_score": -0.047031423232456154,
+            "calinski_harabasz_score": 716.0441993016857,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.7973184357541899,
+            "silhouette_score": -0.2687543068283769,
+            "calinski_harabasz_score": 202.1246040151458,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.20435754189944133,
+            "silhouette_score": 0.12737476897132616,
+            "calinski_harabasz_score": 1522.60468027588,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 9,
+            "noise_percent": 0.654413407821229,
+            "silhouette_score": -0.29404331929159416,
+            "calinski_harabasz_score": 173.47221225403553,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.526927374301676,
+            "silhouette_score": -0.047031423232456154,
+            "calinski_harabasz_score": 716.0441993016857,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.016089385474860336,
+            "silhouette_score": 0.6247162133103731,
+            "calinski_harabasz_score": 439.57819855053947,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 483,
+            "noise_percent": 0.4976536312849162,
+            "silhouette_score": -0.258718514745311,
+            "calinski_harabasz_score": 10.604955112346984,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.003575418994413408,
+            "silhouette_score": 0.7992027895492756,
+            "calinski_harabasz_score": 591.8945244261699,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.2512849162011173,
+            "silhouette_score": -0.10830154140499418,
+            "calinski_harabasz_score": 673.2911516970086,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.7031284916201117,
+            "silhouette_score": -0.20995374822330898,
+            "calinski_harabasz_score": 276.8174525014521,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.19463687150837988,
+            "silhouette_score": -0.06271603992228848,
+            "calinski_harabasz_score": 543.2751455303562,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.21195530726256984,
+            "silhouette_score": 0.03673752973768422,
+            "calinski_harabasz_score": 1013.7418444411242,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.7989944134078212,
+            "silhouette_score": -0.3645437442048694,
+            "calinski_harabasz_score": 153.47142834689907,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.7006703910614526,
+            "silhouette_score": -0.15556983821335132,
+            "calinski_harabasz_score": 349.58045080612277,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.17541899441340783,
+            "silhouette_score": -0.03153636483785296,
+            "calinski_harabasz_score": 740.3491829082927,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 9,
+            "noise_percent": 0.7446927374301676,
+            "silhouette_score": -0.30155988312258375,
+            "calinski_harabasz_score": 157.68098352608905,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.6910614525139664,
+            "silhouette_score": -0.15179305141067567,
+            "calinski_harabasz_score": 364.28326519331813,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.708268156424581,
+            "silhouette_score": -0.11572216743146035,
+            "calinski_harabasz_score": 445.1539293286653,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.1605586592178771,
+            "silhouette_score": 0.037269903247105156,
+            "calinski_harabasz_score": 1075.4712440507976,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 8,
+            "noise_percent": 0.7493854748603352,
+            "silhouette_score": -0.29541483777494537,
+            "calinski_harabasz_score": 172.28354265320112,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.6910614525139664,
+            "silhouette_score": -0.15179305141067567,
+            "calinski_harabasz_score": 364.28326519331813,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7037988826815642,
+            "silhouette_score": -0.11014102877696114,
+            "calinski_harabasz_score": 455.37894431300447,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 9,
+            "noise_percent": 0.7058100558659218,
+            "silhouette_score": -0.2430372519290552,
+            "calinski_harabasz_score": 181.34502124651794,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.6519553072625698,
+            "silhouette_score": -0.11245527578918642,
+            "calinski_harabasz_score": 411.16808818088714,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.6745251396648044,
+            "silhouette_score": -0.09535241138211502,
+            "calinski_harabasz_score": 491.17765285641065,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.027039106145251398,
+            "silhouette_score": 0.6016480415502798,
+            "calinski_harabasz_score": 714.1552619672535,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 365,
+            "noise_percent": 0.6064804469273744,
+            "silhouette_score": -0.3613812889758094,
+            "calinski_harabasz_score": 10.667125658920547,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.004134078212290503,
+            "silhouette_score": 0.785954900536587,
+            "calinski_harabasz_score": 515.499059893937,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 16,
+            "noise_percent": 0.8202234636871508,
+            "silhouette_score": -0.4220460747539105,
+            "calinski_harabasz_score": 55.664315820112776,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.7831284916201118,
+            "silhouette_score": -0.25085044064344975,
+            "calinski_harabasz_score": 188.41123807999085,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.22815642458100557,
+            "silhouette_score": 0.016089246305315743,
+            "calinski_harabasz_score": 729.8113668677154,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 10,
+            "noise_percent": 0.7945251396648044,
+            "silhouette_score": -0.3200886726672869,
+            "calinski_harabasz_score": 100.32759042907432,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.5193296089385475,
+            "silhouette_score": -0.010275036754554871,
+            "calinski_harabasz_score": 470.54439933834834,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7906145251396648,
+            "silhouette_score": -0.1811780322439665,
+            "calinski_harabasz_score": 300.9338923069927,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 11,
+            "noise_percent": 0.737877094972067,
+            "silhouette_score": -0.32719714981598425,
+            "calinski_harabasz_score": 116.76660918894882,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.8113966480446927,
+            "silhouette_score": -0.2659795790178887,
+            "calinski_harabasz_score": 179.12725305971819,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.8372067039106146,
+            "silhouette_score": -0.2937930360203475,
+            "calinski_harabasz_score": 156.21976649903254,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7855865921787709,
+            "silhouette_score": -0.1760455674005081,
+            "calinski_harabasz_score": 308.0450240893675,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 8,
+            "noise_percent": 0.7525139664804469,
+            "silhouette_score": -0.29415507769794963,
+            "calinski_harabasz_score": 146.97688639374138,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.8113966480446927,
+            "silhouette_score": -0.2659795790178887,
+            "calinski_harabasz_score": 179.12725305971819,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.842122905027933,
+            "silhouette_score": -0.27263187138982503,
+            "calinski_harabasz_score": 190.3557473890011,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7901675977653632,
+            "silhouette_score": -0.1807450238513071,
+            "calinski_harabasz_score": 299.9157876777252,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 6,
+            "noise_percent": 0.7650279329608939,
+            "silhouette_score": -0.25400536679596497,
+            "calinski_harabasz_score": 186.8405321194964,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.8174301675977653,
+            "silhouette_score": -0.24872755210954675,
+            "calinski_harabasz_score": 216.9456304783497,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.842122905027933,
+            "silhouette_score": -0.27263187138982503,
+            "calinski_harabasz_score": 190.3557473890011,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 160,
+            "noise_percent": 0.7925139664804469,
+            "silhouette_score": -0.5198650957942137,
+            "calinski_harabasz_score": 7.994607679170987,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 335,
+            "noise_percent": 0.6554189944134078,
+            "silhouette_score": -0.3960168526333294,
+            "calinski_harabasz_score": 9.070405501227246,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 80,
+            "noise_percent": 0.8254748603351956,
+            "silhouette_score": -0.5344909054514776,
+            "calinski_harabasz_score": 12.76468327504784,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 14,
+            "noise_percent": 0.7253631284916201,
+            "silhouette_score": -0.3846167809759592,
+            "calinski_harabasz_score": 51.734959148334866,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.5844692737430167,
+            "silhouette_score": -0.047192108161937224,
+            "calinski_harabasz_score": 389.73224689640836,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 21,
+            "noise_percent": 0.7392178770949721,
+            "silhouette_score": -0.38475286655642427,
+            "calinski_harabasz_score": 63.677663164105866,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 15,
+            "noise_percent": 0.797094972067039,
+            "silhouette_score": -0.3703630953864205,
+            "calinski_harabasz_score": 65.73739637249948,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.8505027932960894,
+            "silhouette_score": -0.3353850723854288,
+            "calinski_harabasz_score": 100.38860010648139,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.8084916201117318,
+            "silhouette_score": -0.1939288399925393,
+            "calinski_harabasz_score": 262.8232715985963,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 12,
+            "noise_percent": 0.7584357541899441,
+            "silhouette_score": -0.3169370736703464,
+            "calinski_harabasz_score": 95.31956891232744,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 9,
+            "noise_percent": 0.8083798882681564,
+            "silhouette_score": -0.3154636179110898,
+            "calinski_harabasz_score": 95.45394101756197,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.85731843575419,
+            "silhouette_score": -0.3089586505321628,
+            "calinski_harabasz_score": 130.49833861423932,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.8125139664804469,
+            "silhouette_score": -0.19803516616066444,
+            "calinski_harabasz_score": 258.708176269808,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 9,
+            "noise_percent": 0.7636871508379889,
+            "silhouette_score": -0.30962929065967937,
+            "calinski_harabasz_score": 119.37023987626704,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 8,
+            "noise_percent": 0.8135195530726257,
+            "silhouette_score": -0.318134031235395,
+            "calinski_harabasz_score": 101.71594969865433,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.85731843575419,
+            "silhouette_score": -0.3089586505321628,
+            "calinski_harabasz_score": 130.49833861423932,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.8130726256983241,
+            "silhouette_score": -0.19485359901118252,
+            "calinski_harabasz_score": 256.5704800377743,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.776536312849162,
+            "silhouette_score": -0.28336493194496737,
+            "calinski_harabasz_score": 141.91460939458952,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 6,
+            "noise_percent": 0.8116201117318436,
+            "silhouette_score": -0.27923767799602756,
+            "calinski_harabasz_score": 137.72405608263566,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.85731843575419,
+            "silhouette_score": -0.3089586505321628,
+            "calinski_harabasz_score": 130.49833861423932,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 106,
+            "noise_percent": 0.8491620111731844,
+            "silhouette_score": -0.49531449426151336,
+            "calinski_harabasz_score": 8.696561887195738,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 227,
+            "noise_percent": 0.7406703910614525,
+            "silhouette_score": -0.44197479831886805,
+            "calinski_harabasz_score": 9.303534305517983,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0048044692737430165,
+            "silhouette_score": 0.7552796889182714,
+            "calinski_harabasz_score": 369.45786794515266,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 12,
+            "noise_percent": 0.7716201117318435,
+            "silhouette_score": -0.35940065702022334,
+            "calinski_harabasz_score": 49.835512633860326,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.7584357541899441,
+            "silhouette_score": -0.1525311989797496,
+            "calinski_harabasz_score": 144.43220950645593,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 28,
+            "noise_percent": 0.8511731843575419,
+            "silhouette_score": -0.41008746206381397,
+            "calinski_harabasz_score": 30.369655990158,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 13,
+            "noise_percent": 0.8546368715083799,
+            "silhouette_score": -0.35247259707887457,
+            "calinski_harabasz_score": 52.04792097201051,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.7779888268156424,
+            "silhouette_score": -0.1631079414587695,
+            "calinski_harabasz_score": 133.8805481872398,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.869608938547486,
+            "silhouette_score": -0.2261967453961604,
+            "calinski_harabasz_score": 160.12981476955883,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 12,
+            "noise_percent": 0.8121787709497207,
+            "silhouette_score": -0.3246520181225414,
+            "calinski_harabasz_score": 72.82958471476024,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.8707262569832402,
+            "silhouette_score": -0.316916157130816,
+            "calinski_harabasz_score": 77.01156187004818,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.7864804469273743,
+            "silhouette_score": -0.0988977673125306,
+            "calinski_harabasz_score": 236.52459507260727,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.869050279329609,
+            "silhouette_score": -0.22541299076662907,
+            "calinski_harabasz_score": 159.10434383185674,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.7747486033519553,
+            "silhouette_score": -0.2334087574826253,
+            "calinski_harabasz_score": 122.60002255018811,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 6,
+            "noise_percent": 0.8594413407821229,
+            "silhouette_score": -0.2924455887968804,
+            "calinski_harabasz_score": 94.46146458968536,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.7864804469273743,
+            "silhouette_score": -0.0988977673125306,
+            "calinski_harabasz_score": 236.52459507260727,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.863463687150838,
+            "silhouette_score": -0.2195227901990885,
+            "calinski_harabasz_score": 164.60659416028028,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.3736312849162011,
+            "silhouette_score": 0.1086798687027502,
+            "calinski_harabasz_score": 466.6307026395455,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.8528491620111732,
+            "silhouette_score": -0.26432310931692743,
+            "calinski_harabasz_score": 115.55902708710748,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.7864804469273743,
+            "silhouette_score": -0.0988977673125306,
+            "calinski_harabasz_score": 236.52459507260727,
+            "model_name": "hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 438,
+            "noise_percent": 0.44681564245810057,
+            "silhouette_score": -0.1663388313362472,
+            "calinski_harabasz_score": 11.387410465323303,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 647,
+            "noise_percent": 0.26212290502793295,
+            "silhouette_score": 0.047899367796703014,
+            "calinski_harabasz_score": 13.61733401703737,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 288,
+            "noise_percent": 0.5629050279329609,
+            "silhouette_score": -0.3115467469433413,
+            "calinski_harabasz_score": 13.077164725513047,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 10,
+            "noise_percent": 0.19430167597765363,
+            "silhouette_score": 0.135641931227447,
+            "calinski_harabasz_score": 271.8784078419348,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.3953072625698324,
+            "silhouette_score": -0.046150876583274825,
+            "calinski_harabasz_score": 519.4878594727231,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.039776536312849164,
+            "silhouette_score": 0.6593792737857308,
+            "calinski_harabasz_score": 1375.822505984073,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 6,
+            "noise_percent": 0.1322905027932961,
+            "silhouette_score": 0.4065082850530314,
+            "calinski_harabasz_score": 572.6069986810419,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.4435754189944134,
+            "silhouette_score": -0.11331022909865655,
+            "calinski_harabasz_score": 342.05122949708056,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7468156424581005,
+            "silhouette_score": -0.24343234250976042,
+            "calinski_harabasz_score": 142.79996536715763,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.043016759776536316,
+            "silhouette_score": 0.6631541980903538,
+            "calinski_harabasz_score": 1861.8639758097029,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0758659217877095,
+            "silhouette_score": 0.5692183109995933,
+            "calinski_harabasz_score": 1158.8807164833079,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.3794413407821229,
+            "silhouette_score": 0.037936296591955014,
+            "calinski_harabasz_score": 808.8589693969369,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7467039106145251,
+            "silhouette_score": -0.24524957387268673,
+            "calinski_harabasz_score": 142.10711668311876,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.3329608938547486,
+            "silhouette_score": -0.01620457645147707,
+            "calinski_harabasz_score": 270.839327149086,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.3846927374301676,
+            "silhouette_score": -0.22996627614762027,
+            "calinski_harabasz_score": 235.89137266687783,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.3794413407821229,
+            "silhouette_score": 0.037936296591955014,
+            "calinski_harabasz_score": 808.8589693969369,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7516201117318436,
+            "silhouette_score": -0.25204152409505276,
+            "calinski_harabasz_score": 137.21039750261292,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.34502793296089385,
+            "silhouette_score": 0.056581456786431346,
+            "calinski_harabasz_score": 360.3869654145517,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.35854748603351955,
+            "silhouette_score": -0.10223694901799357,
+            "calinski_harabasz_score": 444.6501884127794,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7379888268156425,
+            "silhouette_score": -0.2371764550559842,
+            "calinski_harabasz_score": 153.10928013640657,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 244,
+            "noise_percent": 0.6830167597765363,
+            "silhouette_score": -0.47014620145523406,
+            "calinski_harabasz_score": 12.442573503765841,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 490,
+            "noise_percent": 0.4977653631284916,
+            "silhouette_score": -0.2676528934446135,
+            "calinski_harabasz_score": 11.61289520509056,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 11,
+            "noise_percent": 0.05575418994413408,
+            "silhouette_score": 0.5024616485411963,
+            "calinski_harabasz_score": 406.7397936751865,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 6,
+            "noise_percent": 0.38625698324022345,
+            "silhouette_score": 0.01279816693452977,
+            "calinski_harabasz_score": 240.57387888288847,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.6374301675977654,
+            "silhouette_score": -0.1567931168291773,
+            "calinski_harabasz_score": 349.77903390066984,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 6,
+            "noise_percent": 0.20569832402234636,
+            "silhouette_score": 0.1485009281247856,
+            "calinski_harabasz_score": 362.15436175224403,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.3795530726256983,
+            "silhouette_score": 0.0388390978777672,
+            "calinski_harabasz_score": 477.1956090692633,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.8908379888268156,
+            "silhouette_score": -0.39039036147463885,
+            "calinski_harabasz_score": 54.56202524946761,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.8064804469273743,
+            "silhouette_score": -0.24731622903810385,
+            "calinski_harabasz_score": 160.29393375863572,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.2988826815642458,
+            "silhouette_score": 0.15192519967323062,
+            "calinski_harabasz_score": 581.2722427214396,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.34134078212290503,
+            "silhouette_score": 0.19644249137138395,
+            "calinski_harabasz_score": 764.9911303158831,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.8908379888268156,
+            "silhouette_score": -0.39039036147463885,
+            "calinski_harabasz_score": 54.56202524946761,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.8006703910614525,
+            "silhouette_score": -0.24388857797157354,
+            "calinski_harabasz_score": 163.36819719544528,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.3041340782122905,
+            "silhouette_score": 0.2405928205408058,
+            "calinski_harabasz_score": 845.0364592949886,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.34134078212290503,
+            "silhouette_score": 0.19644249137138395,
+            "calinski_harabasz_score": 764.9911303158831,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.8908379888268156,
+            "silhouette_score": -0.39039036147463885,
+            "calinski_harabasz_score": 54.56202524946761,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.794413407821229,
+            "silhouette_score": -0.24047814502943526,
+            "calinski_harabasz_score": 168.33346875667388,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.3041340782122905,
+            "silhouette_score": 0.2405928205408058,
+            "calinski_harabasz_score": 845.0364592949886,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.6077094972067039,
+            "silhouette_score": -0.13406653556462103,
+            "calinski_harabasz_score": 391.5364696889967,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.8908379888268156,
+            "silhouette_score": -0.39039036147463885,
+            "calinski_harabasz_score": 54.56202524946761,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 212,
+            "noise_percent": 0.7278212290502794,
+            "silhouette_score": -0.4937147364369181,
+            "calinski_harabasz_score": 14.467001343105624,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 389,
+            "noise_percent": 0.5750837988826816,
+            "silhouette_score": -0.33845916910573787,
+            "calinski_harabasz_score": 11.3219229024104,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 124,
+            "noise_percent": 0.8083798882681564,
+            "silhouette_score": -0.5698479406698618,
+            "calinski_harabasz_score": 19.586169282635435,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.027597765363128492,
+            "silhouette_score": 0.7031798700532742,
+            "calinski_harabasz_score": 1009.0865356940518,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.7964245810055866,
+            "silhouette_score": -0.25330686679557396,
+            "calinski_harabasz_score": 76.32743122894804,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.11351955307262569,
+            "silhouette_score": 0.40524607581626654,
+            "calinski_harabasz_score": 818.6174332418587,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 18,
+            "noise_percent": 0.7668156424581005,
+            "silhouette_score": -0.40589440116954323,
+            "calinski_harabasz_score": 43.01221981124349,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 9,
+            "noise_percent": 0.786927374301676,
+            "silhouette_score": -0.3048694613770576,
+            "calinski_harabasz_score": 60.89588500010196,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.7820111731843575,
+            "silhouette_score": -0.22682140176860938,
+            "calinski_harabasz_score": 130.36924684163316,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.39430167597765364,
+            "silhouette_score": 0.049569099235035684,
+            "calinski_harabasz_score": 366.93606505017476,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 8,
+            "noise_percent": 0.6158659217877095,
+            "silhouette_score": -0.17658882204615944,
+            "calinski_harabasz_score": 109.49598781704705,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.7932960893854749,
+            "silhouette_score": -0.24977534741163585,
+            "calinski_harabasz_score": 74.73125330018878,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7691620111731844,
+            "silhouette_score": -0.20787434080363398,
+            "calinski_harabasz_score": 175.89569278276548,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.39430167597765364,
+            "silhouette_score": 0.049569099235035684,
+            "calinski_harabasz_score": 366.93606505017476,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.6172067039106145,
+            "silhouette_score": -0.06119462053636796,
+            "calinski_harabasz_score": 178.3037152054519,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.7807821229050279,
+            "silhouette_score": -0.2264932306382149,
+            "calinski_harabasz_score": 151.12094707133795,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7643575418994414,
+            "silhouette_score": -0.20632716954458027,
+            "calinski_harabasz_score": 173.757465590333,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.4,
+            "silhouette_score": 0.14905199179679404,
+            "calinski_harabasz_score": 531.2474339872231,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.6172067039106145,
+            "silhouette_score": -0.06119462053636796,
+            "calinski_harabasz_score": 178.3037152054519,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.7807821229050279,
+            "silhouette_score": -0.2264932306382149,
+            "calinski_harabasz_score": 151.12094707133795,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 199,
+            "noise_percent": 0.7237988826815642,
+            "silhouette_score": -0.4725880952384927,
+            "calinski_harabasz_score": 12.322280400965003,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 374,
+            "noise_percent": 0.5898324022346368,
+            "silhouette_score": -0.34640945222790365,
+            "calinski_harabasz_score": 10.521581364847439,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0088268156424581,
+            "silhouette_score": 0.822311367217064,
+            "calinski_harabasz_score": 972.7966039522395,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 18,
+            "noise_percent": 0.7955307262569833,
+            "silhouette_score": -0.3688360353848868,
+            "calinski_harabasz_score": 36.553954098533644,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 8,
+            "noise_percent": 0.7163128491620112,
+            "silhouette_score": -0.1510919408092253,
+            "calinski_harabasz_score": 101.42681984575208,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.19564245810055866,
+            "silhouette_score": 0.05967897829352168,
+            "calinski_harabasz_score": 459.41582697281945,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 19,
+            "noise_percent": 0.7979888268156424,
+            "silhouette_score": -0.40582881009611244,
+            "calinski_harabasz_score": 41.302897459127855,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 8,
+            "noise_percent": 0.6906145251396648,
+            "silhouette_score": -0.13164740545629824,
+            "calinski_harabasz_score": 109.27520651930323,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.6824581005586592,
+            "silhouette_score": -0.06675099152691266,
+            "calinski_harabasz_score": 217.32659612614037,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 18,
+            "noise_percent": 0.7972067039106145,
+            "silhouette_score": -0.3609823369798216,
+            "calinski_harabasz_score": 45.984530975927576,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 12,
+            "noise_percent": 0.8003351955307263,
+            "silhouette_score": -0.31704739255450093,
+            "calinski_harabasz_score": 63.22923205689209,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 8,
+            "noise_percent": 0.6906145251396648,
+            "silhouette_score": -0.13164740545629824,
+            "calinski_harabasz_score": 109.27520651930323,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.6858100558659218,
+            "silhouette_score": -0.06857795409082681,
+            "calinski_harabasz_score": 212.65311316326182,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 15,
+            "noise_percent": 0.7260335195530726,
+            "silhouette_score": -0.32973469888287055,
+            "calinski_harabasz_score": 63.97595527297842,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 9,
+            "noise_percent": 0.784022346368715,
+            "silhouette_score": -0.2511893386821033,
+            "calinski_harabasz_score": 80.40841861790213,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 6,
+            "noise_percent": 0.6870391061452514,
+            "silhouette_score": -0.12413877245263726,
+            "calinski_harabasz_score": 151.49499246105452,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.6884916201117318,
+            "silhouette_score": -0.0660706208040048,
+            "calinski_harabasz_score": 255.0742210861588,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 13,
+            "noise_percent": 0.7382122905027932,
+            "silhouette_score": -0.3237133509945435,
+            "calinski_harabasz_score": 66.70270895273283,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.7011173184357542,
+            "silhouette_score": -0.1368405422342341,
+            "calinski_harabasz_score": 115.71098814097263,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 5,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 6,
+            "noise_percent": 0.6870391061452514,
+            "silhouette_score": -0.12413877245263726,
+            "calinski_harabasz_score": 151.49499246105452,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 132,
+            "noise_percent": 0.7802234636871508,
+            "silhouette_score": -0.478303442792571,
+            "calinski_harabasz_score": 13.12641006416671,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 283,
+            "noise_percent": 0.6556424581005587,
+            "silhouette_score": -0.38704836004529786,
+            "calinski_harabasz_score": 11.462107698424111,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 76,
+            "noise_percent": 0.7310614525139665,
+            "silhouette_score": -0.4586708436329344,
+            "calinski_harabasz_score": 19.552742441472905,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 18,
+            "noise_percent": 0.8253631284916201,
+            "silhouette_score": -0.3705624922558614,
+            "calinski_harabasz_score": 33.29667578022339,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 8,
+            "noise_percent": 0.7856983240223464,
+            "silhouette_score": -0.18444527771614033,
+            "calinski_harabasz_score": 74.70188742584405,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 25,
+            "noise_percent": 0.5969832402234637,
+            "silhouette_score": -0.23005890657463246,
+            "calinski_harabasz_score": 54.08332995534204,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 21,
+            "noise_percent": 0.7087150837988827,
+            "silhouette_score": -0.3018767883235573,
+            "calinski_harabasz_score": 45.10229335851726,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 8,
+            "noise_percent": 0.781340782122905,
+            "silhouette_score": -0.18299773420861884,
+            "calinski_harabasz_score": 77.22513377179693,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7604469273743016,
+            "silhouette_score": -0.1322650946405983,
+            "calinski_harabasz_score": 188.73765911266784,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 19,
+            "noise_percent": 0.6072625698324022,
+            "silhouette_score": -0.22946349978594716,
+            "calinski_harabasz_score": 66.58661342136887,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 16,
+            "noise_percent": 0.7145251396648045,
+            "silhouette_score": -0.29059170880142654,
+            "calinski_harabasz_score": 56.26791813763728,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.781340782122905,
+            "silhouette_score": -0.18338892623394032,
+            "calinski_harabasz_score": 88.21099295165185,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.7522905027932961,
+            "silhouette_score": -0.12289471008812239,
+            "calinski_harabasz_score": 193.12829389888728,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 17,
+            "noise_percent": 0.6172067039106145,
+            "silhouette_score": -0.22957539278103006,
+            "calinski_harabasz_score": 69.8859057478237,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 11,
+            "noise_percent": 0.7343016759776536,
+            "silhouette_score": -0.22901008564648595,
+            "calinski_harabasz_score": 77.33940147137918,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 50,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.786145251396648,
+            "silhouette_score": -0.1738363262977461,
+            "calinski_harabasz_score": 117.76785550213341,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.7279329608938547,
+            "silhouette_score": -0.05799716989580509,
+            "calinski_harabasz_score": 286.11109077827524,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 14,
+            "noise_percent": 0.6298324022346369,
+            "silhouette_score": -0.23711527288636575,
+            "calinski_harabasz_score": 75.36455073136342,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 9,
+            "noise_percent": 0.7467039106145251,
+            "silhouette_score": -0.1797401713372474,
+            "calinski_harabasz_score": 87.75983748570027,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 0.95,
+            "clustering__min_cluster_size": 60,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 4,
+            "noise_percent": 0.7740782122905028,
+            "silhouette_score": -0.15412159379838292,
+            "calinski_harabasz_score": 158.05830949070338,
+            "model_name": "robust_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 377,
+            "noise_percent": 0.3158659217877095,
+            "silhouette_score": 0.03061426617205143,
+            "calinski_harabasz_score": 63.39543914794922,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 598,
+            "noise_percent": 0.23027932960893854,
+            "silhouette_score": 0.12592890858650208,
+            "calinski_harabasz_score": 51.405853271484375,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 277,
+            "noise_percent": 0.37988826815642457,
+            "silhouette_score": -0.03629622980952263,
+            "calinski_harabasz_score": 59.81337356567383,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.22151866555213928,
+            "calinski_harabasz_score": 227.87892150878906,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.2506220042705536,
+            "calinski_harabasz_score": 249.54901123046875,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 101,
+            "noise_percent": 0.2435754189944134,
+            "silhouette_score": 0.10127748548984528,
+            "calinski_harabasz_score": 353.73583984375,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.2662375569343567,
+            "calinski_harabasz_score": 260.6163330078125,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.26771461963653564,
+            "calinski_harabasz_score": 257.2777099609375,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.2533421814441681,
+            "calinski_harabasz_score": 248.02394104003906,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 56,
+            "noise_percent": 0.2006703910614525,
+            "silhouette_score": 0.13846221566200256,
+            "calinski_harabasz_score": 849.5366821289062,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 5,
+            "noise_percent": 0.0045810055865921784,
+            "silhouette_score": -0.054634939879179,
+            "calinski_harabasz_score": 305.1077575683594,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 2,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.0,
+            "silhouette_score": 0.21957896649837494,
+            "calinski_harabasz_score": 223.93426513671875,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 3,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 359,
+            "noise_percent": 0.3906145251396648,
+            "silhouette_score": -0.0548822320997715,
+            "calinski_harabasz_score": 40.77676010131836,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 3,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 536,
+            "noise_percent": 0.2918435754189944,
+            "silhouette_score": 0.04261491820216179,
+            "calinski_harabasz_score": 42.24549865722656,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 3,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 250,
+            "noise_percent": 0.4293854748603352,
+            "silhouette_score": -0.11127287894487381,
+            "calinski_harabasz_score": 54.11082077026367,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 3,
+            "clustering__min_cluster_size": 5,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.003687150837988827,
+            "silhouette_score": -0.00953038688749075,
+            "calinski_harabasz_score": 82.37250518798828,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 3,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 28,
+            "noise_percent": 0.32804469273743014,
+            "silhouette_score": 0.04658809304237366,
+            "calinski_harabasz_score": 887.4545288085938,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 3,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 73,
+            "noise_percent": 0.25229050279329607,
+            "silhouette_score": 0.03131997212767601,
+            "calinski_harabasz_score": 359.316650390625,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 3,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 60,
+            "noise_percent": 0.364804469273743,
+            "silhouette_score": -0.03671594709157944,
+            "calinski_harabasz_score": 319.54339599609375,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 3,
+            "clustering__min_cluster_size": 25,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.003463687150837989,
+            "silhouette_score": 0.0016810358501970768,
+            "calinski_harabasz_score": 79.48870086669922,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 3,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": null
+        },
+        "scores": {
+            "n_labels": 21,
+            "noise_percent": 0.31441340782122906,
+            "silhouette_score": 0.05689994618296623,
+            "calinski_harabasz_score": 971.8754272460938,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 3,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 3
+        },
+        "scores": {
+            "n_labels": 59,
+            "noise_percent": 0.3073743016759777,
+            "silhouette_score": 0.054766688495874405,
+            "calinski_harabasz_score": 436.00543212890625,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 3,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 7
+        },
+        "scores": {
+            "n_labels": 40,
+            "noise_percent": 0.3505027932960894,
+            "silhouette_score": 0.023836543783545494,
+            "calinski_harabasz_score": 530.9033813476562,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__UMAP__n_neighbors": 30,
+            "data_transform__UMAP__n_components": 3,
+            "clustering__min_cluster_size": 40,
+            "clustering__min_samples": 20
+        },
+        "scores": {
+            "n_labels": 27,
+            "noise_percent": 0.3229050279329609,
+            "silhouette_score": 0.0419437550008297,
+            "calinski_harabasz_score": 866.3789672851562,
+            "model_name": "umap_hdb_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__eps": 0.3
+        },
+        "scores": {
+            "n_labels": 10,
+            "noise_percent": 0.03318435754189944,
+            "largest_cluster_size": 8589,
+            "smallest_cluster_size": 3,
+            "silhouette_score": 0.32610027971697403,
+            "calinski_harabasz_score": 282.00002324554146,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__eps": 0.5
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.014972067039106146,
+            "largest_cluster_size": 8801,
+            "smallest_cluster_size": 6,
+            "silhouette_score": 0.6216290423295624,
+            "calinski_harabasz_score": 663.5329121913019,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__eps": 0.75
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.009050279329608939,
+            "largest_cluster_size": 8864,
+            "smallest_cluster_size": 5,
+            "silhouette_score": 0.6625554639388624,
+            "calinski_harabasz_score": 789.1987930577415,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 2,
+            "clustering__eps": 1.0
+        },
+        "scores": {
+            "n_labels": 2,
+            "noise_percent": 0.006145251396648044,
+            "largest_cluster_size": 8891,
+            "smallest_cluster_size": 4,
+            "silhouette_score": 0.6693998396385861,
+            "calinski_harabasz_score": 714.8065257776816,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__eps": 0.3
+        },
+        "scores": {
+            "n_labels": 30,
+            "noise_percent": 0.15374301675977653,
+            "largest_cluster_size": 7313,
+            "smallest_cluster_size": 3,
+            "silhouette_score": -0.29766606829080705,
+            "calinski_harabasz_score": 85.92995498085669,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__eps": 0.5
+        },
+        "scores": {
+            "n_labels": 7,
+            "noise_percent": 0.06335195530726256,
+            "largest_cluster_size": 8337,
+            "smallest_cluster_size": 5,
+            "silhouette_score": 0.09619972119186165,
+            "calinski_harabasz_score": 317.05708927219865,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__eps": 0.75
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.02893854748603352,
+            "largest_cluster_size": 8681,
+            "smallest_cluster_size": 4,
+            "silhouette_score": 0.4413782608044493,
+            "calinski_harabasz_score": 614.5424892224869,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 3,
+            "clustering__eps": 1.0
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.017318435754189943,
+            "largest_cluster_size": 8781,
+            "smallest_cluster_size": 7,
+            "silhouette_score": 0.6227051855419052,
+            "calinski_harabasz_score": 556.8301039000057,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__eps": 0.3
+        },
+        "scores": {
+            "n_labels": 55,
+            "noise_percent": 0.3970949720670391,
+            "largest_cluster_size": 4979,
+            "smallest_cluster_size": 4,
+            "silhouette_score": -0.5626063870395335,
+            "calinski_harabasz_score": 28.31954673963873,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__eps": 0.5
+        },
+        "scores": {
+            "n_labels": 31,
+            "noise_percent": 0.1617877094972067,
+            "largest_cluster_size": 7323,
+            "smallest_cluster_size": 3,
+            "silhouette_score": -0.3578094015421836,
+            "calinski_harabasz_score": 60.33651864191524,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__eps": 0.75
+        },
+        "scores": {
+            "n_labels": 6,
+            "noise_percent": 0.07418994413407821,
+            "largest_cluster_size": 8259,
+            "smallest_cluster_size": 5,
+            "silhouette_score": 0.05443425937949402,
+            "calinski_harabasz_score": 274.2466327712452,
+            "model_name": "db_model"
+        }
+    },
+    {
+        "parameters": {
+            "data_transform__PCA__n_components": 4,
+            "clustering__eps": 1.0
+        },
+        "scores": {
+            "n_labels": 3,
+            "noise_percent": 0.0358659217877095,
+            "largest_cluster_size": 8619,
+            "smallest_cluster_size": 5,
+            "silhouette_score": 0.5694824967325669,
+            "calinski_harabasz_score": 498.61117773477474,
+            "model_name": "db_model"
+        }
+    }
+]
