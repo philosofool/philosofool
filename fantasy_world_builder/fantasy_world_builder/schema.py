@@ -1,4 +1,5 @@
 from typing import TypedDict, Annotated, Optional
+from pydantic import TypeAdapter
 
 class Entity(TypedDict):
     """A named entity with a summary description."""
@@ -17,9 +18,22 @@ class Setting(Entity):
 class Character(Entity):
     """A character in a narrative."""
 
-    background: Annotated[str, "The history and life details of the character that explain who they are, where they come from and which may hint at their future."]
+    background: Annotated[
+        str,
+        "The history and life details of the character that explain who they are, where they come from and which may hint at their future."]
     appearance: Annotated[str, "The character's outward appearance."]
     personality: Annotated[str, "The character's personality and mannerisms."]
-    setting: Annotated[list[str], "The name of setting(s) they are associated with."]
-    groups: Annotated[list[str], "Any important groups the character is a member of."]
-    details: Annotated[Optional[str], "These are additional details about the character which are updated as a story progresses. Should only be added when specified."]
+    details: Annotated[
+        Optional[str],
+        "These are additional details about the character which are updated as a story progresses. Should only be added when specified."]
+
+class List(TypedDict):
+    """A list of people, places, concepts, and other things that can be counted or named."""
+
+    items: Annotated[list[str], "Things, people, places, concepts and so forth."]
+
+
+list_schema = TypeAdapter(List).json_schema()
+character_schema = TypeAdapter(Character).json_schema()
+setting_schema = TypeAdapter(Setting).json_schema()
+entity_schema = TypeAdapter(Entity).json_schema()
