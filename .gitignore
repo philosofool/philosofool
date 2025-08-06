@@ -118,3 +118,8 @@ dmypy.json
 # OS
 .DS_Store
 Thumbs.db
+
+fantasy_world_builder/worlds/
+
+# .vdb is my extension for vector database.
+*.vdb
