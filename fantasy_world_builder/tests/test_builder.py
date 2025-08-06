@@ -75,7 +75,7 @@ def test_ResearchNode(world, entity, llm):
     world.add_entity(entity)
 
     researcher = ResearchNode(world, llm).compile()
-    messages = researcher.invoke({'messages': ['Tell me about Chris']})
+    messages = researcher.invoke({'messages': [HumanMessage('Tell me about Chris'), 'place holder for supervisor message.']})
     assert 'research' in messages
     research = messages['research']
     assert len(research) == 2
@@ -138,9 +138,10 @@ def test_WorldBuildNode(world, entity):
 
 def test_SettingCreator(world, llm):
     memory = MemorySaver()
-    setting_creator = SettingCreator.from_llm_memory(llm, memory, world).compile()
+    setting_creator = SettingCreator.from_llm_memory(llm, memory, world).compile(memory)
     state = {'messages': [HumanMessage('Make a cat named Tom')]}
-    final_state = setting_creator.invoke(state)
+    config = {'configurable': {'thread_id': '1'}}
+    final_state = setting_creator.invoke(state, config)
     assert 'research' in final_state
     assert 'schema' in final_state
 
