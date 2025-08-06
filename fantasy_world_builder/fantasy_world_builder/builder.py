@@ -4,7 +4,7 @@ import itertools
 import textwrap
 from typing import Type, Annotated, TypedDict
 
-from fantasy_world_builder.schema import ( # noqa: F401  T
+from fantasy_world_builder.schema import (  # noqa: F401  T
     Setting, Character, Entity, List,
     character_schema, setting_schema, entity_schema
 )
@@ -18,13 +18,26 @@ from langgraph.graph.message import add_messages
 from langchain_core.runnables import Runnable
 
 class World:
-    """A Model of a World, including setting and characters."""
+    """A Model of a World, including setting and characters.
+
+    Stores entity data and their relationships in a graph structure.
+    """
     def __init__(self, description: Entity, graph: dict[str, set], entities: dict[str, Entity]):
         self.description = description
         self.graph = graph
         self.entities = entities
 
     def add_entity(self, entity: Entity, relationships: Iterable[str] = tuple()):
+        """Add a new entity to the world and connect it to existing entities.
+
+        Args:
+            entity: The entity to add.
+            relationships: Other entities this one is related to.
+
+        Raises:
+            ValueError: If the entity already exists.
+            KeyError: If any relationships refer to unknown entities.
+        """
         key = entity['name']
         if key in self.graph:
             raise ValueError("Entity is already in the world.")
@@ -39,6 +52,7 @@ class World:
         self.entities[key] = entity
 
 class BuildState(TypedDict):
+    """Shared state for the graph process, including messages, research results, and schema."""
     messages: Annotated[list, add_messages]
     research: Annotated[list[Entity], 'The results of the most recent research completed.']
     schema: Annotated[Type[Entity], "The schema type to use when writing."]
@@ -49,6 +63,7 @@ class SupervisorNode:
         self.llm = llm  # NOTE: this attribute is currently unsused.
 
     def compile(self) -> Runnable:
+        """Create a node that cycles through task phases in round-robin order."""
         results = itertools.cycle(['RESEARCH', 'WRITE', 'BUILD', 'FINISHED'])
 
         def supervisor_node(state: BuildState):
@@ -57,15 +72,14 @@ class SupervisorNode:
 
         return supervisor_node    # pyright: ignore [reportReturnType]
 
-
 class ResearchNode:
-    """Hand collecting information related to a project."""
+    """Handle collecting information related to a project."""
     def __init__(self, world: World, llm: BaseChatModel):
         self.llm = llm
         self.world = world
 
     def build_graph(self) -> StateGraph:
-
+        """Build a mini-graph for extracting entity names and retrieving them from the world."""
         def search_node(state: BuildState) -> dict:
             prompt = state['messages'][-2]
             llm = self.llm.with_structured_output(List)
@@ -82,6 +96,7 @@ class ResearchNode:
         return graph
 
     def compile(self) -> Runnable:
+        """Compile the research graph to a runnable."""
         graph = self.build_graph()
         return graph.compile()
 
@@ -93,6 +108,7 @@ class WriterNode:
         self.memory = memory
 
     def compile(self) -> Runnable:
+        """Build and compile a graph that engineers a prompt and returns structured entity output."""
         def prompt_context(state: BuildState):
             prompt = state['messages'][0].content
             response: str = (
@@ -140,6 +156,7 @@ class BuildWorldNode:
         self.world = world
 
     def compile(self) -> Runnable:
+        """Compile a node that deserializes an entity and updates the world with it."""
         def add_entity_to_world(state: BuildState):
             entity = json.loads(state['messages'][-2].content)
             research = state['research'][1:]
@@ -152,7 +169,6 @@ class BuildWorldNode:
         graph.add_edge('add_entity_to_world', END)
         return graph.compile()
 
-
 class SettingCreator:
     """Compose a supervisor-task multi-agent workflow that creates a setting in a world."""
     def __init__(self, supervisor: SupervisorNode, researcher: ResearchNode, writer: WriterNode, builder: BuildWorldNode):
@@ -164,6 +180,7 @@ class SettingCreator:
 
     @staticmethod
     def routing(state: BuildState):
+        """Route supervisor messages to the correct next step in the workflow."""
         message = state['messages'][-1].content
 
         if message == 'RESEARCH':
@@ -177,6 +194,7 @@ class SettingCreator:
         raise ValueError(f"Unexpected routing message '{message}' received.")
 
     def build_graph(self) -> StateGraph:
+        """Assemble the full agent workflow graph from task-specific nodes."""
         graph = StateGraph(BuildState)
         graph.add_node('supervisor', self.supervisor)
         graph.add_node('researcher', self.researcher,)
@@ -191,12 +209,13 @@ class SettingCreator:
         return graph
 
     def compile(self, checkpointer: MemorySaver | None) -> Runnable:
+        """Compile the full workflow graph to a runnable pipeline."""
         graph = self.build_graph()
         return graph.compile(checkpointer)
 
     @classmethod
     def from_llm_memory(cls, llm, memory, world: World, **kwargs):
-
+        """Convenience method to construct a SettingCreator with defaults from shared components."""
         supervisor = kwargs.get('supervisor', SupervisorNode(llm))
         researcher = kwargs.get('researcher', ResearchNode(world, llm))
         role = f"Write about {world.description['name']} which is {world.description['summary']}"
