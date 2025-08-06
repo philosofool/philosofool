@@ -1,12 +1,10 @@
 from collections.abc import Iterable
 import json
 import itertools
-from pprint import pprint
 import textwrap
 from typing import Type, Annotated, TypedDict
 
-from fantasy_world_builder.llm import node_factory
-from fantasy_world_builder.schema import (
+from fantasy_world_builder.schema import ( # noqa: F401  T
     Setting, Character, Entity, List,
     character_schema, setting_schema, entity_schema
 )
@@ -26,7 +24,7 @@ class World:
         self.graph = graph
         self.entities = entities
 
-    def add_entity(self, entity: Entity, relationships: Iterable[Entity] = tuple()):
+    def add_entity(self, entity: Entity, relationships: Iterable[str] = tuple()):
         key = entity['name']
         if key in self.graph:
             raise ValueError("Entity is already in the world.")
@@ -46,6 +44,7 @@ class BuildState(TypedDict):
     schema: Annotated[Type[Entity], "The schema type to use when writing."]
 
 class SupervisorNode:
+    """Handle workflow and understand requirements for task project execution."""
     def __init__(self, llm: BaseChatModel):
         self.llm = llm  # NOTE: this attribute is currently unsused.
 
@@ -60,6 +59,7 @@ class SupervisorNode:
 
 
 class ResearchNode:
+    """Hand collecting information related to a project."""
     def __init__(self, world: World, llm: BaseChatModel):
         self.llm = llm
         self.world = world
@@ -86,6 +86,7 @@ class ResearchNode:
         return graph.compile()
 
 class WriterNode:
+    """Digest research and create natural language artifacts for the project."""
     def __init__(self, role: str, llm: BaseChatModel, memory):
         self.role = role
         self.llm = llm
@@ -134,6 +135,7 @@ class WriterNode:
         return graph.compile(self.memory)
 
 class BuildWorldNode:
+    """Add to the world based on natural language artifacts that are information about it."""
     def __init__(self, world: World):
         self.world = world
 
@@ -152,7 +154,9 @@ class BuildWorldNode:
 
 
 class SettingCreator:
+    """Compose a supervisor-task multi-agent workflow that creates a setting in a world."""
     def __init__(self, supervisor: SupervisorNode, researcher: ResearchNode, writer: WriterNode, builder: BuildWorldNode):
+        """Create a SettingCreator. See also constructor function `from_llm_memory`, which creates a suitable default."""
         self.supervisor = supervisor.compile()
         self.researcher = researcher.compile()
         self.writer = writer.compile()

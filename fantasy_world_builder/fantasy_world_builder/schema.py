@@ -16,7 +16,7 @@ class Setting(Entity):
     parent: Annotated[Optional[str], "The name of a setting in which this setting is found. For example, a city might have a country as a parent."]
 
 class Character(Entity):
-    """A character in a narrative."""
+    """The description of a character."""
 
     background: Annotated[
         str,
