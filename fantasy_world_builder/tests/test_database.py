@@ -7,18 +7,7 @@ import numpy as np
 import pytest
 from fantasy_world_builder.database import k_largest_idx, SimpleVectorDB
 
-@pytest.fixture
-def vector_db() -> SimpleVectorDB:
-    documents = ['Sam is a bartender', 'Norm is a patron who knows lots of trivia']
-    path = 'test_simple_db.vdb'
-    try:
-        db = SimpleVectorDB.from_path(path)
-    except FileNotFoundError:
-        db = SimpleVectorDB(np.array([]), [], path)
-        for doc in documents:
-            db.add_document(doc)
-        db.persist()
-    return db
+
 
 def test_k_largest_idx():
     arr = [4, 1, 6, 2, 10, 6, 3]
