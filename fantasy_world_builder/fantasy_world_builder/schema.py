@@ -27,6 +27,11 @@ class Character(Entity):
         Optional[str],
         "These are additional details about the character which are updated as a story progresses. Should only be added when specified."]
 
+class Detail(TypedDict):
+    """A description of something besdis a character or place. Useful for events and information about connections between entities."""
+    topic: Annotated[str, "The main subject of this detail; what this detail is about."]
+    details: Annotated[str, "Details like who, what, where, when  or why. Some of these may not be included."]
+
 class List(TypedDict):
     """A list of people, places, concepts, and other things that can be counted or named."""
 
