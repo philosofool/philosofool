@@ -1,13 +1,11 @@
 import sys
 
+import pytest
 
 # sys.path.append('/home/philosofool/repos/philosofool/fantasy_world_builder')
 
 import numpy as np
-import pytest
 from fantasy_world_builder.database import k_largest_idx, SimpleVectorDB
-
-
 
 def test_k_largest_idx():
     arr = [4, 1, 6, 2, 10, 6, 3]
@@ -37,3 +35,7 @@ def test_simple_db__embed(vector_db: SimpleVectorDB):
 def test_simple_db__get_documents(vector_db):
     result = vector_db.get_documents("Someone answers a trivia question.", n_results=1)
     assert 'Norm' in result[0]
+
+def test_simple_db__get_documents_too_many(vector_db):
+    result = vector_db.get_documents("Someone answers a trivia question.", n_results=5)
+    assert len(result) == len(vector_db.documents), "When requesting more documents than are known, return them all."

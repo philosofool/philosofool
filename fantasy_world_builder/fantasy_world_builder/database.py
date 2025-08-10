@@ -61,6 +61,7 @@ class SimpleVectorDB:
         """
         query_embed = self.embed(query)
         similarity = self._document_query_releveance(query_embed)
+        n_results = min(n_results, len(self.documents))
         return list(k_largest_idx(similarity, n_results))
 
     def get_documents(self, query: str, n_results: int = 1) -> list[str]:
