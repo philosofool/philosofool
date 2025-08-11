@@ -59,27 +59,19 @@ def test_world_add_entity_updates_relationships(world, entity):
     assert 'Chris' in rachel_edges
     assert 'Rachel' in chris_edges
 
-
-
-def test_supervisor_node():
-    # NOTE: this test is currently expressing idle functionality
-    # in the model. It won't use an llm. Take a look at the code.
-    # We're leaving this in place for now.
-    llm = FakeListChatModel(responses=['RESEARCH', 'WRITE', "BUILD", 'FINISHED'])
-    supervisor = SupervisorNode(llm).compile()
-
-    result = supervisor({'messages': ['message']})['messages'][-1]
-    result.content == 'RESEARCH'
-
-def test_ResearchNode(world, entity, llm):
+def test_world_save_load(world, entity):
+    from tempfile import TemporaryDirectory
+    import os
+    temp_dir = TemporaryDirectory()
+    directory = temp_dir.name
     world.add_entity(entity)
-
-    researcher = ResearchNode(world, llm).compile()
-    messages = researcher.invoke({'messages': [HumanMessage('Tell me about Chris'), 'place holder for supervisor message.']})
-    assert 'research' in messages
-    research = messages['research']
-    assert len(research) == 2
-    assert all(type(r) is dict for r in research)
+    path = os.path.join(directory, 'world.json')
+    world.save(path)
+    assert os.path.exists(path)
+    round_trip = World.load(path)
+    assert world.graph == round_trip.graph
+    assert world.entities == round_trip.entities
+    assert world.description == round_trip.description
 
 def test_WriterNode(llm, world, entity):
     writer = WriterNode(

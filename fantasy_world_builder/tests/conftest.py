@@ -10,10 +10,10 @@ def vector_db() -> SimpleVectorDB:
     try:
         db = SimpleVectorDB.from_path(path)
     except FileNotFoundError:
-        db = SimpleVectorDB(np.array([]), [], path)
+        db = SimpleVectorDB(np.array([]), [])
         for doc in documents:
             db.add_document(doc)
-        db.persist()
+        db.persist(path)
     return db
 
 @pytest.fixture(scope='session')
