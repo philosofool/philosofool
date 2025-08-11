@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+import pickle
+
 from typing import Optional
 import numpy as np
 from openai import OpenAI
@@ -155,7 +157,7 @@ class SimpleVectorDB:
         self.documents[doc_idx] = document
         self.vectors[doc_idx] = embed
 
-    def persist(self) -> None:
+    def persist(self, path: str | None = None) -> None:
         """Save the vector database to disk.
 
         Raises
@@ -169,11 +171,12 @@ class SimpleVectorDB:
         by db_path. The entire database state is saved and can be restored using
         the from_path class method.
         """
-        if self.db_path is None:
-            raise AttributeError("Cannot persist DB if db_path is a valid file location")
-        import pickle
+        if self.db_path is None and path is None:
+            raise AttributeError("Cannot persist DB if db_path is a valid file location. Pass path to persist.")
+        elif path is None:
+            path = self.db_path
         data = pickle.dumps([self.vectors, self.documents])
-        with open(self.db_path, 'wb') as f:
+        with open(path, 'wb') as f:
             f.write(data)
 
     @classmethod
