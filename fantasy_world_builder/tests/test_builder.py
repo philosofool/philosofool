@@ -11,8 +11,7 @@ from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.language_models.fake_chat_models import FakeListChatModel
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 
-from fantasy_world_builder.builder import  World
-from fantasy_world_builder.builder import BuildWorldNode, WriterNode, ResearchNode, SupervisorNode, SettingCreator
+from fantasy_world_builder.builder import  World, create_build_world
 from fantasy_world_builder.schema import Entity, Setting, Character, List, character_schema
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END
@@ -73,80 +72,19 @@ def test_world_save_load(world, entity):
     assert world.entities == round_trip.entities
     assert world.description == round_trip.description
 
-def test_WriterNode(llm, world, entity):
-    writer = WriterNode(
-        'Write about a mountain town.',
-        llm=llm,
-        memory=MemorySaver()
-    ).compile()
-    state = {
-        'messages': [{'role': 'user', 'content': 'Tell me about Chris.'}],
-        # 'research': [world.description, entity]
-        'research': []
+def test_create_build__adds_entity(world, entity):
+    state = {'messages': [AIMessage(json.dumps(entity))]}
+    build = create_build_world(world)
+    build(state)
+    name = entity['name']
+    assert name in world.graph
+    assert name in world.entities
 
-    }
-    config = {"configurable": {"thread_id": "1"}}
-    response = writer.invoke(state, config=config)
-    assert response['schema'] == character_schema
-    chris = json.loads(response['messages'][-1].content)
-    assert 'personality' in chris, 'The response final message should be a Character type dict.'
-
-def test_WriteNode_memory(llm, world, entity):
-    writer = WriterNode(
-        'You create settings in about a mountain town.',
-        llm=llm,
-        memory=MemorySaver()
-    ).compile()
-    state = {
-        'messages': [{'role': 'user', 'content': 'Create village called Hamlet in a fictional world.'}],
-        'research': []
-    }
-    config = {"configurable": {"thread_id": "1"}}
-    response = writer.invoke(state, config=config)
-    hamlet = json.loads(response['messages'][-1].content)
-    assert hamlet['name'] == 'Hamlet'
-    state = {
-        'messages': [{'role': 'user', 'content': 'A person in Hamlet.'}],
-        'research': [world.description, hamlet]
-        # 'research': []
-    }
-    response = writer.invoke(state, config=config)
-    person = json.loads(response['messages'][-1].content)
-    assert person['name'] != 'Hamlet'
-
-
-def test_WorldBuildNode(world, entity):
-    builder = BuildWorldNode(world).compile()
-    world.add_entity(entity)
-    rachel = {'name': 'Rachel', 'summary': "Chris's friend."}
-    state = {
-        'messages': [AIMessage(json.dumps(rachel)), 'placeholder for AI message "BUILD"'],
-        'research': [..., entity]
-    }
-    response = builder.invoke(state)
-    assert 'Chris' in world.graph
-    assert 'Rachel' in world.graph
-    assert world.entities['Chris'] == entity
-
-def test_SettingCreator(world, llm):
-    memory = MemorySaver()
-    setting_creator = SettingCreator.from_llm_memory(llm, memory, world).compile(memory)
-    state = {'messages': [HumanMessage('Make a cat named Tom')]}
-    config = {'configurable': {'thread_id': '1'}}
-    final_state = setting_creator.invoke(state, config)
-    assert 'research' in final_state
-    assert 'schema' in final_state
-
-@pytest.mark.parametrize('input, expected', [
-    ('RESEARCH', 'researcher'),
-    ('WRITE', 'writer'),
-    ('BUILD', 'builder'),
-    ('FINISHED', END)
-])
-def test_SettingCreator_routing(input, expected):
-    state = {'messages': [AIMessage(input)]}
-    assert SettingCreator.routing(state) == expected
-
+def test_create_build__returns_dict(world, entity):
+    state = {'messages': [AIMessage(json.dumps(entity))]}
+    build = create_build_world(world)
+    response = build(state)['messages'][-1]
+    assert response.content == f"Successfully added {entity.get('topic', entity['name'])} to world."
 
 def test_fake_chat_model():
     # assure this entity behaves like I think.

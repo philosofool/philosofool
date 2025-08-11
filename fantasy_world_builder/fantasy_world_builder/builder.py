@@ -2,8 +2,9 @@ from collections.abc import Iterable
 import json
 import itertools
 import textwrap
-from typing import Type, Annotated, TypedDict
+from typing import Type, Annotated, TypedDict, Any
 
+from fantasy_world_builder.writer import WriterState
 from fantasy_world_builder.schema import (  # noqa: F401  T
     Setting, Character, Entity, List,
     character_schema, setting_schema, entity_schema
@@ -75,3 +76,9 @@ class World:
             as_dict = json.loads(f.read(), object_hook=deserialize_sets)
         return cls(**as_dict)
 
+def create_build_world(world: World):
+    def build(state: WriterState):
+        entity = json.loads(state['messages'][-1].content)
+        world.add_entity(entity)
+        return {'messages': [SystemMessage(f"Successfully added {entity.get('topic', entity['name'])} to world.")]}
+    return build
