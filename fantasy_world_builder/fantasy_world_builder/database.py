@@ -15,7 +15,7 @@ class SimpleVectorDB:
     Uses dot product as a similarity metric for lookup.
     """
 
-    def __init__(self, vectors: np.ndarray, documents: list[str], db_path: Optional[str]) -> None:
+    def __init__(self, vectors: np.ndarray, documents: list[str], db_path: Optional[str] = None) -> None:
         """Initialize the SimpleVectorDB.
 
         Parameters

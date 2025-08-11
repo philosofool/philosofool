@@ -41,7 +41,7 @@ def test_create_writer_node(message_str, expected, llm):
 def test_create_character_node(llm):
     create_character = create_character_node(llm)
     response: dict = create_character(human_message('A person who likes dogs.'))
-    character = json.loads(response['messages'][-1])
+    character = json.loads(response['messages'][-1].content)
     assert 'personality' in character
     assert type(character) is dict
 
@@ -108,11 +108,12 @@ def test_detail_node_memory(llm):
     memory = MemorySaver()
     create_detail = to_compiled_graph(create_detail_node(llm), memory)
     message = "Create a magic spell in a fantasy world. Make sure it's different from ones you've already created."
-    response1 = create_detail.invoke(human_message(message), config=config)['messages'][-1]
-    response2 = create_detail.invoke(human_message(message), config=config)['messages'][-1]
+    response1 = create_detail.invoke(human_message(message), config=config)['messages']
+    response2 = create_detail.invoke(human_message(message), config=config)['messages']
+    assert len(response1) < len(response2), "With memory, the second response should include additional messages."
     condition = 'Respond SAME if the responses describe the same spell in a story. Respond NOT SAME if they do not.'
-    result = _are_similar_responses(llm, response1, response2, condition)
-    assert result == 'NOT SAME', f'Got \n{response1.content[:35]}\n{response2.content[:35]}'
+    result = _are_similar_responses(llm, response1[-1].content, response2[-1].content, condition)
+    assert result == 'NOT SAME', f'Got \n{response1.content[:50]}\n{response2.content[:50]}'
 
 
 @pytest.mark.parametrize('prompt, test_key', [

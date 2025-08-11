@@ -51,17 +51,17 @@ def create_character_node(llm) -> Callable[[WriterState], dict]:
 
 def create_setting_node(llm) -> Callable[[WriterState], dict]:
     def setting_node(state: WriterState) -> dict:
-        user_input = state['messages'][-1]
+        user_input = state['messages']
         prompt = SystemMessage("You are an agent whose job is to write descriptions of settings.")
-        response = llm.with_structured_output(Setting).invoke([prompt, user_input])
+        response = llm.with_structured_output(Setting).invoke(user_input[:-1] + [prompt] + user_input[-1:])
         return {'messages': [json.dumps(response)]}
     return setting_node
 
 def create_detail_node(llm) -> Callable[[WriterState], dict]:
     def detail_node(state: WriterState) -> dict:
-        user_input = state['messages'][-1]
+        user_input = state['messages']
         prompt = SystemMessage("You are an agent whose job is to write descriptions of subjects, events or other things that are not people or places.")
-        response = llm.with_structured_output(Detail).invoke([prompt, user_input])
+        response = llm.with_structured_output(Detail).invoke(user_input[:-1] + [prompt] + user_input[-1:])
         return {'messages': [json.dumps(response)]}
     return detail_node
 
