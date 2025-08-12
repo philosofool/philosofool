@@ -1,7 +1,7 @@
 import textwrap
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import SystemMessage
-from fantasy_world_builder.writer import WriterState
+from fantasy_world_builder.schema import WriterState
 
 def routing(state: WriterState):
     last_task = state.get('routing')

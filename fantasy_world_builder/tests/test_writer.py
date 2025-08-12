@@ -1,11 +1,11 @@
 import json
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
 
+from fantasy_world_builder.schema import WriterState
 from fantasy_world_builder.writer import (
-    create_writer_node, create_character_node, create_setting_node, WriterState,
-    create_detail_node, writer_graph
+    create_writer_node, create_character_node, create_setting_node, create_detail_node, writer_graph
 )
 import pytest
 
@@ -35,7 +35,7 @@ def test_create_writer_node(message_str, expected, llm):
     message = human_message(message_str)
     response = writer_node(message)
     assert 'routing' in response
-    assert response['routing'].content == expected
+    assert response['routing'] == expected
 
 
 def test_create_character_node(llm):
@@ -60,14 +60,16 @@ def test_character_node_memory(llm):
 def test_create_character_node__as_graph(llm):
     create_character = create_character_node(llm)
     as_model = to_compiled_graph(create_character)
-    response2 = as_model.invoke(human_message('A person who likes dogs.'))
-    character = response2['messages'][-1]
-    assert 'personality' in character.content, f'{response2}'
+    response = as_model.invoke(human_message('A person who likes dogs.'))
+    character = response['messages'][-1]
+    assert 'personality' in character.content, f'{response}'
+    assert isinstance(character, AIMessage)
 
 def test_create_setting_node(llm):
     create_setting = create_setting_node(llm)
     response: dict = create_setting(human_message('A place full of happy dogs.'))
-    setting = json.loads(response['messages'][-1])
+    ...
+    setting = json.loads(response['messages'][-1].content)
     assert 'physical_description' in setting
     assert type(setting) is dict
 
@@ -76,6 +78,7 @@ def test_create_setting_node__as_graph(llm):
     as_model = to_compiled_graph(create_character)
     response = as_model.invoke(human_message('A place full of happy dogs.'))
     setting = response['messages'][-1]
+    assert isinstance(setting, AIMessage)
     assert 'physical_description' in setting.content, f'{response}'
 
 def test_setting_node_memory(llm):
@@ -92,7 +95,7 @@ def test_setting_node_memory(llm):
 def test_create_detail_node(llm):
     create_detail = create_detail_node(llm)
     response: dict = create_detail(human_message('Your topic is "Ways dogs make humans happy".'))
-    details = json.loads(response['messages'][-1])
+    details = json.loads(response['messages'][-1].content)
     assert 'details' in details
     assert type(details) is dict
 
@@ -101,6 +104,7 @@ def test_create_detail_node__as_graph(llm):
     as_model = to_compiled_graph(create_detail)
     response = as_model.invoke(human_message('The detail is "Ways dogs make humans happy".'))
     details = response['messages'][-1]
+    assert isinstance(details, AIMessage)
     assert 'topic' in details.content, f'{response}'
 
 def test_detail_node_memory(llm):

@@ -1,4 +1,5 @@
 from typing import TypedDict, Annotated, Optional
+from langgraph.graph import add_messages
 from pydantic import TypeAdapter
 
 class Entity(TypedDict):
@@ -42,3 +43,8 @@ list_schema = TypeAdapter(List).json_schema()
 character_schema = TypeAdapter(Character).json_schema()
 setting_schema = TypeAdapter(Setting).json_schema()
 entity_schema = TypeAdapter(Entity).json_schema()
+
+
+class WriterState(TypedDict):
+    messages: Annotated[list, add_messages]
+    routing: Annotated[str, 'Where to go next.']

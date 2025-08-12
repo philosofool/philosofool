@@ -1,22 +1,15 @@
-from collections.abc import Iterable
-import json
-import itertools
-import textwrap
-from typing import Type, Annotated, TypedDict, Any
+from __future__ import annotations
 
-from fantasy_world_builder.writer import WriterState
+from collections.abc import Iterable, Callable
+import json
+from typing import Any, Literal
+
 from fantasy_world_builder.schema import (  # noqa: F401  T
-    Setting, Character, Entity, List,
+    Setting, Character, Entity, List, WriterState,
     character_schema, setting_schema, entity_schema
 )
 
-from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import SystemMessage, AIMessage, HumanMessage  # noqa: F401
-from langgraph.checkpoint.memory import MemorySaver
-from langgraph.graph import StateGraph, START, END
-from langgraph.graph.message import add_messages
-
-from langchain_core.runnables import Runnable
 
 
 # TODO: move these to a better location (serialize.py?)
@@ -71,13 +64,13 @@ class World:
             f.write(to_string)
 
     @classmethod
-    def load(cls, path):
+    def load(cls, path) -> World:
         with open(path, 'r') as f:
             as_dict = json.loads(f.read(), object_hook=deserialize_sets)
         return cls(**as_dict)
 
-def create_build_world(world: World):
-    def build(state: WriterState):
+def create_build_world(world: World) -> Callable[[WriterState], dict[Literal['messages'], list]]:
+    def build(state: WriterState) -> dict[Literal['messages'], list]:
         entity = json.loads(state['messages'][-1].content)
         world.add_entity(entity)
         return {'messages': [SystemMessage(f"Successfully added {entity.get('topic', entity['name'])} to world.")]}
