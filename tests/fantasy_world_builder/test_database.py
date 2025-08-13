@@ -3,13 +3,18 @@ from tempfile import TemporaryDirectory
 import os
 import pytest
 import numpy as np
-from fantasy_world_builder.database import k_largest_idx, SimpleVectorDB
+from fantasy_world_builder.database import k_largest_idx, k_largest_sorted_idx, SimpleVectorDB
 
 def test_k_largest_idx():
     arr = [4, 1, 6, 2, 10, 6, 3]
     expected = [2, 4, 5]
     assert k_largest_idx(arr, 1) == [4]
     assert len(np.intersect1d(k_largest_idx(arr, 3), expected)) == 3
+
+def test_k_largest_sorted_idx():
+    arr = [4, 1, 6, 2, 10, 6, 3]
+    expected = [4, 5, 2]
+    np.testing.assert_array_equal(k_largest_sorted_idx(arr, 3), expected)
 
 def test_simple_db__init():
     documents = ['Sam is a bartender', 'Norm is a patron who knows lots of trivia']
@@ -33,6 +38,8 @@ def test_simple_db__embed(vector_db: SimpleVectorDB):
 def test_simple_db__get_documents(vector_db):
     result = vector_db.get_documents("Someone answers a trivia question.", n_results=1)
     assert 'Norm' in result[0]
+    result = vector_db.get_documents("Someone answers a trivia question.", n_results=2)
+    assert 'Norm' in result[0], "Results should be sorted, descending."
 
 def test_simple_db__get_documents_too_many(vector_db):
     result = vector_db.get_documents("Someone answers a trivia question.", n_results=5)
