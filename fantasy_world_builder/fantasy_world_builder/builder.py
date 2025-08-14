@@ -2,26 +2,16 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Callable
 import json
-from typing import Any, Literal
+from typing import Literal
 
 from fantasy_world_builder.schema import (  # noqa: F401  T
     Setting, Character, Entity, List, WriterState,
     character_schema, setting_schema, entity_schema
 )
 
+from fantasy_world_builder.serialize import PrettyRoundTripJSONEncoder, pretty_roundtrip_decoder
 from langchain_core.messages import SystemMessage, AIMessage, HumanMessage  # noqa: F401
 
-
-# TODO: move these to a better location (serialize.py?)
-def serialize_sets(obj: Any) -> Any:
-    if isinstance(obj, set):
-        return {"__type__": "set", "items": list(obj)}
-    raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
-
-def deserialize_sets(obj: dict) -> Any:
-    if "__type__" in obj and obj["__type__"] == "set":
-        return set(obj["items"])
-    return obj
 
 class World:
     """A Model of a World, including setting and characters.
@@ -59,14 +49,14 @@ class World:
 
     def save(self, path):
         as_dict = {key: getattr(self, key) for key in ['graph', 'entities', 'description']}
-        to_string = json.dumps(as_dict, default=serialize_sets)
+        to_string = json.dumps(as_dict, cls=PrettyRoundTripJSONEncoder, indent=4)
         with open(path, 'w') as f:
             f.write(to_string)
 
     @classmethod
     def load(cls, path) -> World:
         with open(path, 'r') as f:
-            as_dict = json.loads(f.read(), object_hook=deserialize_sets)
+            as_dict = json.loads(f.read(), object_hook=pretty_roundtrip_decoder)
         return cls(**as_dict)
 
 def create_build_world(world: World) -> Callable[[WriterState], dict[Literal['messages'], list]]:
