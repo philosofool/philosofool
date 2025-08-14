@@ -3,7 +3,7 @@ from tempfile import TemporaryDirectory
 import os
 import pytest
 import numpy as np
-from fantasy_world_builder.database import k_largest_idx, k_largest_sorted_idx, SimpleVectorDB
+from fantasy_world_builder.database import k_largest_idx, k_largest_sorted_idx, SimpleVectorDB, EmbeddingsStore
 
 def test_k_largest_idx():
     arr = [4, 1, 6, 2, 10, 6, 3]
@@ -28,7 +28,7 @@ def test_simple_db__init():
 
 def test__document_query_relevance():
     vector_db = SimpleVectorDB(np.array([[1., 0], [0, 2], [0, 1]]), ['dummy', 'dummy2'])
-    result = vector_db._document_query_releveance(np.array([0, 1]))
+    result = vector_db._document_query_relevance(np.array([0, 1]))
     np.testing.assert_array_almost_equal(result, np.array([0, 2, 1]))
 
 def test_simple_db__embed(vector_db: SimpleVectorDB):
@@ -70,3 +70,27 @@ def test_simple_db__from_path():
     round_trip = SimpleVectorDB.from_path(path)
     np.testing.assert_array_equal(round_trip.vectors, vector_db.vectors)
     assert round_trip.documents == vector_db.documents
+
+def test_embedding_store__add_get():
+    store = EmbeddingsStore({}, '')
+    x = np.array([.1, .1, .2])
+    store.add('query', x)
+    np.testing.assert_array_equal(x, store.get('query'))
+    store.delete('query')
+    with np.testing.assert_raises(KeyError):
+        store.get('query')
+
+def test_embedding_store__load():
+    from tempfile import TemporaryDirectory
+    dir = TemporaryDirectory()
+    path = os.path.join(dir.name, 'store.json')
+    store = EmbeddingsStore({}, path)
+    store.save()
+    assert os.path.exists(path)
+
+    x = np.array([.1, .1, .2])
+    store.add('query', x)
+    store.save()
+    new_store = EmbeddingsStore.from_path(path)
+    np.testing.assert_array_equal(x, store.get('query'))
+    assert new_store.path == path

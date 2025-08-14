@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 import pickle
+import json
 
 from typing import Optional
 import numpy as np
@@ -62,9 +63,9 @@ class SimpleVectorDB:
         Uses dot product similarity between query embedding and document embeddings.
         """
         query_embed = self.embed(query)
-        similarity = self._document_query_releveance(query_embed)
+        similarity = self._document_query_relevance(query_embed)
         n_results = min(n_results, len(self.documents))
-        return list(k_largest_idx(similarity, n_results))
+        return list(k_largest_sorted_idx(similarity, n_results))
 
     def get_documents(self, query: str, n_results: int = 1) -> list[str]:
         """Retrieve the most similar documents for a given query in arbitrary order.
@@ -210,7 +211,7 @@ class SimpleVectorDB:
             vectors, documents = pickle.loads(f.read())
         return cls(vectors, documents, path)
 
-    def _document_query_releveance(self, embedding: np.ndarray):
+    def _document_query_relevance(self, embedding: np.ndarray):
         """Calculate similarity scores between query embedding and all document vectors.
 
         This is a private method used internally for similarity computation.
@@ -218,8 +219,8 @@ class SimpleVectorDB:
         return self.vectors @ embedding
 
 
-def k_largest_idx(x: Sequence, k: int):
-    """Find indices of k largest elements in an array-like sequence.
+def k_largest_idx(x: np.ndarray | Sequence, k: int):
+    """Find indices of k largest elements in an array-like sequence, unsorted.
 
     Parameters
     ----------
@@ -248,3 +249,73 @@ def k_largest_idx(x: Sequence, k: int):
     x_arr = np.asarray(x)
     partition = np.argpartition(x_arr, x_arr.size - k)
     return partition[-k:]
+
+def k_largest_sorted_idx(x: np.ndarray | Sequence, k: int):
+    """Find indices of k largest elements in an array-like sequence, sorted.
+
+    Parameters
+    ----------
+    x : array_like
+        Input array from which to find the largest elements.
+    k : int
+        Number of largest elements to find.
+
+    Returns
+    -------
+    np.ndarray
+        Array of indices corresponding to the k largest elements in x.
+        The indices are sorted by value, with the index of the largest
+        element being index 0.
+    """
+
+    x_arr = np.asarray(x)
+    unsorted = k_largest_idx(x_arr, k)
+    order = np.argsort(x_arr[unsorted])
+    return unsorted[np.flip(order)]
+
+
+import json
+import numpy as np
+
+def numpy_json_default(obj):
+    """JSON serializer for numpy arrays."""
+    if isinstance(obj, np.ndarray):
+        return {
+            "__ndarray__": True,
+            "dtype": str(obj.dtype),
+            "shape": obj.shape,
+            "data": obj.tolist()  # store as list
+        }
+    raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
+
+
+def numpy_json_hook(dct):
+    """JSON object hook for decoding numpy arrays."""
+    if "__ndarray__" in dct:
+        return np.array(dct["data"], dtype=dct["dtype"]).reshape(dct["shape"])
+    return dct
+
+
+class EmbeddingsStore:
+    def __init__(self, embeddings: dict[str, np.ndarray], path: str):
+        self.path = path
+        self._embeddings = embeddings
+
+    @classmethod
+    def from_path(cls, path):
+        with open(path, 'r') as f:
+            embeddings = json.loads(f.read(), object_hook=numpy_json_hook)
+        return cls(embeddings, path)
+
+    def add(self, query: str, embedding: np.ndarray):
+        self._embeddings[query] = embedding
+
+    def get(self, query: str):
+        return self._embeddings[query]
+
+    def delete(self, query: str):
+        del self._embeddings[query]
+
+    def save(self):
+        with open(self.path, 'w') as f:
+            f.write(json.dumps(self._embeddings, default=numpy_json_default))
