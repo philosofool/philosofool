@@ -10,6 +10,8 @@ from typing import Optional
 import numpy as np
 from openai import OpenAI
 
+from fantasy_world_builder.serialize import PrettyRoundTripJSONEncoder, pretty_roundtrip_decoder
+
 
 class SimpleVectorDB:
     """Simple Vector database for lightweight, in-memory applications.
@@ -274,9 +276,6 @@ def k_largest_sorted_idx(x: np.ndarray | Sequence, k: int):
     return unsorted[np.flip(order)]
 
 
-import json
-import numpy as np
-
 def numpy_json_default(obj):
     """JSON serializer for numpy arrays."""
     if isinstance(obj, np.ndarray):
@@ -304,7 +303,7 @@ class EmbeddingsStore:
     @classmethod
     def from_path(cls, path):
         with open(path, 'r') as f:
-            embeddings = json.loads(f.read(), object_hook=numpy_json_hook)
+            embeddings = json.loads(f.read(), object_hook=pretty_roundtrip_decoder)
         return cls(embeddings, path)
 
     def add(self, query: str, embedding: np.ndarray):
@@ -318,4 +317,4 @@ class EmbeddingsStore:
 
     def save(self):
         with open(self.path, 'w') as f:
-            f.write(json.dumps(self._embeddings, default=numpy_json_default))
+            f.write(json.dumps(self._embeddings, cls=PrettyRoundTripJSONEncoder, indent=2))
