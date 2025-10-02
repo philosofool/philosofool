@@ -1,0 +1,32 @@
+// Sample dev container file.
+// Copy this to 'devcontainer.json' and it should configure your local
+// dev container environment for pytorch development.
+{
+  "name": "python-gpu-torch-env",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspace",
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+  ],
+  "remoteUser": "vscode",
+  // Uncomment to enable GPUs if they are available on your host machine.
+  // "runArgs": ["--gpus" "all"],
+  "postCreateCommand": "pip install --upgrade pip  && pip install -e .",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/opt/conda/bin/python",
+        "python.analysis.autoImportCompletions": true,
+        "python.analysis.typeCheckingMode": "basic"
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter"
+      ]
+    }
+  }
+}
