@@ -160,7 +160,7 @@ class TrainingLoop():
         for epoch in range(self._epochs, self._epochs + epochs):
             self.logging.start_epoch(epoch)
             for (batch, loss) in self.train(train_data):
-                self.logging.training(batch, loss, train_data)
+                self.logging.training(batch, loss, train_data)  # pyright: ignore [reportArgumentType]
             test_correct, test_loss = self.test(test_data)
             self.logging.testing(test_correct, test_loss)
         self._epochs += epochs
@@ -234,13 +234,58 @@ class GANLoop:
         self.generator_optim = generator_optimizer
         self.discriminator_optim = discriminator_optimizer
         self.loss = loss
-        self._device = torch.accelerator.current_accelerator().type if torch.accelerator.is_available() else "cpu"
+        self._device = torch.accelerator.current_accelerator().type if torch.accelerator.is_available() else "cpu"  # pyright: ignore [reportOptionalMemberAccess]
         self._history = HistoryCallback()
         self._publisher = Publisher()
         self.generator.to(self._device)
         self.discriminator.to(self._device)
 
+    @property
+    def history(self):
+        return self._history.history
+
     def fit(self, data: DataLoader, epochs: int = 1, callbacks: list[Callback] = []):
+        """
+        Train the GAN for a given number of epochs.
+
+        This method coordinates the GAN training loop, publishing events to any
+        registered callbacks at key points (epoch start, batch end, epoch end, fit end).
+        Callbacks can be used for logging, adaptive learning rate scheduling,
+        early stopping, or other custom behavior.
+
+        Parameters
+        ----------
+        data : torch.utils.data.DataLoader
+            The dataloader providing real training samples for the GAN.
+        epochs : int, default=1
+            Number of epochs to train for.
+        callbacks : list[Callback], optional
+            A list of callback objects that subscribe to training events. Each callback
+            should implement event handlers compatible with the topics published by
+            the training loop (e.g. "epoch_start", "batch_end", "epoch_end", "fit_end").
+
+        Events Published
+        ----------------
+        - "epoch_start": at the start of each epoch, with arguments {epoch}.
+        - "batch_end": after each batch, with arguments {batch, gen_loss, dis_loss}.
+        If any callback returns the signal "end_batch", the batch loop is interrupted.
+        - "epoch_end": after each epoch, with arguments {epoch}.
+        If any callback returns the signal "end_fit", training terminates early.
+        - "fit_end": after the full training loop has finished (normally or early).
+
+        Notes
+        -----
+        - Generator and discriminator losses are yielded from `self.step(data)`,
+        which should define the per-batch training behavior.
+        - The last values of `gen_loss` and `dis_loss` from the final batch are
+        retained in local scope but not returned.
+        - Callbacks provide the only mechanism for logging, checkpointing, or
+        early termination; the loop itself only publishes events.
+
+        Examples
+        --------
+        >>> trainer.fit(train_loader, epochs=50, callbacks=[LoggingCallback(), EarlyStopping()])
+        """
         gen_loss, dis_loss = None, None
         self._subscribe_callbacks(callbacks)
 
@@ -315,7 +360,6 @@ class GANLoop:
         self.discriminator_optim.step()
 
         return loss
-        # print(self.discriminator.state_dict()['residual_layer.0.weight'][0, 0, 0])
 
     def generator_step(self, fakes, gen_labels):
         self.discriminator.eval()
@@ -344,7 +388,4 @@ class GANLoop:
     def load_checkpoint(cls, path) -> tuple['GANLoop', dict | None]:
         checkpoint = torch.load(path, weights_only=False)
         meta = checkpoint.pop('meta', None)
-        # NOTE: handling a typo in a previous version.
-        if 'genertator_optimizer' in checkpoint:
-            checkpoint['generator_optimizer'] = checkpoint.pop('genertator_optimizer')
         return cls(**checkpoint), meta
