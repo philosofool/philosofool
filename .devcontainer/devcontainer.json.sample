@@ -14,7 +14,7 @@
   "remoteUser": "vscode",
   // Uncomment to enable GPUs if they are available on your host machine.
   // "runArgs": ["--gpus" "all"],
-  "postCreateCommand": "pip install --upgrade pip",
+  "postCreateCommand": "pip install --upgrade pip  && pip install -e .",
   "customizations": {
     "vscode": {
       "settings": {
