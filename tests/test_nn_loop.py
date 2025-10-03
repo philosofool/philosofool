@@ -1,10 +1,13 @@
+from sympy import Ge
 import torch
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 from philosofool.torch.nn_loop import (
     GANLoop, JSONLogger, StandardOutputLogger, TrainingLoop,
     Publisher, HistoryCallback,
-    JSONLogger, StandardOutputLogger, CompositeLogger
+    JSONLogger, StandardOutputLogger, CompositeLogger,
+    EndOnBatchCallback, SnapshotCallback, VerboseTrainingCallback
+
 )
 from philosofool.torch.nn_models import Generator, Discriminator
 import numpy as np
@@ -13,22 +16,24 @@ import pytest
 
 def test_pub_sub(capsys):
 
-    def test_handle(x):
-        print(x, end='')
+    class TestCallback:
+        def on_test_message(self, x):
+            print(x, end='')
 
+    test_callback = TestCallback()
     publisher = Publisher()
-    publisher.subscribe('test message', test_handle)
-    publisher.publish('test message', True)
+    publisher.subscribe('test', test_callback)
+    publisher.publish('test', 'test_message', True)
 
     assert len(publisher.topics) == 1
 
-    publisher.subscribe('test message', test_handle)
-    assert len(publisher.topics['test message']) == 1, "A handle should only be in a given topic once."
+    publisher.subscribe('test', test_callback)
+    assert len(publisher.topics['test']) == 1, "A handle should only be in a given topic once."
 
     message = capsys.readouterr().out
     assert message == "True"
     with np.testing.assert_raises(TypeError):
-        publisher.publish('test message', y=False)
+        publisher.publish('test', 'test_message', y=False)
 
 
 @pytest.fixture
@@ -173,8 +178,8 @@ def test_train_classifier__train(training_loop, data_loader):
 def test_history_callback():
     publisher = Publisher()
     callback = HistoryCallback()
-    publisher.subscribe(callback.on, callback)
-    publisher.publish('batch_end', None, val_loss=.1, test_loss=.05)
+    publisher.subscribe('event', callback)
+    publisher.publish('event', 'batch_end', None, batch=1, val_loss=.1, test_loss=.05)
     assert callback.history == {'val_loss': [.1], 'test_loss': [.05]}
 
 @pytest.fixture
@@ -255,3 +260,43 @@ class TestGANLoop:
             key_new, new_weight = new
 
             assert torch.any(original_weight != new_weight.detach()), """Parameters of discriminator should update."""
+
+
+def test_end_on_batch():
+    end_on_batch = EndOnBatchCallback(2)
+    assert end_on_batch.on_batch_end(None, batch=2, gen_loss=.1) == 'end_batch', "Should emit 'end_batch' signal, gen_loss (unused) is accepeccted."
+    assert end_on_batch.on_batch_end(None, batch=1) is None, "Should not end on batch one. Missing gen_loss is accepted."
+
+def test_snapshot_callback():
+    generator = Generator(10, 10)
+    discriminator = Discriminator(10)
+
+    loss = nn.BCEWithLogitsLoss()
+    loop = GANLoop(
+        generator,
+        discriminator,
+        torch.optim.SGD(generator.parameters(), lr=.01, momentum=0),
+        torch.optim.SGD(discriminator.parameters(), lr=.01, momentum=0),
+        loss
+    )
+
+    loop.generator.eval()
+    snapshot_callback = SnapshotCallback(n_images=1, interval=2)
+    snapshot_callback.on_batch_end(loop, batch=2, gen_loss=.1, dis_loss=.1)
+    assert len(snapshot_callback.snapshots ) == 1, "Snapshots should update when called on batch interval."
+    snapshot_callback.on_batch_end(loop, batch=3, gen_loss=.1, dis_loss=.1)
+    assert len(snapshot_callback.snapshots ) == 1, "Snapshots should update only on interval."
+    snapshot_callback.on_batch_end(loop, batch=2, gen_loss=.1, dis_loss=.1)
+    assert len(snapshot_callback.snapshots) == 2, "Snapshots should update when called on batch interval."
+    snapshots = snapshot_callback.snapshots
+    assert torch.allclose(snapshots[0].detach(), snapshots[1].detach())
+
+    snapshot_callback.on_epoch_end(loop, epoch=1)
+    assert snapshot_callback.snapshots[0].shape[0] == snapshot_callback.n_images == 1
+
+def test_vebose_training_callback():
+
+    callback = VerboseTrainingCallback(batch_interval=2)
+    callback.on_batch_end(None, batch=1)
+    callback.on_batch_end(None, batch=2, gen_loss=.1, dis_loss=.2)
+    callback.on_epoch_start(None, epoch=12, unused_argument='ignored')

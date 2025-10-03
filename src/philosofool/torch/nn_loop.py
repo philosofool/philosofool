@@ -1,15 +1,15 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from collections.abc import Callable, Iterator
+from typing import Any, TYPE_CHECKING, Iterator, Protocol, Callable
 import json
-from typing import Any, TYPE_CHECKING, Iterator, Protocol
-import warnings
 
 import numpy as np
 import torch
-from torch import accelerator
-from torch import nn
+from torch import accelerator, nn
+from torchvision.utils import make_grid
+
+from philosofool.torch.visualize import show_image
 
 if TYPE_CHECKING:
     from torch.utils.data import DataLoader
@@ -183,10 +183,9 @@ class LambdaCallback:
 
 class HistoryCallback:
     def __init__(self):
-        self.on = 'batch_end'
         self.history = defaultdict(list)
 
-    def __call__(self, loop, **kwargs):
+    def on_batch_end(self, loop, batch: int, **kwargs):
         for key, value in kwargs.items():
             self.history[key].append(value)
         return None
@@ -205,12 +204,13 @@ class Publisher:
             self.topics[topic] = set()
         self.topics[topic].add(handler)
 
-    def publish(self, topic, *args, **kwargs) -> list:
+    def publish(self, topic, message, *args, **kwargs) -> list:
         """Publish args and kwargs to topic."""
         results = []
-        if topic not in self.topics:
-            return []
-        for handler in self.topics[topic]:
+        for callback in self.topics.get(topic, []):
+            handler = getattr(callback, f'on_{message}', None)
+            if handler is None:
+                continue
             result = handler(*args, **kwargs)
             if result is not None:
                 results.append(result)
@@ -266,10 +266,11 @@ class GANLoop:
 
         Events Published
         ----------------
+        - "fit_start": at the start of training, with no arguments.
         - "epoch_start": at the start of each epoch, with arguments {epoch}.
         - "batch_end": after each batch, with arguments {batch, gen_loss, dis_loss}.
         If any callback returns the signal "end_batch", the batch loop is interrupted.
-        - "epoch_end": after each epoch, with arguments {epoch}.
+        - "epoch_end": after each epoch, with arguments {eptestoch}.
         If any callback returns the signal "end_fit", training terminates early.
         - "fit_end": after the full training loop has finished (normally or early).
 
@@ -287,8 +288,8 @@ class GANLoop:
         >>> trainer.fit(train_loader, epochs=50, callbacks=[LoggingCallback(), EarlyStopping()])
         """
         gen_loss, dis_loss = None, None
-        self._subscribe_callbacks(callbacks)
-
+        self.add_callbacks(callbacks)
+        self._publish('fit_start')
         for epoch in range(epochs):
             self._publish('epoch_start', epoch=epoch)
             for i, (gen_loss, dis_loss) in enumerate(self.step(data)):
@@ -300,14 +301,14 @@ class GANLoop:
                 break
         self._publish('fit_end')
 
-    def _subscribe_callbacks(self, callbacks):
-        for callback in [self._history] + callbacks:
-            self._publisher.subscribe(callback.on, callback)
+    def add_callbacks(self, *callbacks):
+        for callback in [self._history] + list(callbacks):
+            self._publisher.subscribe('gan_loop', callback)
 
     def _publish(self, message, **kwargs) -> list:
         if self._publisher is None:
             return []
-        signals = self._publisher.publish(message, self, **kwargs)
+        signals = self._publisher.publish('gan_loop', message, self, **kwargs)
         return signals
 
 
@@ -389,3 +390,56 @@ class GANLoop:
         checkpoint = torch.load(path, weights_only=False)
         meta = checkpoint.pop('meta', None)
         return cls(**checkpoint), meta
+
+
+class EndOnBatchCallback:
+    """After a number of batches, proceed to the next epoch."""
+    def __init__(self, last_batch: int):
+        self.last_batch = last_batch
+
+    def on_batch_end(self, loop, batch: int, **kwargs):
+        if batch == self.last_batch:
+            return 'end_batch'
+
+
+class SnapshotCallback:
+    """Collect snapshots on an interval."""
+    def __init__(self, n_images: int, interval: int):
+        self.interval = interval
+        self.n_images = n_images
+        self.snapshots = []
+        self._random_inputs = {}
+
+    def on_batch_end(self, loop: GANLoop, batch, **kwargs):
+        if batch % self.interval != 0:
+            return
+        random_input = self._random_input(loop.generator.input_size).to(loop._device)
+        result = loop.generator(random_input)
+        self.snapshots.append(result)
+
+    def on_epoch_end(self, loop, **kwargs):
+        images = self.snapshots[-1]
+        show_image(make_grid(images.to('cpu'), nrow=4))
+
+    def _random_input(self, size: int):
+        if size in self._random_inputs:
+            return self._random_inputs[size]
+        random_input = torch.randn((self.n_images, size, 1, 1))
+        self._random_inputs[size] = random_input
+        return random_input
+
+
+class VerboseTrainingCallback:
+    def __init__(self, batch_interval: int):
+        self.batch_interval = batch_interval
+
+    def on_epoch_start(self, loop, epoch: int, **kwargs):
+        print(f"Epoch: {epoch}")
+
+    def on_batch_end(self, loop, batch: int, **kwargs):
+        if batch % self.batch_interval != 0:
+            return
+        strings = []
+        for key, value in kwargs.items():
+            strings.append(f"{key}: {value}")
+        print(', '.join(strings))
