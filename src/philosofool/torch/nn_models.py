@@ -226,10 +226,12 @@ class Discriminator(nn.Module):
         super().__init__()
         self.dropout = dropout
         conv_layer = nn.Conv2d(3, feature_size, 3, stride=1)
-        conv_layer2 = nn.Conv2d(feature_size, feature_size * 4, 5, stride=2)
-        conv_layer3 = nn.Conv2d(feature_size * 4, feature_size * 8, 7, stride=2)
-        conv_layer4 = nn.Conv2d(feature_size * 8, feature_size * 16, 9, stride=2)
+        conv_layer2 = nn.Conv2d(feature_size, feature_size * 2, 5, stride=2)
+        conv_layer3 = nn.Conv2d(feature_size * 2, feature_size * 4, 5, stride=2)
+        conv_layer4 = nn.Conv2d(feature_size * 4, feature_size * 8, 7, stride=2)
+
         h, w, c = compute_convolution_dims((64, 64), conv_layer, conv_layer2, conv_layer3, conv_layer4)
+        print(h, w, c, h * w * c)
         linear_width = 32
         self.network = nn.Sequential(
             conv_layer,
@@ -250,3 +252,6 @@ class Discriminator(nn.Module):
     def forward(self, x):
         # x = nn.Dropout(.3)(x)
         return self.network(x)
+
+if __name__ == '__main__':
+    dis = Discriminator()
