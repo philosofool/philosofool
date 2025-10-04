@@ -302,7 +302,7 @@ class GANLoop:
         self._publish('fit_end')
 
     def add_callbacks(self, *callbacks):
-        for callback in [self._history] + list(callbacks):
+        for callback in [self._history] + list(*callbacks):
             self._publisher.subscribe('gan_loop', callback)
 
     def _publish(self, message, **kwargs) -> list:

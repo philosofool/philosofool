@@ -132,6 +132,7 @@ class ResidualBlock(nn.Module):
                 conv_layer = nn.Conv2d(out_channels, out_channels, kernel_size, stride, padding=padding)
             block_steps.append(conv_layer)
             block_steps.append(nn.BatchNorm2d(out_channels))
+            # don't apply the activation for the final convolution (which is activated after the skip connection.)
             if i != n_steps - 1:
                 block_steps.append(nn.ReLU())
         self.residual_layer = nn.Sequential(*block_steps)
@@ -189,10 +190,14 @@ class Generator(nn.Module):
             return nn.Sequential(*steps)
 
         self.network = nn.Sequential(
-            forward_step(nn.ConvTranspose2d(input_size, features_size * 8, 4, 2, 1)),
-            forward_step(nn.ConvTranspose2d(features_size * 8, features_size * 4, 8, 4, 2)),
-            forward_step(nn.ConvTranspose2d(features_size * 4, features_size * 2, 8, 4, 2)),
-            nn.ConvTranspose2d(features_size * 2, 3, 8, 2, 3),
+            *[
+                forward_step(layer) for layer in (
+                    nn.ConvTranspose2d(input_size, features_size * 8, 4, 2, 1),
+                    nn.ConvTranspose2d(features_size * 8, features_size * 4, 8, 4, 0),
+                    nn.ConvTranspose2d(features_size * 4, features_size * 2, 8, 2, 0),
+                    nn.ConvTranspose2d(features_size * 2, features_size * 2, 8, 2, 1),
+            )],
+            nn.Conv2d(features_size * 2, 3, 1, 1, 0),
             nn.Tanh()
         )
 
@@ -225,24 +230,28 @@ class Discriminator(nn.Module):
     def __init__(self, feature_size: int = 10, dropout=.1):
         super().__init__()
         self.dropout = dropout
-        conv_layer = nn.Conv2d(3, feature_size, 3, stride=1)
-        conv_layer2 = nn.Conv2d(feature_size, feature_size * 2, 5, stride=2)
-        conv_layer3 = nn.Conv2d(feature_size * 2, feature_size * 4, 5, stride=2)
-        conv_layer4 = nn.Conv2d(feature_size * 4, feature_size * 8, 7, stride=2)
+        steps = [
+            nn.Conv2d(3, feature_size, 3, stride=1),
+            nn.ReLU(),
+            nn.Conv2d(feature_size, feature_size * 2, 3, stride=1),
+            nn.ReLU(),
+            nn.Conv2d(feature_size * 2, feature_size * 2, 3, stride=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+            nn.Conv2d(feature_size * 2, feature_size * 4, 5, stride=1),
+            nn.ReLU(),
+            nn.Conv2d(feature_size * 4, feature_size * 4, 5, stride=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+            nn.Conv2d(feature_size * 4, feature_size * 8, 7, stride=1),
+            nn.MaxPool2d(2),
+            nn.ReLU(),
+        ]
 
-        h, w, c = compute_convolution_dims((64, 64), conv_layer, conv_layer2, conv_layer3, conv_layer4)
-        print(h, w, c, h * w * c)
+        h, w, c = compute_convolution_dims((64, 64), *steps)
         linear_width = 32
         self.network = nn.Sequential(
-            conv_layer,
-            nn.ReLU(),
-            conv_layer2,
-            nn.ReLU(),
-            conv_layer3,
-            nn.ReLU(),
-            conv_layer4,
-            nn.ReLU(),
-            # nn.Dropout(self.dropout),
+           *steps,
             nn.Flatten(),
             nn.Linear(h * w * c, linear_width),
             nn.ReLU(),
@@ -254,4 +263,4 @@ class Discriminator(nn.Module):
         return self.network(x)
 
 if __name__ == '__main__':
-    dis = Discriminator()
+    dis = Discriminator(60)
