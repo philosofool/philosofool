@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from email.policy import default
 from typing import Any, TYPE_CHECKING, Iterator, Protocol, Callable
 import json
 
@@ -64,7 +65,7 @@ class StandardOutputLogger:
     def finish(self):
         return
 
-class JSONLogger:
+class JSONLoggerCallback:
     """Save training results to a file."""
     def __init__(self, path):
         self.path = path
@@ -76,17 +77,17 @@ class JSONLogger:
             self.logs = {'train_loss': [], 'test_loss': [], 'test_accuracy': []}
         self._epoch_training = []
 
-    def start_epoch(self, epoch):
+    def on_epoch_start(self, loop, **kwargs):
         self._update_epochs()
 
-    def training(self, batch, loss, data) -> None:
-        self._epoch_training.append(loss)
+    def on_batch_end(self, loop, **kwargs) -> None:
+        self._epoch_training.append(kwargs['loss'])
 
-    def testing(self, correct, loss) -> None:
+    def on_epoch_end(self, loop, correct, loss, **kwargs) -> None:
         self.logs['test_accuracy'].append(correct)
         self.logs['test_loss'].append(loss)
 
-    def finish(self):
+    def on_fit_end(self):
         self._update_epochs()
         with open(self.path, 'w') as f:
             f.write(json.dumps(self.logs))
@@ -119,14 +120,32 @@ class CompositeLogger:
             logger.finish()
 
 class TrainingLoop():
-    def __init__(self, model: nn.Module, optimizer: Optimizer, loss: Loss, logging: TrainingLogger | None = None):
+    def __init__(self, model: nn.Module, optimizer: Optimizer, loss: Loss):
         self.model = model
         self.optimizer = optimizer
         self.loss = loss
-        self.logging = logging or StandardOutputLogger()
         self._epochs = 0
         self._device = accelerator.current_accelerator().type if accelerator.is_available() else "cpu"    # pyright: ignore [reportOptionalMemberAccess]
+        self._history = HistoryCallback()
+        self._publisher = Publisher()
+
+        self.add_callbacks(self._history)
+
         self.model.to(self._device)
+
+    @property
+    def history(self) -> dict:
+        return self._history.history
+
+    def add_callbacks(self, *callbacks):
+        for callback in callbacks:
+            self._publisher.subscribe('training_loop', callback)
+
+    def _publish(self, message, **kwargs) -> list:
+        if self._publisher is None:
+            return []
+        signals = self._publisher.publish('training_loop', message, self, **kwargs)
+        return signals
 
     def test(self, data: DataLoader) -> tuple:
         size = len(data.dataset)  # pyright: ignore [reportArgumentType]
@@ -156,39 +175,18 @@ class TrainingLoop():
             self.optimizer.zero_grad()
             yield batch, loss.item()
 
-    def fit(self, train_data: DataLoader, test_data: DataLoader, epochs=1) -> None:
+    def fit(self, train_data: DataLoader, test_data: DataLoader, epochs=1, callbacks: list = None) -> None:
+        if callbacks:
+            self.add_callbacks(*callbacks)
+        self._publish('fit_start', train_data=train_data, test_data=test_data)
         for epoch in range(self._epochs, self._epochs + epochs):
-            self.logging.start_epoch(epoch)
+            self._publish('epoch_start', epoch=epoch)
             for (batch, loss) in self.train(train_data):
-                self.logging.training(batch, loss, train_data)  # pyright: ignore [reportArgumentType]
+                self._publish('batch_end', batch=batch, loss=loss)
             test_correct, test_loss = self.test(test_data)
-            self.logging.testing(test_correct, test_loss)
+            self._publish('epoch_end', correct=test_correct, test_loss=test_loss)
         self._epochs += epochs
-        self.logging.finish()
-
-
-class Callback(Protocol):
-    on: str
-
-    def __call__(self, loop, **kwargs):
-        ...
-
-class LambdaCallback:
-    def __init__(self, on: str, fn: Callable):
-        self.on = on
-        self._fn = fn
-
-    def __call__(self, loop, **kwargs):
-        return self._fn(loop, **kwargs)
-
-class HistoryCallback:
-    def __init__(self):
-        self.history = defaultdict(list)
-
-    def on_batch_end(self, loop, batch: int, **kwargs):
-        for key, value in kwargs.items():
-            self.history[key].append(value)
-        return None
+        self._publish('fit_end')
 
 class Publisher:
     """A publisher-subscriber implementation.
@@ -237,6 +235,8 @@ class GANLoop:
         self._device = torch.accelerator.current_accelerator().type if torch.accelerator.is_available() else "cpu"  # pyright: ignore [reportOptionalMemberAccess]
         self._history = HistoryCallback()
         self._publisher = Publisher()
+
+        self.add_callbacks(self._history)
         self.generator.to(self._device)
         self.discriminator.to(self._device)
 
@@ -244,7 +244,7 @@ class GANLoop:
     def history(self):
         return self._history.history
 
-    def fit(self, data: DataLoader, epochs: int = 1, callbacks: list[Callback] = []):
+    def fit(self, data: DataLoader, epochs: int = 1, callbacks: list = []):
         """
         Train the GAN for a given number of epochs.
 
@@ -288,8 +288,8 @@ class GANLoop:
         >>> trainer.fit(train_loader, epochs=50, callbacks=[LoggingCallback(), EarlyStopping()])
         """
         gen_loss, dis_loss = None, None
-        self.add_callbacks(callbacks)
-        self._publish('fit_start')
+        self.add_callbacks(*callbacks)
+        self._publish('fit_start', data=data)
         for epoch in range(epochs):
             self._publish('epoch_start', epoch=epoch)
             for i, (gen_loss, dis_loss) in enumerate(self.step(data)):
@@ -302,7 +302,7 @@ class GANLoop:
         self._publish('fit_end')
 
     def add_callbacks(self, *callbacks):
-        for callback in [self._history] + list(*callbacks):
+        for callback in callbacks:
             self._publisher.subscribe('gan_loop', callback)
 
     def _publish(self, message, **kwargs) -> list:
@@ -443,3 +443,23 @@ class VerboseTrainingCallback:
         for key, value in kwargs.items():
             strings.append(f"{key}: {value}")
         print(', '.join(strings))
+
+
+class HistoryCallback:
+    def __init__(self):
+        self.history = defaultdict(list)
+        self._batch_history = None # list-defaultdict is created each epoch start.
+
+    def on_epoch_start(self, loop, **kwargs):
+        self._batch_history = defaultdict(list)
+
+    def on_batch_end(self, loop, batch: int, **kwargs):
+        for key, value in kwargs.items():
+            self._batch_history[key].append(value)
+        return None
+
+    def on_epoch_end(self, loop, **kwargs):
+        for key, values in self._batch_history.items():
+            self.history[key].append(float(np.mean(values)))
+        for key, value in kwargs.items():
+            self.history[key].append(value)
