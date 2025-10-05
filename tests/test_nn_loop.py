@@ -2,9 +2,9 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 from philosofool.torch.nn_loop import (
-    GANLoop, JSONLoggerCallback, StandardOutputLogger, TrainingLoop,
+    GANLoop, JSONLoggerCallback, TrainingLoop,
     Publisher, HistoryCallback,
-    JSONLoggerCallback, StandardOutputLogger, CompositeLogger,
+    JSONLoggerCallback,
     EndOnBatchCallback, SnapshotCallback, VerboseTrainingCallback
 
 )
@@ -201,6 +201,30 @@ def test_history_callback():
     publisher.publish('event', 'batch_end', None, batch=1, val_loss=.1, test_loss=.05)
     publisher.publish('event', 'epoch_end', None)
     assert callback.history == {'val_loss': [.1], 'test_loss': [.05]}
+
+def test_json_logging_callback(data_loader):
+    from tempfile import TemporaryDirectory
+    import os
+    import json
+
+    directory = TemporaryDirectory().name
+    path = os.path.join(directory, 'logs', 'log.json')
+    publisher = Publisher()
+
+    callback = JSONLoggerCallback(path)
+    publisher.subscribe('events', callback)
+    publisher.publish('events', 'fit_start', None, data_loader, data_loader)
+    publisher.publish('events', 'epoch_start', None, epoch=1)
+    publisher.publish('events', 'batch_end', None, loss=.1)
+    publisher.publish('events', 'epoch_end', None, correct=1, test_loss=.2)
+    publisher.publish('events', 'fit_end', None)
+
+    with open(path, 'r') as f:
+        logs = json.loads(f.read())
+    assert callback.logs == logs
+    assert logs['train_loss'] == [.1]
+    assert logs['test_loss'] == [.2]
+    assert logs['test_accuracy'] == [1 / 2]
 
 @pytest.fixture
 def gan_loop() -> GANLoop:
