@@ -118,3 +118,10 @@ dmypy.json
 # OS
 .DS_Store
 Thumbs.db
+Thumbs.db
+
+# local data files, etc.
+data/
+notebooks/gan_tuning
+local_data/
+*.vdb
