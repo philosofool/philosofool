@@ -1,4 +1,3 @@
-from sympy import Ge
 import torch
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
@@ -13,6 +12,30 @@ from philosofool.torch.nn_models import Generator, Discriminator
 import numpy as np
 
 import pytest
+
+
+def clone_state_dict(module: nn.Module) -> dict:
+    """Return a copy of the module state dict, cloning and detaching the tensors in it.
+
+    Useful for checking if a model's state dict has updated.
+    """
+    return {k: tensor.clone().detach() for k, tensor in module.state_dict().items()}
+
+class CountEpochsCallback:
+    """Callback for testing loop counts."""
+    def __init__(self):
+        self.epochs = 0
+        self.batches = 0
+
+    def on_epoch_start(self, loop, epoch, **kwargs):
+        self.epochs += 1
+
+    def on_batch_end(self, loop, batch, **kwargs):
+        self.batches += 1
+
+class EndAfterOneEpoch:
+    def on_epoch_end(self, loop, **kwargs):
+        return 'end_fit'
 
 def test_pub_sub(capsys):
 
@@ -37,7 +60,7 @@ def test_pub_sub(capsys):
 
 
 @pytest.fixture
-def data_loader() -> DataLoader:
+def dataset() -> TensorDataset:
     # 1 batch, 2 rows, three columns
     data = torch.tensor(
         [[1., 0., 0], [0., 1., .0]]
@@ -45,7 +68,12 @@ def data_loader() -> DataLoader:
     labels = torch.tensor(
         [[1., 0.], [0., 1.]]
     )
-    data_loader = DataLoader(TensorDataset(data, labels), batch_size=2)
+    return TensorDataset(data, labels)
+
+
+@pytest.fixture
+def data_loader(dataset) -> DataLoader:
+    data_loader = DataLoader(dataset, batch_size=2)
     return data_loader
 
 
@@ -71,6 +99,7 @@ def training_loop() -> TrainingLoop:
 class TestTrainingLoop:
     def test_fit__callbacks(self, training_loop, data_loader):
         class TestCallback:
+            """Track events published, keepinf the order and whether published messages include required information."""
             def __init__(self):
                 self.messages = []
 
@@ -106,7 +135,7 @@ class TestTrainingLoop:
         expected = ['fit_start', 'epoch_start', 'batch_end', 'epoch_end', 'fit_end']
         assert len(callback.messages) <= len(expected), "An event was published more than expected."
         assert len(callback.messages) >= len(expected), "An expected event was not published."
-        assert callback.messages == expected, "Some callback received the wrong number of keywords."
+        assert callback.messages == expected, "Some callback received the wrong keywords."
 
 
     def test_test(self, training_loop, data_loader):
@@ -117,8 +146,37 @@ class TestTrainingLoop:
 
 
     def test_fit(self, data_loader, training_loop):
+
+        initial_state = clone_state_dict(training_loop.model)
         train_data, test_data = data_loader, data_loader
-        training_loop.fit(train_data, test_data, 8)
+        counter = CountEpochsCallback()
+        training_loop.fit(train_data, test_data, 8, callbacks=[counter])
+        # test if weights updated.
+        updated = False
+        for original, new in zip(initial_state.items(), training_loop.model.state_dict().items()):
+            updated = updated or torch.any(original[1] != new[1])
+        assert updated, "Expected some parameters to update."
+
+        assert counter.epochs == 8, "Expected 8 epochs."
+
+    def test_fit__handles_end_fit(self, dataset, training_loop):
+
+        data_loader = DataLoader(dataset, batch_size=1)
+
+        counter = CountEpochsCallback()
+        end_on_epoch = EndAfterOneEpoch()
+        training_loop.fit(data_loader, data_loader, epochs=3, callbacks=[end_on_epoch, counter])
+        assert counter.epochs == 1
+
+    def test_fit__handles_end_epoch(self, dataset, training_loop):
+        data_loader = DataLoader(dataset, batch_size=1)
+
+        counter = CountEpochsCallback()
+        end_on_batch = EndOnBatchCallback(0)
+        training_loop.fit(data_loader, data_loader, epochs=3, callbacks=[end_on_batch, counter])
+        assert counter.batches == 3
+        assert counter.epochs == 3
+
 
     def test_train(self, training_loop, data_loader):
 
@@ -249,13 +307,34 @@ class TestGANLoop:
         loader = DataLoader(TensorDataset(images), 32)
         test_callback = TestCallback()
         gan_loop.fit(loader, epochs=1, callbacks=[test_callback])
-        assert test_callback.messages == ['fit_start', 'epoch_start', 'batch_end', 'batch_end', 'epoch_end', 'fit_end'], "Expec"
+        expected = ['fit_start', 'epoch_start', 'batch_end', 'batch_end', 'epoch_end', 'fit_end']
+        assert test_callback.messages == expected, f"Callback expected {expected}, but received {test_callback.messages}"
+
+    def test_fit__handles_end_epoch(self, gan_loop: GANLoop):
+        images, fakes, _, __ = self._make_images_fakes(gan_loop)
+        counter = CountEpochsCallback()
+        end_on_batch = EndOnBatchCallback(0)
+        dataset = TensorDataset(images)
+        data_loader = DataLoader(dataset, 2)
+        gan_loop.fit(data_loader, epochs=2, callbacks=[end_on_batch, counter])
+        assert counter.batches == 8
+        assert counter.epochs == 2
+
+    def test_fit__handles_end_fit(self, gan_loop: GANLoop):
+        images, fakes, _, __ = self._make_images_fakes(gan_loop)
+        counter = CountEpochsCallback()
+        end_after_epoch = EndAfterOneEpoch()
+        dataset = TensorDataset(images)
+        data_loader = DataLoader(dataset, 2)
+        gan_loop.fit(data_loader, epochs=2, callbacks=[end_after_epoch, counter])
+        assert counter.batches == 4
+        assert counter.epochs == 1
 
 
 
 def test_end_on_batch():
     end_on_batch = EndOnBatchCallback(2)
-    assert end_on_batch.on_batch_end(None, batch=2, gen_loss=.1) == 'end_batch', "Should emit 'end_batch' signal, gen_loss (unused) is accepeccted."
+    assert end_on_batch.on_batch_end(None, batch=2, gen_loss=.1) == 'end_epoch', "Should emit 'end_epoch' signal, gen_loss (unused) is accepeccted."
     assert end_on_batch.on_batch_end(None, batch=1) is None, "Should not end on batch one. Missing gen_loss is accepted."
 
 def test_snapshot_callback():

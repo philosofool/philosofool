@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from email.policy import default
 from typing import Any, TYPE_CHECKING, Iterator, Protocol, Callable
 import json
 
@@ -87,7 +86,7 @@ class JSONLoggerCallback:
         self.logs['test_accuracy'].append(correct)
         self.logs['test_loss'].append(loss)
 
-    def on_fit_end(self):
+    def on_fit_end(self, **kwargs):
         self._update_epochs()
         with open(self.path, 'w') as f:
             f.write(json.dumps(self.logs))
@@ -175,16 +174,20 @@ class TrainingLoop():
             self.optimizer.zero_grad()
             yield batch, loss.item()
 
-    def fit(self, train_data: DataLoader, test_data: DataLoader, epochs=1, callbacks: list = None) -> None:
+    def fit(self, train_data: DataLoader, test_data: DataLoader, epochs=1, callbacks: list | None = None) -> None:
         if callbacks:
             self.add_callbacks(*callbacks)
         self._publish('fit_start', train_data=train_data, test_data=test_data)
         for epoch in range(self._epochs, self._epochs + epochs):
             self._publish('epoch_start', epoch=epoch)
             for (batch, loss) in self.train(train_data):
-                self._publish('batch_end', batch=batch, loss=loss)
+                signals = self._publish('batch_end', batch=batch, loss=loss)
+                if 'end_epoch' in signals:
+                    break
             test_correct, test_loss = self.test(test_data)
-            self._publish('epoch_end', correct=test_correct, test_loss=test_loss)
+            signals = self._publish('epoch_end', correct=test_correct, test_loss=test_loss)
+            if 'end_fit' in signals:
+                break
         self._epochs += epochs
         self._publish('fit_end')
 
@@ -196,7 +199,7 @@ class Publisher:
     def __init__(self):
         self.topics = {}
 
-    def subscribe(self, topic: str, handler: Callable):
+    def subscribe(self, topic: str, handler):
         """Add handler to the collection of callables notified when a message is published to topic."""
         if topic not in self.topics:
             self.topics[topic] = set()
@@ -399,7 +402,7 @@ class EndOnBatchCallback:
 
     def on_batch_end(self, loop, batch: int, **kwargs):
         if batch == self.last_batch:
-            return 'end_batch'
+            return 'end_epoch'
 
 
 class SnapshotCallback:
@@ -413,7 +416,7 @@ class SnapshotCallback:
     def on_batch_end(self, loop: GANLoop, batch, **kwargs):
         if batch % self.interval != 0:
             return
-        random_input = self._random_input(loop.generator.input_size).to(loop._device)
+        random_input = self._random_input(loop.generator.input_size).to(loop._device)  # pyright: ignore [reportArgumentType]
         result = loop.generator(random_input)
         self.snapshots.append(result)
 
@@ -421,7 +424,7 @@ class SnapshotCallback:
         images = self.snapshots[-1]
         show_image(make_grid(images.to('cpu'), nrow=4))
 
-    def _random_input(self, size: int):
+    def _random_input(self, size: int) -> torch.Tensor:
         if size in self._random_inputs:
             return self._random_inputs[size]
         random_input = torch.randn((self.n_images, size, 1, 1))
@@ -448,7 +451,7 @@ class VerboseTrainingCallback:
 class HistoryCallback:
     def __init__(self):
         self.history = defaultdict(list)
-        self._batch_history = None # list-defaultdict is created each epoch start.
+        self._batch_history = defaultdict(list) # list-defaultdict is created each epoch start.
 
     def on_epoch_start(self, loop, **kwargs):
         self._batch_history = defaultdict(list)
