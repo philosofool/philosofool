@@ -1,3 +1,8 @@
+from tempfile import TemporaryDirectory
+import os
+import json
+
+import numpy as np
 import torch
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
@@ -9,7 +14,6 @@ from philosofool.torch.nn_loop import (
 
 )
 from philosofool.torch.nn_models import Generator, Discriminator
-import numpy as np
 
 import pytest
 
@@ -203,9 +207,6 @@ def test_history_callback():
     assert callback.history == {'val_loss': [.1], 'test_loss': [.05]}
 
 def test_json_logging_callback(data_loader):
-    from tempfile import TemporaryDirectory
-    import os
-    import json
 
     directory = TemporaryDirectory().name
     path = os.path.join(directory, 'logs', 'log.json')
@@ -280,7 +281,6 @@ class TestGANLoop:
             assert torch.all(original_weight == new_weight.detach()), """Parameters of discriminator should not update."""
 
     def test_step(self, gan_loop):
-        from torch.utils.data import TensorDataset, DataLoader
         images, fakes, gen_params_initial, dis_params_initial = self._make_images_fakes(gan_loop)
 
         generator = gan_loop.generator
