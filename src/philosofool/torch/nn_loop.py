@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import Any, TYPE_CHECKING, Iterator, Protocol, Callable
 import json
+import os
 
 import numpy as np
 import torch
@@ -28,105 +29,75 @@ def summarize_test(correct: float, loss: float) -> str:
     return f"Test Error: \n Accuracy: {(100 * correct):>0.1f}%, Avg loss: {loss:>8f} \n"
 
 
-class TrainingLogger(Protocol):
-    def training(self, batch: int, loss: float, *metrics: float) -> None:
-        ...
-
-    def testing(self, correct: float, loss: float) -> None:
-        ...
-
-    def start_epoch(self, epoch: int) -> None:
-        ...
-
-    def finish(self):
-        ...
-
-class StandardOutputLogger:
-    """Handle logging to standard output."""
-    def __init__(self, interval: int = 1):
-        self.interval = interval
-        self._losses = []
-
-    def training(self, batch: int, loss: float, data: DataLoader) -> None:
-        """Log the outputs of a training loop to standard output."""
-        self._losses.append(loss)
-        if batch % self.interval == 0:
-            print(summarize_training(batch, np.mean(self._losses), data))  # pyright: ignore [reportArgumentType]
-
-    def testing(self, correct: float, loss: float) -> None:
-        """Log the outputs of testing to standard output."""
-        print(summarize_test(correct, loss))
-
-    def start_epoch(self, epoch: int) -> None:
-        self._losses = []
-        print(f"Epoch: {epoch}")
-
-    def finish(self):
-        return
-
-class JSONLogger:
+class JSONLoggerCallback:
     """Save training results to a file."""
     def __init__(self, path):
         self.path = path
         try:
             with open(path, 'r') as f:
                 logs = json.loads(f.read())
-            self.logs = logs
         except FileNotFoundError:
-            self.logs = {'train_loss': [], 'test_loss': [], 'test_accuracy': []}
-        self._epoch_training = []
+            self._make_logs_dir(path)
+            logs = {'train_loss': [], 'test_loss': [], 'test_accuracy': []}
+        self.logs = logs
+        self._batch_losses = []
 
-    def start_epoch(self, epoch):
-        self._update_epochs()
+    def _make_logs_dir(self, path: str):
+        directory, filename = os.path.split(path)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
-    def training(self, batch, loss, data) -> None:
-        self._epoch_training.append(loss)
+    def on_fit_start(self, loop, train_data: DataLoader, test_data: DataLoader, **kwargs):
+        self._data_size = len(test_data.dataset)    # pyright: ignore [reportArgumentType]
 
-    def testing(self, correct, loss) -> None:
-        self.logs['test_accuracy'].append(correct)
-        self.logs['test_loss'].append(loss)
+    def on_batch_end(self, loop, **kwargs) -> None:
+        # collect loss on each batch.
+        self._batch_losses.append(kwargs['loss'])
 
-    def finish(self):
-        self._update_epochs()
+    def on_epoch_end(self, loop, correct, test_loss, **kwargs) -> None:
+        self.logs['test_accuracy'].append(correct / self._data_size)
+        self.logs['test_loss'].append(test_loss)
+        self._update_training_loss()
+
+    def on_fit_end(self, loop, **kwargs):
         with open(self.path, 'w') as f:
             f.write(json.dumps(self.logs))
 
-    def _update_epochs(self):
-        if self._epoch_training:
-            mean = np.mean(self._epoch_training)
+    def _update_training_loss(self):
+        # append mean loss from batch_losses
+        if self._batch_losses:
+            mean = np.mean(self._batch_losses)
             self.logs['train_loss'].append(mean)
-        self._epoch_training = []
+        self._batch_losses = []
 
-class CompositeLogger:
-    """Compose simple loggers."""
-    def __init__(self, *loggers: TrainingLogger):
-        self.loggers = loggers
-
-    def training(self, batch, loss, size):
-        for logger in self.loggers:
-            logger.training(batch, loss, size)
-
-    def testing(self, correct, loss):
-        for logger in self.loggers:
-            logger.testing(correct, loss)
-
-    def start_epoch(self, epoch):
-        for logger in self.loggers:
-            logger.start_epoch(epoch)
-
-    def finish(self):
-        for logger in self.loggers:
-            logger.finish()
 
 class TrainingLoop():
-    def __init__(self, model: nn.Module, optimizer: Optimizer, loss: Loss, logging: TrainingLogger | None = None):
+    def __init__(self, model: nn.Module, optimizer: Optimizer, loss: Loss):
         self.model = model
         self.optimizer = optimizer
         self.loss = loss
-        self.logging = logging or StandardOutputLogger()
         self._epochs = 0
         self._device = accelerator.current_accelerator().type if accelerator.is_available() else "cpu"    # pyright: ignore [reportOptionalMemberAccess]
+        self._history = HistoryCallback()
+        self._publisher = Publisher()
+
+        self.add_callbacks(self._history)
+
         self.model.to(self._device)
+
+    @property
+    def history(self) -> dict:
+        return self._history.history
+
+    def add_callbacks(self, *callbacks):
+        for callback in callbacks:
+            self._publisher.subscribe('training_loop', callback)
+
+    def _publish(self, message, **kwargs) -> list:
+        if self._publisher is None:
+            return []
+        signals = self._publisher.publish('training_loop', message, self, **kwargs)
+        return signals
 
     def test(self, data: DataLoader) -> tuple:
         size = len(data.dataset)  # pyright: ignore [reportArgumentType]
@@ -156,39 +127,22 @@ class TrainingLoop():
             self.optimizer.zero_grad()
             yield batch, loss.item()
 
-    def fit(self, train_data: DataLoader, test_data: DataLoader, epochs=1) -> None:
+    def fit(self, train_data: DataLoader, test_data: DataLoader, epochs=1, callbacks: list | None = None) -> None:
+        if callbacks:
+            self.add_callbacks(*callbacks)
+        self._publish('fit_start', train_data=train_data, test_data=test_data)
         for epoch in range(self._epochs, self._epochs + epochs):
-            self.logging.start_epoch(epoch)
+            self._publish('epoch_start', epoch=epoch)
             for (batch, loss) in self.train(train_data):
-                self.logging.training(batch, loss, train_data)  # pyright: ignore [reportArgumentType]
+                signals = self._publish('batch_end', batch=batch, loss=loss)
+                if 'end_epoch' in signals:
+                    break
             test_correct, test_loss = self.test(test_data)
-            self.logging.testing(test_correct, test_loss)
+            signals = self._publish('epoch_end', correct=test_correct, test_loss=test_loss)
+            if 'end_fit' in signals:
+                break
         self._epochs += epochs
-        self.logging.finish()
-
-
-class Callback(Protocol):
-    on: str
-
-    def __call__(self, loop, **kwargs):
-        ...
-
-class LambdaCallback:
-    def __init__(self, on: str, fn: Callable):
-        self.on = on
-        self._fn = fn
-
-    def __call__(self, loop, **kwargs):
-        return self._fn(loop, **kwargs)
-
-class HistoryCallback:
-    def __init__(self):
-        self.history = defaultdict(list)
-
-    def on_batch_end(self, loop, batch: int, **kwargs):
-        for key, value in kwargs.items():
-            self.history[key].append(value)
-        return None
+        self._publish('fit_end')
 
 class Publisher:
     """A publisher-subscriber implementation.
@@ -198,7 +152,7 @@ class Publisher:
     def __init__(self):
         self.topics = {}
 
-    def subscribe(self, topic: str, handler: Callable):
+    def subscribe(self, topic: str, handler):
         """Add handler to the collection of callables notified when a message is published to topic."""
         if topic not in self.topics:
             self.topics[topic] = set()
@@ -237,6 +191,8 @@ class GANLoop:
         self._device = torch.accelerator.current_accelerator().type if torch.accelerator.is_available() else "cpu"  # pyright: ignore [reportOptionalMemberAccess]
         self._history = HistoryCallback()
         self._publisher = Publisher()
+
+        self.add_callbacks(self._history)
         self.generator.to(self._device)
         self.discriminator.to(self._device)
 
@@ -244,7 +200,7 @@ class GANLoop:
     def history(self):
         return self._history.history
 
-    def fit(self, data: DataLoader, epochs: int = 1, callbacks: list[Callback] = []):
+    def fit(self, data: DataLoader, epochs: int = 1, callbacks: list = []):
         """
         Train the GAN for a given number of epochs.
 
@@ -288,8 +244,8 @@ class GANLoop:
         >>> trainer.fit(train_loader, epochs=50, callbacks=[LoggingCallback(), EarlyStopping()])
         """
         gen_loss, dis_loss = None, None
-        self.add_callbacks(callbacks)
-        self._publish('fit_start')
+        self.add_callbacks(*callbacks)
+        self._publish('fit_start', data=data)
         for epoch in range(epochs):
             self._publish('epoch_start', epoch=epoch)
             for i, (gen_loss, dis_loss) in enumerate(self.step(data)):
@@ -302,7 +258,7 @@ class GANLoop:
         self._publish('fit_end')
 
     def add_callbacks(self, *callbacks):
-        for callback in [self._history] + list(*callbacks):
+        for callback in callbacks:
             self._publisher.subscribe('gan_loop', callback)
 
     def _publish(self, message, **kwargs) -> list:
@@ -399,7 +355,7 @@ class EndOnBatchCallback:
 
     def on_batch_end(self, loop, batch: int, **kwargs):
         if batch == self.last_batch:
-            return 'end_batch'
+            return 'end_epoch'
 
 
 class SnapshotCallback:
@@ -413,7 +369,7 @@ class SnapshotCallback:
     def on_batch_end(self, loop: GANLoop, batch, **kwargs):
         if batch % self.interval != 0:
             return
-        random_input = self._random_input(loop.generator.input_size).to(loop._device)
+        random_input = self._random_input(loop.generator.input_size).to(loop._device)  # pyright: ignore [reportArgumentType]
         result = loop.generator(random_input)
         self.snapshots.append(result)
 
@@ -421,7 +377,7 @@ class SnapshotCallback:
         images = self.snapshots[-1]
         show_image(make_grid(images.to('cpu'), nrow=4))
 
-    def _random_input(self, size: int):
+    def _random_input(self, size: int) -> torch.Tensor:
         if size in self._random_inputs:
             return self._random_inputs[size]
         random_input = torch.randn((self.n_images, size, 1, 1))
@@ -443,3 +399,23 @@ class VerboseTrainingCallback:
         for key, value in kwargs.items():
             strings.append(f"{key}: {value}")
         print(', '.join(strings))
+
+
+class HistoryCallback:
+    def __init__(self):
+        self.history = defaultdict(list)
+        self._batch_history = defaultdict(list) # list-defaultdict is created each epoch start.
+
+    def on_epoch_start(self, loop, **kwargs):
+        self._batch_history = defaultdict(list)
+
+    def on_batch_end(self, loop, batch: int, **kwargs):
+        for key, value in kwargs.items():
+            self._batch_history[key].append(value)
+        return None
+
+    def on_epoch_end(self, loop, **kwargs):
+        for key, values in self._batch_history.items():
+            self.history[key].append(float(np.mean(values)))
+        for key, value in kwargs.items():
+            self.history[key].append(value)
