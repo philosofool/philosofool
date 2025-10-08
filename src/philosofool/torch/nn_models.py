@@ -178,7 +178,7 @@ class Generator(nn.Module):
         self.features_size = features_size
         features_size = features_size
 
-        def forward_step(layer: nn.ConvTranspose2d) -> nn.Sequential:
+        def apply_batch_norm_and_relu(layer: nn.ConvTranspose2d) -> nn.Sequential:
             """Apply batch norm, leakyReLU and optional dropout after layer."""
             steps = [
                 layer,
@@ -191,11 +191,14 @@ class Generator(nn.Module):
 
         self.network = nn.Sequential(
             *[
-                forward_step(layer) for layer in (
+                apply_batch_norm_and_relu(layer) for layer in (
                     nn.ConvTranspose2d(input_size, features_size * 8, 4, 2, 1),
-                    nn.ConvTranspose2d(features_size * 8, features_size * 4, 8, 4, 0),
-                    nn.ConvTranspose2d(features_size * 4, features_size * 2, 8, 2, 0),
-                    nn.ConvTranspose2d(features_size * 2, features_size * 2, 8, 2, 1),
+                    nn.ConvTranspose2d(features_size * 8, features_size * 4, 4, 2, 0),
+                    nn.ConvTranspose2d(features_size * 4, features_size * 4, 4, 2, 0),
+                    nn.ConvTranspose2d(features_size * 4, features_size * 4, 4, 2, 0),
+                    nn.ConvTranspose2d(features_size * 4, features_size * 4, 4, 2, 0),
+                    nn.ConvTranspose2d(features_size * 4, features_size * 4, 4, 1, 1),
+                    nn.ConvTranspose2d(features_size * 4, features_size * 2, 4, 1, 0)
             )],
             nn.Conv2d(features_size * 2, 3, 1, 1, 0),
             nn.Tanh()
@@ -227,31 +230,43 @@ def compute_convolution_dims(input_dims, *layers) -> tuple[int, int, int | None]
 
 
 class Discriminator(nn.Module):
-    def __init__(self, feature_size: int = 10, dropout=.1):
+    def __init__(self, feature_size: int = 10, dropout=.0, expected_input_size: tuple[int, int] = (64, 64)):
         super().__init__()
         self.dropout = dropout
-        steps = [
-            nn.Conv2d(3, feature_size, 3, stride=1),
-            nn.ReLU(),
-            nn.Conv2d(feature_size, feature_size * 2, 3, stride=1),
-            nn.ReLU(),
-            nn.Conv2d(feature_size * 2, feature_size * 2, 3, stride=1),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-            nn.Conv2d(feature_size * 2, feature_size * 4, 5, stride=1),
-            nn.ReLU(),
-            nn.Conv2d(feature_size * 4, feature_size * 4, 5, stride=1),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-            nn.Conv2d(feature_size * 4, feature_size * 8, 7, stride=1),
-            nn.MaxPool2d(2),
-            nn.ReLU(),
-        ]
 
-        h, w, c = compute_convolution_dims((64, 64), *steps)
+        def apply_batch_norm_and_relu(layer: nn.Conv2d | nn.MaxPool2d) -> nn.Module:
+            """Apply batch norm, leakyReLU and optional dropout after layer."""
+
+            if isinstance(layer, nn.MaxPool2d):
+                return layer
+
+            steps = [
+                layer,
+                # nn.BatchNorm2d(layer.out_channels),
+                nn.ReLU()
+            ]
+            if dropout:
+                steps.append(nn.Dropout(dropout))
+            return nn.Sequential(*steps)
+
+        self.steps = [
+            apply_batch_norm_and_relu(layer) for layer in (
+                nn.Conv2d(3, feature_size, 3, stride=1),
+                nn.Conv2d(feature_size, feature_size * 2, 3, stride=1),
+                nn.Conv2d(feature_size * 2, feature_size * 2, 3, stride=1),
+                nn.Conv2d(feature_size * 2, feature_size * 2, 3, stride=1),
+                nn.Conv2d(feature_size * 2, feature_size * 4, 5, stride=1),
+                nn.MaxPool2d(2),
+                nn.Conv2d(feature_size * 4, feature_size * 4, 5, stride=1),
+                nn.Conv2d(feature_size * 4, feature_size * 4, 5, stride=1),
+                nn.MaxPool2d(2),
+                nn.Conv2d(feature_size * 4, feature_size * 8, 7, stride=1),
+            )
+        ]
+        h, w, c = compute_convolution_dims(expected_input_size, *self.steps)
         linear_width = 32
         self.network = nn.Sequential(
-           *steps,
+           *self.steps,
             nn.Flatten(),
             nn.Linear(h * w * c, linear_width),
             nn.ReLU(),
@@ -264,3 +279,4 @@ class Discriminator(nn.Module):
 
 if __name__ == '__main__':
     dis = Discriminator(60)
+    print(compute_convolution_dims((64, 64), *dis.steps))

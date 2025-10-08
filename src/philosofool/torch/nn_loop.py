@@ -250,7 +250,7 @@ class GANLoop:
             self._publish('epoch_start', epoch=epoch)
             for i, (gen_loss, dis_loss) in enumerate(self.step(data)):
                 signals = self._publish('batch_end', batch=i, gen_loss=gen_loss, dis_loss=dis_loss)
-                if 'end_batch' in signals:
+                if 'end_epoch' in signals:
                     break
             signals = self._publish('epoch_end', epoch=epoch)
             if 'end_fit' in signals:

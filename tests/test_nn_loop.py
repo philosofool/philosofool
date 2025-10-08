@@ -244,9 +244,9 @@ class TestGANLoop:
     def _make_images_fakes(self, loop) -> tuple[torch.Tensor, torch.Tensor, dict, dict]:
         """Generate real and fake images for testing, returning tensors and cloned model parameters."""
 
-        images = torch.rand((8, 3, 64, 64)) / 2 + .5
+        images = torch.rand((8, 3, 64, 64)).to(loop._device) / 2 + .5
         generator = loop.generator
-        fakes = generator(torch.randn(8, generator.input_size, 1, 1))
+        fakes = generator(torch.randn(8, generator.input_size, 1, 1).to(loop._device))
         discriminator = loop.discriminator
         gen_params = {key: tensor.clone().detach() for key, tensor in generator.state_dict().items()}
         dis_params = {key: tensor.clone().detach() for key, tensor in discriminator.state_dict().items()}
@@ -337,12 +337,12 @@ class TestGANLoop:
     def test_fit__handles_end_epoch(self, gan_loop: GANLoop):
         images, fakes, _, __ = self._make_images_fakes(gan_loop)
         counter = CountEpochsCallback()
-        end_on_batch = EndOnBatchCallback(0)
+        end_on_batch = EndOnBatchCallback(1)
         dataset = TensorDataset(images)
         data_loader = DataLoader(dataset, 2)
         gan_loop.fit(data_loader, epochs=2, callbacks=[end_on_batch, counter])
-        assert counter.batches == 8
-        assert counter.epochs == 2
+        assert counter.batches == 4, "We expect two batches per epoch."
+        assert counter.epochs == 2, "We expect two epochs."
 
     def test_fit__handles_end_fit(self, gan_loop: GANLoop):
         images, fakes, _, __ = self._make_images_fakes(gan_loop)
