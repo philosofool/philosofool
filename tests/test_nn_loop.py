@@ -1,3 +1,4 @@
+from telnetlib import GA
 from tempfile import TemporaryDirectory
 import os
 import json
@@ -252,33 +253,48 @@ class TestGANLoop:
         dis_params = {key: tensor.clone().detach() for key, tensor in discriminator.state_dict().items()}
         return images, fakes, gen_params, dis_params
 
-    def test_discriminator_step(self, gan_loop):
-        images, fakes, gen_params_initial, dis_params_initial = self._make_images_fakes(gan_loop)
-        generator = gan_loop.generator
+
+    def test_discriminator_forward(self, gan_loop):
+        images, fakes, gen_params, dis_params = self._make_images_fakes(gan_loop)
         discriminator = gan_loop.discriminator
+        loss = gan_loop.discriminator_forward(images, fakes)
 
-        gan_loop.discriminator_step(images, fakes)
+        for original_weight, new_weight in zip(dis_params.values(), discriminator.state_dict().values()):
+            assert torch.all(original_weight == new_weight.detach()), """Parameters of discriminator not should update after forward pass."""
 
-        for original_weight, new_weight in zip(gen_params_initial.values(), generator.state_dict().values()):
-            assert torch.all(original_weight == new_weight), "Parameters of generator should not update."
+        loss.backward()
+        gan_loop.discriminator_optim.step()
+        for original_weight, new_weight in zip(dis_params.values(), discriminator.state_dict().values()):
+            assert torch.any(original_weight != new_weight.detach()), """The discriminator optimizer should update the discriminator after a backward pass on the loss.."""
 
-        for original_weight, new_weight in zip(dis_params_initial.values(), discriminator.state_dict().values()):
-            assert torch.any(original_weight != new_weight.detach()), """Parameters of discriminator should update."""
-
-    def test_generator_step(self, gan_loop):
-        images, fakes, gen_params_initial, dis_params_initial = self._make_images_fakes(gan_loop)
-
+    def test_generator_forward(self, gan_loop):
+        images, fakes, gen_params, dis_params = self._make_images_fakes(gan_loop)
         generator = gan_loop.generator
-        discriminator = gan_loop.discriminator
+        loss = gan_loop.generator_forward(fakes)
 
-        gan_loop.generator_step(fakes, torch.ones(8).to(gan_loop._device))
+        for original_weight, new_weight in zip(gen_params.values(), generator.state_dict().values()):
+            assert torch.all(original_weight == new_weight.detach()), """Parameters of discriminator not should update after forward pass."""
 
+        loss.backward()
+        gan_loop.generator_optim.step()
         updated = False
-        for original_weight, new_weight in zip(gen_params_initial.values(), generator.parameters()):
-            updated = updated or bool(torch.any(original_weight != new_weight))
-        assert updated, "Parameters of generator should update."
-        for original_weight, new_weight in zip(dis_params_initial.values(), discriminator.parameters()):
-            assert torch.all(original_weight == new_weight.detach()), """Parameters of discriminator should not update."""
+        for original_weight, new_weight in zip(gen_params.values(), generator.state_dict().values()):
+            updated = torch.any(original_weight != new_weight.detach()),
+        assert updated, """Parameters of discriminator should update after backward and optimizer.step pass."""
+
+    def test_step__grad_zero_each_iter(self, gan_loop):
+        images, *_ = self._make_images_fakes(gan_loop)
+        loader = DataLoader(TensorDataset(images), images.shape[0] // 2)
+        assert isinstance(gan_loop, GANLoop)
+        for _ in gan_loop.step(loader):
+            for name, param in gan_loop.discriminator.named_parameters():
+                if param.requires_grad and param.grad is not None:
+                    assert torch.allclose(param.grad, torch.zeros_like(param.grad)), f"Discriminator param {name} gradient expected to be zeros."
+
+            for name, param in gan_loop.generator.named_parameters():
+                if param.requires_grad and param.grad is not None:
+                    assert torch.allclose(param.grad, torch.zeros_like(param.grad)), f"Generator param {name} gradient expected to be zeros."
+
 
     def test_step(self, gan_loop):
         images, fakes, gen_params_initial, dis_params_initial = self._make_images_fakes(gan_loop)
@@ -291,6 +307,7 @@ class TestGANLoop:
 
         for losses in gan_loop.step(loader):
             n_iterations += 1
+
         assert n_iterations == 4, "There should be 1 step per batch and there are 4 batches."
 
         updated = False

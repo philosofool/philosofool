@@ -268,12 +268,14 @@ class GANLoop:
         return signals
 
 
-    def step(self, data: DataLoader, train_generator: bool = True, train_discriminator: bool = True) -> Iterator:
+    def step(self, data: DataLoader) -> Iterator:
         """Perform one step of generator and discriminator optimization, yielding loss on each batch."""
         self.generator.to(self._device)
         self.discriminator.to(self._device)
         self.generator.train()
         self.discriminator.train()
+
+        # NOTE: you need to zero grads appropriately during this!!!
 
         # assume loss == 1 when no training is requested.
         generator_loss = torch.tensor(1.)
@@ -285,48 +287,58 @@ class GANLoop:
                 assert isinstance(images, torch.Tensor), "Images is expected to be a tensor."
             batch_size = images.shape[0]
 
-            # use "real" label when generating genertor loss
-            gen_labels = torch.ones(batch_size).to(self._device)
-
             random_input = torch.randn(batch_size, self.generator.input_size, 1, 1).to(self._device)   # pyright: ignore [reportArgumentType]
             images = images.to(self._device)
             fakes = self.generator(random_input).to(self._device)
 
-            if train_discriminator:
-                discriminator_loss = self.discriminator_step(images, fakes)
 
-            if train_generator:
-                generator_loss = self.generator_step(fakes, gen_labels)
+            discriminator_loss = self.discriminator_forward(images, fakes)
+            generator_loss = self.generator_forward(fakes)
 
-            yield generator_loss.item(), discriminator_loss.item()
+            # compute generator loss on current disciminator.
+            # Must complete before disciminator weight updated.
+            generator_loss.backward()
 
-    def discriminator_step(self, images, fakes):
+            discriminator_loss.backward()
+            self.discriminator_optim.step()
+
+            # compute the loss against the new model as well; optimize the generator on both losses.
+            fakes = self.generator(random_input).to(self._device)
+            new_generator_loss = self.generator_forward(fakes)
+            new_generator_loss.backward()
+            self.generator_optim.step()
+
+            sum_generator_loss = generator_loss.item() + new_generator_loss.item()
+            self.discriminator_optim.zero_grad()
+            self.generator_optim.zero_grad()
+            yield sum_generator_loss, discriminator_loss.item()
+
+    def discriminator_forward(self, images: torch.Tensor, fakes: torch.Tensor) -> torch.Tensor:
         batch_size = images.shape[0]
         self.discriminator.train()
         self.generator.eval()
-        self.discriminator_optim.zero_grad()
 
-        images_pred = self.discriminator(images).to(self._device).view(-1)
-        loss_real = self.loss(images_pred, torch.ones(batch_size).to(self._device))
-        fake_pred = self.discriminator(fakes.detach()).to(self._device).view(-1)
-        loss_fake = self.loss(fake_pred, torch.zeros(batch_size).to(self._device))
+        pred_images = self.discriminator(images).to(self._device).view(-1)
+        loss_real = self.loss(pred_images, torch.ones(batch_size).to(self._device))
 
-        loss_fake.backward()
-        loss_real.backward()
+        prediction_fake = self.discriminator(fakes.detach()).to(self._device).view(-1)
+        # pred_for_generator = fake_pred.clone()
+        loss_fake = self.loss(prediction_fake, torch.zeros(batch_size).to(self._device))
+
+        # loss_fake.backward(retain_graph=True)
+        # loss_real.backward()
         loss = loss_real + loss_fake
-        self.discriminator_optim.step()
 
         return loss
 
-    def generator_step(self, fakes, gen_labels):
+    def generator_forward(self, fakes: torch.Tensor):
         self.discriminator.eval()
         self.generator.train()
-        self.generator_optim.zero_grad()
-        discriminator_pred = self.discriminator(fakes)
-        generator_loss = self.loss(discriminator_pred.view(-1), gen_labels)
-        generator_loss.backward()
-        self.generator_optim.step()
-        return generator_loss
+        predictions = self.discriminator(fakes).to(self._device).view(-1)
+        gen_labels = torch.ones_like(predictions).to(self._device)
+        loss = self.loss(predictions, gen_labels)
+
+        return loss
 
     def save_checkpoint(self, path: str, meta: dict | None):
         checkpoint = {
