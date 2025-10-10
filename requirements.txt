@@ -5,3 +5,4 @@ pytest
 matplotlib
 scikit-learn
 seaborn
+torch-geometric
