@@ -29,48 +29,6 @@ def summarize_test(correct: float, loss: float) -> str:
     return f"Test Error: \n Accuracy: {(100 * correct):>0.1f}%, Avg loss: {loss:>8f} \n"
 
 
-class JSONLoggerCallback:
-    """Save training results to a file."""
-    def __init__(self, path):
-        self.path = path
-        try:
-            with open(path, 'r') as f:
-                logs = json.loads(f.read())
-        except FileNotFoundError:
-            self._make_logs_dir(path)
-            logs = {'train_loss': [], 'test_loss': [], 'test_accuracy': []}
-        self.logs = logs
-        self._batch_losses = []
-
-    def _make_logs_dir(self, path: str):
-        directory, filename = os.path.split(path)
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-
-    def on_fit_start(self, loop, train_data: DataLoader, test_data: DataLoader, **kwargs):
-        self._data_size = len(test_data.dataset)    # pyright: ignore [reportArgumentType]
-
-    def on_batch_end(self, loop, **kwargs) -> None:
-        # collect loss on each batch.
-        self._batch_losses.append(kwargs['loss'])
-
-    def on_epoch_end(self, loop, correct, test_loss, **kwargs) -> None:
-        self.logs['test_accuracy'].append(correct / self._data_size)
-        self.logs['test_loss'].append(test_loss)
-        self._update_training_loss()
-
-    def on_fit_end(self, loop, **kwargs):
-        with open(self.path, 'w') as f:
-            f.write(json.dumps(self.logs))
-
-    def _update_training_loss(self):
-        # append mean loss from batch_losses
-        if self._batch_losses:
-            mean = np.mean(self._batch_losses)
-            self.logs['train_loss'].append(mean)
-        self._batch_losses = []
-
-
 class TrainingLoop():
     def __init__(self, model: nn.Module, optimizer: Optimizer, loss: Loss):
         self.model = model
@@ -419,3 +377,44 @@ class HistoryCallback:
             self.history[key].append(float(np.mean(values)))
         for key, value in kwargs.items():
             self.history[key].append(value)
+
+class JSONLoggerCallback:
+    """Save training results to a file."""
+    def __init__(self, path):
+        self.path = path
+        try:
+            with open(path, 'r') as f:
+                logs = json.loads(f.read())
+        except FileNotFoundError:
+            self._make_logs_dir(path)
+            logs = {'train_loss': [], 'test_loss': [], 'test_accuracy': []}
+        self.logs = logs
+        self._batch_losses = []
+
+    def _make_logs_dir(self, path: str):
+        directory, filename = os.path.split(path)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+    def on_fit_start(self, loop, train_data: DataLoader, test_data: DataLoader, **kwargs):
+        self._data_size = len(test_data.dataset)    # pyright: ignore [reportArgumentType]
+
+    def on_batch_end(self, loop, **kwargs) -> None:
+        # collect loss on each batch.
+        self._batch_losses.append(kwargs['loss'])
+
+    def on_epoch_end(self, loop, correct, test_loss, **kwargs) -> None:
+        self.logs['test_accuracy'].append(correct / self._data_size)
+        self.logs['test_loss'].append(test_loss)
+        self._update_training_loss()
+
+    def on_fit_end(self, loop, **kwargs):
+        with open(self.path, 'w') as f:
+            f.write(json.dumps(self.logs))
+
+    def _update_training_loss(self):
+        # append mean loss from batch_losses
+        if self._batch_losses:
+            mean = np.mean(self._batch_losses)
+            self.logs['train_loss'].append(mean)
+        self._batch_losses = []
