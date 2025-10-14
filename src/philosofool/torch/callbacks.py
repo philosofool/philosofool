@@ -5,8 +5,6 @@ import os
 import numpy as np
 from typing import TYPE_CHECKING
 
-
-
 import torch
 from torch.utils.data import DataLoader
 from torchvision.utils import make_grid
@@ -17,9 +15,39 @@ if TYPE_CHECKING:
     from philosofool.torch.nn_loop import GANLoop
 
 
+class EarlyStoppingCallabck:
+    def __init__(self, patience: int, monitor: str = 'test_loss'):
+        self.patience = patience
+        if monitor not in {'val_loss', 'test_loss'}:
+            raise NotImplementedError("EarlyStopping currently only suppots stopping on validation loss.")
+        self.monitor = monitor
+        self._loops_since_improvement = 0
+        self._best = None
+
+    def on_batch_end(self, loop, batch, loss, **kwargs):
+        ...
+
+    def on_epoch_end(self, loop, test_loss, **kwargs):
+        if self.monitor in {'test_loss', 'val_loss'}:
+            return self._determine_improvement(loop, test_loss)
+        raise NotImplementedError("EarlyStopping is only configured to monitor test_loss or val_loss.")
+
+    def _determine_improvement(self, loop, target_metric):
+        if self._best is None:
+            self._best = target_metric
+            return
+        if target_metric < self._best:
+            self._best = target_metric
+            self._loops_since_improvement = 0
+            return
+        self._loops_since_improvement += 1
+        if self._loops_since_improvement >= self.patience:
+            return 'end_fit'
+
 
 class EndOnBatchCallback:
     """After a number of batches, proceed to the next epoch."""
+
     def __init__(self, last_batch: int):
         self.last_batch = last_batch
 
@@ -29,7 +57,12 @@ class EndOnBatchCallback:
 
 
 class SnapshotCallback:
-    """Collect snapshots on an interval."""
+    """Collect snapshots on an interval.
+
+    With generative models, this collects the outputs on batches and epochs
+    to assess the quality of generated images.
+    """
+
     def __init__(self, n_images: int, interval: int):
         self.interval = interval
         self.n_images = n_images
@@ -56,6 +89,8 @@ class SnapshotCallback:
 
 
 class VerboseTrainingCallback:
+    """Provide training metrics to standard ouput during training."""
+
     def __init__(self, batch_interval: int):
         self.batch_interval = batch_interval
 
@@ -72,6 +107,8 @@ class VerboseTrainingCallback:
 
 
 class HistoryCallback:
+    """Create a history of per-epoch results."""
+
     def __init__(self):
         self.history = defaultdict(list)
         self._batch_history = defaultdict(list) # list-defaultdict is created each epoch start.
@@ -93,6 +130,7 @@ class HistoryCallback:
 
 class JSONLoggerCallback:
     """Save training results to a file."""
+
     def __init__(self, path):
         self.path = path
         try:

@@ -3,7 +3,9 @@ import torch
 from torch import nn
 import os
 import json
-from philosofool.torch.callbacks import EndOnBatchCallback, HistoryCallback, JSONLoggerCallback, SnapshotCallback, VerboseTrainingCallback
+from philosofool.torch.callbacks import (
+    EarlyStoppingCallabck, EndOnBatchCallback, HistoryCallback, JSONLoggerCallback, SnapshotCallback, VerboseTrainingCallback
+)
 from philosofool.torch.nn_loop import (
     GANLoop,
     Publisher
@@ -83,3 +85,42 @@ def test_vebose_training_callback():
     callback.on_batch_end(None, batch=1)
     callback.on_batch_end(None, batch=2, gen_loss=.1, dis_loss=.2)
     callback.on_epoch_start(None, epoch=12, unused_argument='ignored')
+
+class TestEarlyStopping:
+    def test_emits_end_fit(self):
+        """Assure stops after number of expected turns."""
+        callback = EarlyStoppingCallabck(patience=2, monitor='val_loss')
+        publisher = Publisher()
+        publisher.subscribe('events', callback)
+
+
+        loop = None
+        y = torch.tensor([1, 1])
+        y_hat = torch.tensor([.5, .5])
+        loss = torch.nn.functional.nll_loss(y_hat, y).mean().item()
+
+        for i in range(2):
+            signals = publisher.publish('events', 'epoch_end', loop, test_loss=loss)
+            assert signals == []
+
+        signals = publisher.publish('events', 'epoch_end', loop, test_loss=loss)
+        assert signals == ['end_fit']
+
+    def test_resets_after_improvement(self):
+        callback = EarlyStoppingCallabck(patience=1, monitor='val_loss')
+        publisher = Publisher()
+        publisher.subscribe('events', callback)
+
+
+        loop = None
+        y = torch.tensor([1, 1])
+        y_hat = torch.tensor([.5, .5])
+        loss = torch.nn.functional.nll_loss(y_hat, y).mean().item()
+
+        publisher.publish('events', 'epoch_end', loop, test_loss=loss)
+        signals = publisher.publish('events', 'epoch_end', loop, test_loss=loss - 1)
+        assert signals == []
+
+        publisher.publish('events', 'epoch_end', loop, test_loss=loss)
+        signals = publisher.publish('events', 'epoch_end', loop, test_loss=loss)
+        assert signals == ['end_fit']
