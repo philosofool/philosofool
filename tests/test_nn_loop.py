@@ -35,7 +35,7 @@ class CountEpochsCallback:
 
 class EndAfterOneEpoch:
     def on_epoch_end(self, loop, **kwargs):
-        return 'end_fit'
+        loop.publish(f"{loop.name}_control", 'end_fit')
 
 def test_pub_sub(capsys):
 
@@ -59,25 +59,6 @@ def test_pub_sub(capsys):
         publisher.publish('test', 'test_message', y=False)
 
 
-class SimpleModel(nn.Module):
-    """A linear model that takes three inputs and returns two outputs."""
-    def __init__(self):
-        super().__init__()
-        self.linear = nn.Linear(3, 2)
-
-    def forward(self, x):
-        logits = self.linear(x)
-        return logits
-
-
-@pytest.fixture
-def training_loop() -> TrainingLoop:
-    model = SimpleModel()
-    optimizer = torch.optim.SGD(model.parameters(), lr=.5)
-    loss = nn.CrossEntropyLoss()
-
-    training_loop = TrainingLoop(model, optimizer, loss)
-    return training_loop
 
 class TestTrainingLoop:
     def test_fit__callbacks(self, training_loop, data_loader):
@@ -106,10 +87,11 @@ class TestTrainingLoop:
                 self.messages.append('batch_end')
 
             def on_epoch_end(self, loop, **kwargs):
-                if 'correct' in kwargs and 'test_loss' in kwargs:
-                    self.messages.append('epoch_end')
-                else:
-                    self.messages.append('missing kwarg test_loss or correct')
+                for expected_key in ['test_loss', 'y_hat', 'y_true']:
+                    if expected_key not in kwargs:
+                        self.messages.append(f"missing keyword {expected_key}.")
+                        return
+                self.messages.append('epoch_end')
 
             def on_fit_end(self, loop, **kwargs):
                 self.messages.append('fit_end')
@@ -123,11 +105,12 @@ class TestTrainingLoop:
 
 
     def test_test(self, training_loop, data_loader):
-        correct, loss_value = training_loop.test(data_loader)
-        assert training_loop.model.training == False
-        assert type(correct) == float
-        assert type(loss_value) == float
-
+        loss_value, y_hat, y = training_loop.test(data_loader)
+        assert training_loop.model.training == False, "The model should be set to training."
+        assert y_hat.requires_grad == False, "The results tensors should be deteched."
+        assert y.requires_grad == False, "The results tensors should be deteched."
+        assert y_hat.shape == y.shape, "These should be the same shape."
+        assert torch.all(y == torch.tensor([[1., 0.], [0., 1.]])), "y values should match labels in data."
 
     def test_fit(self, data_loader, training_loop):
 
@@ -178,7 +161,10 @@ class TestTrainingLoop:
             assert y_hat.shape == y_true.shape, "The shape of the predictions and the labels should be the same."
             assert y_hat.requires_grad == False
             assert torch.all((y_true == 1) + (y_true == 0)), "The values in y_true should be 1 or 0."
+
+            # update to test loss on next iteration.
             last_loss = loss_value
+
 
 
 @pytest.fixture
@@ -234,7 +220,7 @@ class TestGANLoop:
         for original_weight, new_weight in zip(dis_params_initial.values(), discriminator.parameters()):
             assert torch.all(original_weight == new_weight.detach()), """Parameters of discriminator should not update."""
 
-    def test_step(self, gan_loop):
+    def test_train(self, gan_loop: GANLoop):
         images, fakes, gen_params_initial, dis_params_initial = self._make_images_fakes(gan_loop)
 
         generator = gan_loop.generator
@@ -243,7 +229,7 @@ class TestGANLoop:
         loader = DataLoader(TensorDataset(images), images.shape[0] // 4)
         n_iterations = 0
 
-        for losses in gan_loop.step(loader):
+        for losses in gan_loop.train(loader):
             n_iterations += 1
         assert n_iterations == 4, "There should be 1 step per batch and there are 4 batches."
 
@@ -295,7 +281,7 @@ class TestGANLoop:
         dataset = TensorDataset(images)
         data_loader = DataLoader(dataset, 2)
         gan_loop.fit(data_loader, epochs=2, callbacks=[end_on_batch, counter])
-        assert counter.batches == 8
+        assert counter.batches == 2
         assert counter.epochs == 2
 
     def test_fit__handles_end_fit(self, gan_loop: GANLoop):

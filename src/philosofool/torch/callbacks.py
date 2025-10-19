@@ -43,7 +43,7 @@ class EarlyStoppingCallabck:
             return
         self._loops_since_improvement += 1
         if self._loops_since_improvement >= self.patience:
-            return 'end_fit'
+            loop.publish(f"{loop.name}_control", 'end_fit')
 
 
 class EndOnBatchCallback:
@@ -53,8 +53,7 @@ class EndOnBatchCallback:
         self.last_batch = last_batch
 
     def on_batch_end(self, loop, batch: int, **kwargs):
-        if batch == self.last_batch:
-            return 'end_epoch'
+        loop.publish(f"{loop.name}_control", 'end_epoch')
 
 
 class SnapshotCallback:
