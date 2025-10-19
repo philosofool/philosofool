@@ -43,20 +43,31 @@ class TrainingLoop():
         signals = self._publisher.publish('training_loop', message, self, **kwargs)
         return signals
 
-    def test(self, data: DataLoader) -> tuple:
+    def test(self, data: DataLoader) -> tuple[float, torch.Tensor, torch.Tensor]:
+        """Return loss, y_hat and y.
+
+        The tensors are detached.
+        """
         size = len(data.dataset)  # pyright: ignore [reportArgumentType]
         num_batches = len(data)
         self.model.eval()
-        test_loss, correct = 0., 0.
+        test_loss = 0.
+        y_values, y_hat_values = [], []
+        n_samples = 0
         with torch.no_grad():
             for X, y in data:
                 X, y = X.to(self._device), y.to(self._device)
-                pred = self.model(X)
-                test_loss += self.loss(pred, y).item()
-                correct += (pred.argmax(1) == y).type(torch.float).sum().item()
-        test_loss /= num_batches
-        correct /= size
-        return correct, test_loss
+                y_hat = self.model(X)
+                loss = self.loss(y_hat, y).item()
+                n_samples += y.shape[0]
+                test_loss += loss * y.shape[0]
+                y_values.append(y)
+                y_hat_values.append(y_hat)
+                # correct += (pred.argmax(1) == y).type(torch.float).sum().item()
+        test_loss = test_loss / n_samples
+        y_hat = torch.concat(y_hat_values)
+        y = torch.concat(y_values)
+        return test_loss, y_hat, y
 
     def train(self, data: DataLoader) -> Iterator:
         size = len(data.dataset)  # pyright: ignore [reportArgumentType]
@@ -81,8 +92,8 @@ class TrainingLoop():
                 signals = self._publish('batch_end', batch=batch, loss=loss, y_hat=y_hat, y_true=y)
                 if 'end_epoch' in signals:
                     break
-            test_correct, test_loss = self.test(test_data)
-            signals = self._publish('epoch_end', correct=test_correct, test_loss=test_loss)
+            test_loss, y_hat_val, y_val = self.test(test_data)
+            signals = self._publish('epoch_end', test_loss=test_loss, y_hat=y_hat_val, y_true=y_val)
             if 'end_fit' in signals:
                 break
         self._epochs += epochs

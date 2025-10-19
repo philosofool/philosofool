@@ -106,10 +106,11 @@ class TestTrainingLoop:
                 self.messages.append('batch_end')
 
             def on_epoch_end(self, loop, **kwargs):
-                if 'correct' in kwargs and 'test_loss' in kwargs:
-                    self.messages.append('epoch_end')
-                else:
-                    self.messages.append('missing kwarg test_loss or correct')
+                for expected_key in ['test_loss', 'y_hat', 'y_true']:
+                    if expected_key not in kwargs:
+                        self.messages.append(f"missing keyword {expected_key}.")
+                        return
+                self.messages.append('epoch_end')
 
             def on_fit_end(self, loop, **kwargs):
                 self.messages.append('fit_end')
@@ -123,11 +124,12 @@ class TestTrainingLoop:
 
 
     def test_test(self, training_loop, data_loader):
-        correct, loss_value = training_loop.test(data_loader)
-        assert training_loop.model.training == False
-        assert type(correct) == float
-        assert type(loss_value) == float
-
+        loss_value, y_hat, y = training_loop.test(data_loader)
+        assert training_loop.model.training == False, "The model should be set to training."
+        assert y_hat.requires_grad == False, "The results tensors should be deteched."
+        assert y.requires_grad == False, "The results tensors should be deteched."
+        assert y_hat.shape == y.shape, "These should be the same shape."
+        assert torch.all(y == torch.tensor([[1., 0.], [0., 1.]])), "y values should match labels in data."
 
     def test_fit(self, data_loader, training_loop):
 
@@ -178,6 +180,8 @@ class TestTrainingLoop:
             assert y_hat.shape == y_true.shape, "The shape of the predictions and the labels should be the same."
             assert y_hat.requires_grad == False
             assert torch.all((y_true == 1) + (y_true == 0)), "The values in y_true should be 1 or 0."
+
+            # update to test loss on next iteration.
             last_loss = loss_value
 
 
