@@ -220,7 +220,7 @@ class TestGANLoop:
         for original_weight, new_weight in zip(dis_params_initial.values(), discriminator.parameters()):
             assert torch.all(original_weight == new_weight.detach()), """Parameters of discriminator should not update."""
 
-    def test_step(self, gan_loop):
+    def test_train(self, gan_loop: GANLoop):
         images, fakes, gen_params_initial, dis_params_initial = self._make_images_fakes(gan_loop)
 
         generator = gan_loop.generator
@@ -229,7 +229,7 @@ class TestGANLoop:
         loader = DataLoader(TensorDataset(images), images.shape[0] // 4)
         n_iterations = 0
 
-        for losses in gan_loop.step(loader):
+        for losses in gan_loop.train(loader):
             n_iterations += 1
         assert n_iterations == 4, "There should be 1 step per batch and there are 4 batches."
 
@@ -281,7 +281,7 @@ class TestGANLoop:
         dataset = TensorDataset(images)
         data_loader = DataLoader(dataset, 2)
         gan_loop.fit(data_loader, epochs=2, callbacks=[end_on_batch, counter])
-        assert counter.batches == 8
+        assert counter.batches == 2
         assert counter.epochs == 2
 
     def test_fit__handles_end_fit(self, gan_loop: GANLoop):

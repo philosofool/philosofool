@@ -159,6 +159,7 @@ class GANLoop:
         self.discriminator = discriminator
         self.generator_optim = generator_optimizer
         self.discriminator_optim = discriminator_optimizer
+        self.name = 'gan_loop'
         self.loss = loss
         self._device = torch.accelerator.current_accelerator().type if torch.accelerator.is_available() else "cpu"  # pyright: ignore [reportOptionalMemberAccess]
         self._history = HistoryCallback()
@@ -168,9 +169,17 @@ class GANLoop:
         self.generator.to(self._device)
         self.discriminator.to(self._device)
 
+        self._publisher.subscribe("gan_loop_control", self)
+
     @property
     def history(self):
         return self._history.history
+
+    def on_end_epoch(self, publisher, end_fit=True):
+        self._end_epoch = True
+
+    def on_end_fit(self, publisher, end_fit=True):
+        self._end_fit = True
 
     def fit(self, data: DataLoader, epochs: int = 1, callbacks: list = []):
         """
@@ -217,30 +226,30 @@ class GANLoop:
         """
         gen_loss, dis_loss = None, None
         self.add_callbacks(*callbacks)
-        self._publish('fit_start', data=data)
+        self.publish(self.name, 'fit_start', data=data)
+        self._end_epoch = False
+        self._end_fit = False
         for epoch in range(epochs):
-            self._publish('epoch_start', epoch=epoch)
-            for i, (gen_loss, dis_loss) in enumerate(self.step(data)):
-                signals = self._publish('batch_end', batch=i, gen_loss=gen_loss, dis_loss=dis_loss)
-                if 'end_batch' in signals:
+            self.publish(self.name, 'epoch_start', epoch=epoch)
+            for i, (gen_loss, dis_loss) in enumerate(self.train(data)):
+                self.publish(self.name, 'batch_end', batch=i, gen_loss=gen_loss, dis_loss=dis_loss)
+                if self._end_epoch:
                     break
-            signals = self._publish('epoch_end', epoch=epoch)
-            if 'end_fit' in signals:
+            signals = self.publish(self.name, 'epoch_end', epoch=epoch)
+            if self._end_fit:
                 break
-        self._publish('fit_end')
+        self.publish(self.name, 'fit_end')
 
     def add_callbacks(self, *callbacks):
         for callback in callbacks:
             self._publisher.subscribe('gan_loop', callback)
 
-    def _publish(self, message, **kwargs) -> list:
-        if self._publisher is None:
-            return []
-        signals = self._publisher.publish('gan_loop', message, self, **kwargs)
-        return signals
+    def publish(self, channel, message, **kwargs) -> list:
+        self._publisher.publish(channel, message, self, **kwargs)
+        return None
 
 
-    def step(self, data: DataLoader, train_generator: bool = True, train_discriminator: bool = True) -> Iterator:
+    def train(self, data: DataLoader, train_generator: bool = True, train_discriminator: bool = True) -> Iterator:
         """Perform one step of generator and discriminator optimization, yielding loss on each batch."""
         self.generator.to(self._device)
         self.discriminator.to(self._device)
