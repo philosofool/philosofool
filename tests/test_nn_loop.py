@@ -35,7 +35,7 @@ class CountEpochsCallback:
 
 class EndAfterOneEpoch:
     def on_epoch_end(self, loop, **kwargs):
-        return 'end_fit'
+        loop.publish(f"{loop.name}_control", 'end_fit')
 
 def test_pub_sub(capsys):
 
@@ -59,25 +59,6 @@ def test_pub_sub(capsys):
         publisher.publish('test', 'test_message', y=False)
 
 
-class SimpleModel(nn.Module):
-    """A linear model that takes three inputs and returns two outputs."""
-    def __init__(self):
-        super().__init__()
-        self.linear = nn.Linear(3, 2)
-
-    def forward(self, x):
-        logits = self.linear(x)
-        return logits
-
-
-@pytest.fixture
-def training_loop() -> TrainingLoop:
-    model = SimpleModel()
-    optimizer = torch.optim.SGD(model.parameters(), lr=.5)
-    loss = nn.CrossEntropyLoss()
-
-    training_loop = TrainingLoop(model, optimizer, loss)
-    return training_loop
 
 class TestTrainingLoop:
     def test_fit__callbacks(self, training_loop, data_loader):
@@ -183,6 +164,7 @@ class TestTrainingLoop:
 
             # update to test loss on next iteration.
             last_loss = loss_value
+
 
 
 @pytest.fixture

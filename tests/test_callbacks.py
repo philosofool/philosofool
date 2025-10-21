@@ -12,6 +12,18 @@ from philosofool.torch.nn_loop import (
 )
 from philosofool.torch.nn_models import Discriminator, Generator
 
+class MessagesListener:
+    """Register when a message is recieved."""
+    def __init__(self):
+        self.messages = {}
+
+    def __getattr__(self, value):
+        if isinstance(value, str) and value.startswith('on_'):
+            self.messages[value] = True
+        return self.handler
+
+    def handler(self, *args, **kwargs):
+        return None
 
 def test_history_callback():
     publisher = Publisher()
@@ -47,11 +59,14 @@ def test_json_logging_callback(data_loader):
     # assert logs['test_accuracy'] == [1 / 2]  # THIS NEEDS IMPLEMENTING
 
 
-def test_end_on_batch():
-    end_on_batch = EndOnBatchCallback(2)
-    assert end_on_batch.on_batch_end(None, batch=2, gen_loss=.1) == 'end_epoch', "Should emit 'end_epoch' signal, gen_loss (unused) is accepeccted."
-    assert end_on_batch.on_batch_end(None, batch=1) is None, "Should not end on batch one. Missing gen_loss is accepted."
+def test_end_on_batch(training_loop):
 
+    listener = MessagesListener()
+    training_loop._publisher.subscribe('training_loop_control', listener)
+    end_on_batch = EndOnBatchCallback(2)
+    assert end_on_batch.on_batch_end(training_loop, batch=2, gen_loss=.1) is None, "Emitting signals is deprecated."
+    assert end_on_batch.on_batch_end(training_loop, batch=1) is None, "Should not end on batch one. Missing gen_loss is accepted."
+    assert listener.messages.get('on_end_epoch')
 
 def test_snapshot_callback():
     generator = Generator(10, 10)
@@ -89,40 +104,54 @@ def test_vebose_training_callback():
     callback.on_epoch_start(None, epoch=12, unused_argument='ignored')
 
 class TestEarlyStopping:
-    def test_emits_end_fit(self):
+    def test_emits_end_fit(self, training_loop):
         """Assure stops after number of expected turns."""
         callback = EarlyStoppingCallabck(patience=2, monitor='val_loss')
-        publisher = Publisher()
-        publisher.subscribe('events', callback)
+        training_loop.add_callbacks(callback)
+        # publisher = Publisher()
 
+        class MessagesListener:
+            def __init__(self):
+                self.messages = {}
 
-        loop = None
+            def __getattr__(self, value):
+                if isinstance(value, str) and value.startswith('on_'):
+                    self.messages[value] = True
+                return self.handler
+
+            def handler(self, *args, **kwargs):
+                return None
+
+        listener = MessagesListener()
+        training_loop._publisher.subscribe('training_loop_control', listener)
+
         y = torch.tensor([1, 1])
         y_hat = torch.tensor([.5, .5])
         loss = torch.nn.functional.nll_loss(y_hat, y).mean().item()
 
         for i in range(2):
-            signals = publisher.publish('events', 'epoch_end', loop, test_loss=loss)
-            assert signals == []
+            signals = training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss)
+            assert signals is None
+        assert listener.messages.get('on_end_fit') is None
+        signals = training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss)
+        assert not signals, "Emitting signals is deprecated."
+        assert listener.messages.get('on_end_fit')
 
-        signals = publisher.publish('events', 'epoch_end', loop, test_loss=loss)
-        assert signals == ['end_fit']
-
-    def test_resets_after_improvement(self):
+    def test_resets_after_improvement(self, training_loop):
         callback = EarlyStoppingCallabck(patience=1, monitor='val_loss')
-        publisher = Publisher()
-        publisher.subscribe('events', callback)
+        training_loop.add_callbacks(callback)
 
+        listener = MessagesListener()
+        training_loop._publisher.subscribe('training_loop_control', listener)
 
-        loop = None
         y = torch.tensor([1, 1])
         y_hat = torch.tensor([.5, .5])
         loss = torch.nn.functional.nll_loss(y_hat, y).mean().item()
 
-        publisher.publish('events', 'epoch_end', loop, test_loss=loss)
-        signals = publisher.publish('events', 'epoch_end', loop, test_loss=loss - 1)
-        assert signals == []
+        training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss)
+        training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss - 1)
+        assert listener.messages.get('on_end_fit') is None
 
-        publisher.publish('events', 'epoch_end', loop, test_loss=loss)
-        signals = publisher.publish('events', 'epoch_end', loop, test_loss=loss)
-        assert signals == ['end_fit']
+        training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss)
+        training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss)
+        assert listener.messages.get('on_end_fit')

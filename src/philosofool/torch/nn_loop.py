@@ -16,10 +16,11 @@ if TYPE_CHECKING:
 
 
 class TrainingLoop():
-    def __init__(self, model: nn.Module, optimizer: Optimizer, loss: Loss):
+    def __init__(self, model: nn.Module, optimizer: Optimizer, loss: Loss, name='training_loop'):
         self.model = model
         self.optimizer = optimizer
         self.loss = loss
+        self.name = name
         self._epochs = 0
         self._device = accelerator.current_accelerator().type if accelerator.is_available() else "cpu"    # pyright: ignore [reportOptionalMemberAccess]
         self._history = HistoryCallback()
@@ -29,19 +30,33 @@ class TrainingLoop():
 
         self.model.to(self._device)
 
+        self._end_epoch = False
+        self._end_fit = False
+        self._publisher.subscribe(f'{self.name}_control', self)
+
     @property
     def history(self) -> dict:
         return self._history.history
 
     def add_callbacks(self, *callbacks):
         for callback in callbacks:
-            self._publisher.subscribe('training_loop', callback)
+            self._publisher.subscribe(self.name, callback)
 
-    def _publish(self, message, **kwargs) -> list:
-        if self._publisher is None:
-            return []
-        signals = self._publisher.publish('training_loop', message, self, **kwargs)
-        return signals
+    def publish(self, channel, message, **kwargs) -> list:
+        self._publisher.publish(channel, message, self, **kwargs)
+
+    def _emit_to_callbacks(self, message, **kwargs) -> list:
+        """Publish to self.name.
+
+        This is a private helper to make the steps in fit read a little more clearly.
+        """
+        self.publish(self.name, message, publisher=self, **kwargs)
+
+    def on_end_epoch(self, publisher, *, end_epoch=True, **kwargs):
+        self._end_epoch = end_epoch
+
+    def on_end_fit(self, publisher, *, end_fit=True, **kwargs):
+        self._end_fit = end_fit
 
     def test(self, data: DataLoader) -> tuple[float, torch.Tensor, torch.Tensor]:
         """Return loss, y_hat and y.
@@ -85,19 +100,21 @@ class TrainingLoop():
     def fit(self, train_data: DataLoader, test_data: DataLoader, epochs=1, callbacks: list | None = None) -> None:
         if callbacks:
             self.add_callbacks(*callbacks)
-        self._publish('fit_start', train_data=train_data, test_data=test_data)
+        self._emit_to_callbacks('fit_start', train_data=train_data, test_data=test_data)
+        self._end_epoch = False
+        self._end_fit = False
         for epoch in range(self._epochs, self._epochs + epochs):
-            self._publish('epoch_start', epoch=epoch)
+            self._emit_to_callbacks('epoch_start', epoch=epoch)
             for (batch, loss, y_hat, y) in self.train(train_data):
-                signals = self._publish('batch_end', batch=batch, loss=loss, y_hat=y_hat, y_true=y)
-                if 'end_epoch' in signals:
+                self._emit_to_callbacks('batch_end', batch=batch, loss=loss, y_hat=y_hat, y_true=y)
+                if self._end_epoch:
                     break
             test_loss, y_hat_val, y_val = self.test(test_data)
-            signals = self._publish('epoch_end', test_loss=test_loss, y_hat=y_hat_val, y_true=y_val)
-            if 'end_fit' in signals:
+            self._emit_to_callbacks('epoch_end', test_loss=test_loss, y_hat=y_hat_val, y_true=y_val)
+            if self._end_fit:
                 break
         self._epochs += epochs
-        self._publish('fit_end')
+        self._emit_to_callbacks('fit_end')
 
 class Publisher:
     """A publisher-subscriber implementation.
