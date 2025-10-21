@@ -1,5 +1,6 @@
 from __future__ import annotations
 from collections import defaultdict
+from collections.abc import Iterable
 import json
 import os
 import numpy as np
@@ -109,7 +110,9 @@ class VerboseTrainingCallback:
 class HistoryCallback:
     """Create a history of per-epoch results."""
 
-    def __init__(self):
+    def __init__(self, batch_end: Iterable[str] = tuple(), epoch_end: Iterable[str] = tuple()):
+        self.batch_end = batch_end
+        self.epoch_end = epoch_end
         self.history = defaultdict(list)
         self._batch_history = defaultdict(list) # list-defaultdict is created each epoch start.
 
@@ -117,14 +120,16 @@ class HistoryCallback:
         self._batch_history = defaultdict(list)
 
     def on_batch_end(self, loop, batch: int, **kwargs):
-        for key, value in kwargs.items():
+        for key in self.batch_end:
+            value = kwargs.get(key)
             self._batch_history[key].append(value)
         return None
 
     def on_epoch_end(self, loop, **kwargs):
         for key, values in self._batch_history.items():
             self.history[key].append(float(np.mean(values)))
-        for key, value in kwargs.items():
+        for key in self.epoch_end:
+            value = kwargs.get(key)
             self.history[key].append(value)
 
 
@@ -154,8 +159,9 @@ class JSONLoggerCallback:
         # collect loss on each batch.
         self._batch_losses.append(kwargs['loss'])
 
-    def on_epoch_end(self, loop, correct, test_loss, **kwargs) -> None:
-        self.logs['test_accuracy'].append(correct / self._data_size)
+    def on_epoch_end(self, loop, test_loss, **kwargs) -> None:
+        # TODO: implement this on metrics.
+        # self.logs['test_accuracy'].append(correct / self._data_size)
         self.logs['test_loss'].append(test_loss)
         self._update_training_loss()
 
