@@ -5,33 +5,54 @@ import json
 import os
 import numpy as np
 from typing import TYPE_CHECKING
+import warnings
 
 import torch
 from torch.utils.data import DataLoader
 from torchvision.utils import make_grid
 
 from philosofool.torch.visualize import show_image
+from philosofool.torch.metrics import Metric
 
 if TYPE_CHECKING:
-    from philosofool.torch.nn_loop import GANLoop
+    from philosofool.torch.nn_loop import TrainingLoop
+    from philosofool.torch.experimental.nn_loop import GANLoop
 
 
 class EarlyStoppingCallabck:
-    def __init__(self, patience: int, monitor: str = 'test_loss'):
+    """Handle early stopping of training loops."""
+
+    def __init__(self, patience: int, monitor: str = 'test_loss', refresh_on_new_fit: bool = True):
+        if monitor == 'test_loss':
+            warnings.warn("The default value for monitor will switch to 'loss_val' in a future version.")
         self.patience = patience
-        if monitor not in {'val_loss', 'test_loss'}:
+        if monitor not in {'loss_val', 'test_loss'}:
             raise NotImplementedError("EarlyStopping currently only suppots stopping on validation loss.")
         self.monitor = monitor
         self._loops_since_improvement = 0
         self._best = None
+        self.refresh_on_new_fit = refresh_on_new_fit
+
+    def on_fit_start(self, loop, **kwargs):
+        """Refresh so it takes patiences iterations before stopping the loop."""
+        if self.refresh_on_new_fit:
+            self._loops_since_improvement = 0
+            self._best = None
 
     def on_batch_end(self, loop, batch, loss, **kwargs):
         ...
 
-    def on_epoch_end(self, loop, test_loss, **kwargs):
-        if self.monitor in {'test_loss', 'val_loss'}:
-            return self._determine_improvement(loop, test_loss)
-        raise NotImplementedError("EarlyStopping is only configured to monitor test_loss or val_loss.")
+    def on_epoch_end(self, loop, **kwargs):
+        """Emit 'end_fit' if there has been no improvement."""
+        test_loss = kwargs.get(self.monitor)
+
+        if test_loss is None:
+            raise KeyError("Monitored metric not in arguments.")
+        self._determine_improvement(loop, test_loss)
+        if self._loops_since_improvement >= self.patience:
+            loop.publish(f"{loop.name}_control", 'end_fit')
+
+        # TODO: implement early stoping on metrics events.
 
     def _determine_improvement(self, loop, target_metric):
         if self._best is None:
@@ -42,8 +63,6 @@ class EarlyStoppingCallabck:
             self._loops_since_improvement = 0
             return
         self._loops_since_improvement += 1
-        if self._loops_since_improvement >= self.patience:
-            loop.publish(f"{loop.name}_control", 'end_fit')
 
 
 class EndOnBatchCallback:
@@ -91,6 +110,7 @@ class SnapshotCallback:
 class VerboseTrainingCallback:
     """Provide training metrics to standard ouput during training."""
 
+    # TODO: configure this with MetricsCallback to work with on_metrics.
     def __init__(self, batch_interval: int):
         self.batch_interval = batch_interval
 
@@ -109,9 +129,7 @@ class VerboseTrainingCallback:
 class HistoryCallback:
     """Create a history of per-epoch results."""
 
-    def __init__(self, batch_end: Iterable[str] = tuple(), epoch_end: Iterable[str] = tuple()):
-        self.batch_end = batch_end
-        self.epoch_end = epoch_end
+    def __init__(self):
         self.history = defaultdict(list)
         self._batch_history = defaultdict(list) # list-defaultdict is created each epoch start.
 
@@ -119,23 +137,40 @@ class HistoryCallback:
         self._batch_history = defaultdict(list)
 
     def on_batch_end(self, loop, batch: int, **kwargs):
-        for key in self.batch_end:
-            value = kwargs.get(key)
+        for key, value in kwargs.items():
+            if 'loss' not in key:
+                continue
+            if key != 'loss':
+                warnings.warn("Passing losses by names other than 'loss', e.g, by 'train_loss' is deprecated.")
             self._batch_history[key].append(value)
         return None
 
     def on_epoch_end(self, loop, **kwargs):
-        for key, values in self._batch_history.items():
-            self.history[key].append(float(np.mean(values)))
-        for key in self.epoch_end:
-            value = kwargs.get(key)
+        """Update history by aggregating the batch results other losses."""
+        for key, value in self._batch_history.items():
+            if 'loss' not in key:
+                continue
+            value_mean = float(np.mean(value))
+            self.history[key].append(value_mean)
+        for key, value in kwargs.items():
+            if 'loss' not in key:
+                continue
             self.history[key].append(value)
+        pass
 
+    def on_metrics(self, loop, metrics: dict):
+        for key, value in metrics.items():
+            self.history[key].append(value)
 
 class JSONLoggerCallback:
     """Save training results to a file."""
 
     def __init__(self, path):
+        warning_msg = """{self.__class__.__name__} is scheduled for revisions in a future version.
+        All metrics names will use a <metric_name> and <metric_name>_val format.
+        Use caution when linking processes to the JSON files this logger writes.
+        """
+        warnings.warn(warning_msg, category=FutureWarning, stacklevel=2)
         self.path = path
         try:
             with open(path, 'r') as f:
@@ -174,3 +209,67 @@ class JSONLoggerCallback:
             mean = np.mean(self._batch_losses)
             self.logs['train_loss'].append(mean)
         self._batch_losses = []
+
+
+class MetricsCallback:
+    """Handle the computation of metrics during training.
+
+    This callback is a publisher as well as a subscriber. At the end of each epoch,
+    it publishes to `metrics` on the loop's channel. Callbacks which require metric
+    updates should subscribe to the loop's metric messages to receive these updates.
+    """
+    def __init__(self, metrics: list[Metric]):
+        """Initalize a callback that executes metrics.
+
+        This callback always captures training loss and, if processed,
+        validation loss, even if the rest of the metrics are empty.
+        """
+        self.metrics = metrics
+        self._batch_losses = []
+        self._n_samples = .0
+
+    def on_batch_end(self, loop, *, y_hat, y_true, **kwargs):
+        """Update each metric with the inputs."""
+        for metric in self.metrics:
+            metric.update(y_hat, y_true)
+        if 'train_loss' in kwargs:
+            warnings.warn(
+                """Passing loss by name 'train_loss' is deprecated and will be removed in a future version.
+                Use bare 'loss' when passing loss metrics. Batch losses should be training losses.""",
+                category=PendingDeprecationWarning,
+                stacklevel=2)
+            self._batch_losses.append(kwargs['test_loss'] * y_hat.shape[0])
+        else:
+            self._batch_losses.append(kwargs['loss'] * y_hat.shape[0])
+        self._n_samples += y_hat.shape[0]
+
+
+    def on_epoch_end(self, loop, *, y_hat, y_true, **kwargs):
+        """Compute metrics over the training and validation predictions.
+
+        The metrics are published to the loop's channel as `metrics` and
+        the payload is a dictionary of the form:
+            {'metric': .01, 'metric_val': .02}
+        """
+        metrics = {}
+        if 'test_loss' in kwargs:
+            warnings.warn(
+                """Passing loss by name 'test_loss' is deprecated and will be removed in a future version.
+                Use bare 'loss' when passing loss metrics. End epoch metrics should be valiation losses.""",
+                category=PendingDeprecationWarning,
+                stacklevel=2)
+            metrics['loss_val'] = kwargs['test_loss']
+        elif 'loss' in kwargs:
+            metrics['loss_val'] = kwargs['loss']
+        metrics['loss'] = np.sum(self._batch_losses) / self._n_samples
+        self._batch_losses = []
+        self._n_samples = 0.
+        for metric in self.metrics:
+            name = getattr(metric, 'name', metric.__class__.__name__).lower()
+            metrics[name] = metric.compute()
+            metric.reset()
+            metric.update(y_hat, y_true)
+            metrics[name + "_val"] = metric.compute()
+            metric.reset()
+
+        loop.publish(loop.name, 'metrics', metrics=metrics)
