@@ -11,9 +11,10 @@ from torch.utils.data import DataLoader
 from torchvision.utils import make_grid
 
 from philosofool.torch.visualize import show_image
+from philosofool.torch.metrics import Metric
 
 if TYPE_CHECKING:
-    from philosofool.torch.nn_loop import GANLoop
+    from philosofool.torch.nn_loop import GANLoop, TrainingLoop
 
 
 class EarlyStoppingCallabck:
@@ -174,3 +175,26 @@ class JSONLoggerCallback:
             mean = np.mean(self._batch_losses)
             self.logs['train_loss'].append(mean)
         self._batch_losses = []
+
+
+class MetricsCallback:
+    def __init__(self, metrics: list[Metric]):
+        self.metrics = metrics
+
+    def on_batch_end(self, loop, **kwargs):
+        for metric in self.metrics:
+            metric.update(kwargs['y_hat'], kwargs['y_true'])
+
+    def on_epoch_end(self, loop, **kwargs):
+        metrics = {}
+        for metric in self.metrics:
+            name = getattr(metric, 'name', metric.__class__.__name__).lower()
+            metrics[name] = metric.compute()
+            metric.reset()
+            metric.update(kwargs['y_hat'], kwargs['y_true'])
+            metrics[name + "_val"] = metric.compute()
+            metric.reset()
+
+        # assert isinstance(loop)
+
+        loop.publish(loop.name, 'metrics', metrics=metrics)

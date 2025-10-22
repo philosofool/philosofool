@@ -42,6 +42,9 @@ class TrainingLoop():
         for callback in callbacks:
             self._publisher.subscribe(self.name, callback)
 
+    def subscribe(self, channel, callback):
+        self._publisher.subscribe(channel, callback)
+
     def publish(self, channel, message, **kwargs) -> list:
         self._publisher.publish(channel, message, self, **kwargs)
 

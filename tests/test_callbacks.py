@@ -1,3 +1,5 @@
+from collections.abc import Callable
+from collections import namedtuple
 from tempfile import TemporaryDirectory
 import torch
 from torch import nn
@@ -13,17 +15,35 @@ from philosofool.torch.nn_loop import (
 from philosofool.torch.nn_models import Discriminator, Generator
 
 class MessagesListener:
-    """Register when a message is recieved."""
+    """A test callback that records which events were received and their payloads."""
+    LastCallArgs = namedtuple('LastCallArgs', ['args', 'kwargs'])
+
     def __init__(self):
-        self.messages = {}
+        self.calls: list[tuple[str, tuple, dict]] = []  # [(event_name, args, kwargs), ...]
+        self.handlers: dict[str, Callable]= {}  # caches handler functions for dynamic attributes
 
-    def __getattr__(self, value):
-        if isinstance(value, str) and value.startswith('on_'):
-            self.messages[value] = True
-        return self.handler
+    def __getattr__(self, name: str) -> Callable:
+        """Dynamically create a handler for any event (e.g., on_batch_end)."""
+        if not name.startswith("on_"):
+            raise AttributeError(f"{self.__class__.__name__} has no attribute {name}")
+        if name not in self.handlers:
+            def handler(*args, **kwargs):
+                self.calls.append((name, args, kwargs))
+            self.handlers[name] = handler
+        return self.handlers[name]
 
-    def handler(self, *args, **kwargs):
+    def called(self, event_name: str) -> bool:
+        """Return True if a given event was observed."""
+        return any(name == event_name for name, *_ in self.calls)
+
+    def last_call(self, event_name: str) -> tuple[tuple, dict] | None:
+        """Return the most recent (args, kwargs) for a given event."""
+        for name, args, kwargs in reversed(self.calls):
+            if name == event_name:
+                return self.LastCallArgs(args, kwargs)
         return None
+
+
 
 def test_history_callback():
     publisher = Publisher()
@@ -66,7 +86,7 @@ def test_end_on_batch(training_loop):
     end_on_batch = EndOnBatchCallback(2)
     assert end_on_batch.on_batch_end(training_loop, batch=2, gen_loss=.1) is None, "Emitting signals is deprecated."
     assert end_on_batch.on_batch_end(training_loop, batch=1) is None, "Should not end on batch one. Missing gen_loss is accepted."
-    assert listener.messages.get('on_end_epoch')
+    assert listener.called('on_end_epoch')
 
 def test_snapshot_callback():
     generator = Generator(10, 10)
@@ -150,8 +170,46 @@ class TestEarlyStopping:
 
         training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss)
         training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss - 1)
-        assert listener.messages.get('on_end_fit') is None
+        assert not listener.called('on_end_fit')
 
         training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss)
         training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss)
-        assert listener.messages.get('on_end_fit')
+        assert listener.called('on_end_fit')
+
+        assert not listener.last_call('on_end_fit').kwargs
+
+class TestMetricsCallback():
+    def test_metrics_compute(self, training_loop):
+        from philosofool.torch.metrics import Accuracy
+        from philosofool.torch.callbacks import MetricsCallback
+        accuracy = Accuracy('binary')
+        callback = MetricsCallback([accuracy])
+
+        callback.on_batch_end(training_loop, y_hat=torch.tensor([1., 1., 0., 0]), y_true=torch.tensor([1., 0., 1., 0]))
+        callback.on_batch_end(training_loop, y_hat=torch.tensor([1., 1., 0., 0]), y_true=torch.tensor([1., 1., 0., 0]))
+
+        assert accuracy.correct == 6
+        assert accuracy.count == 8
+        callback.on_epoch_end(training_loop, y_hat=torch.tensor([1., 1., 0., 0]), y_true=torch.tensor([1., 1., 0., 0]))
+        assert accuracy.count == 0., "Count should reset each epoch."
+        assert accuracy.correct == 0., "Correct should reset each epoch"
+
+    def test_metrics_publish(self, training_loop):
+        from philosofool.torch.metrics import Accuracy
+        from philosofool.torch.callbacks import MetricsCallback
+        from philosofool.torch.nn_loop import TrainingLoop
+        assert isinstance(training_loop, TrainingLoop)
+
+        accuracy = Accuracy('binary')
+        callback = MetricsCallback([accuracy])
+        training_loop.add_callbacks(callback)
+
+        listener = MessagesListener()
+        training_loop.subscribe('training_loop', listener)
+
+        training_loop.publish('training_loop', 'batch_end', batch=0,  y_hat=torch.tensor([1., 1., 0., 0]), y_true=torch.tensor([1., 0., 1., 0]))
+        training_loop.publish('training_loop', 'batch_end', batch=1,  y_hat=torch.tensor([1., 1., 0., 0]), y_true=torch.tensor([1., 1., 0., 0]))
+        training_loop.publish('training_loop', 'epoch_end', y_hat=torch.tensor([1., 1., 0., 0]), y_true=torch.tensor([1., 1., 0., 0]))
+
+        assert listener.called('on_metrics')
+        assert 'metrics' in listener.last_call('on_metrics').kwargs
