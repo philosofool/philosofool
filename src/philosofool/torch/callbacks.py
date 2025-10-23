@@ -119,19 +119,18 @@ class HistoryCallback:
     def on_epoch_start(self, loop, **kwargs):
         self._batch_history = defaultdict(list)
 
-    def on_batch_end(self, loop, batch: int, **kwargs):
-        for key in self.batch_end:
-            value = kwargs.get(key)
-            self._batch_history[key].append(value)
+    def on_batch_end(self, loop, batch: int, *, loss, **kwargs):
+        self._batch_history['loss'].append(loss)
         return None
 
-    def on_epoch_end(self, loop, **kwargs):
-        for key, values in self._batch_history.items():
-            self.history[key].append(float(np.mean(values)))
-        for key in self.epoch_end:
-            value = kwargs.get(key)
-            self.history[key].append(value)
+    def on_epoch_end(self, loop, *, test_loss, **kwargs):
+        mean_batch_loss = float(np.mean(self._batch_history['loss']))
+        self.history['loss'].append(mean_batch_loss)
+        self.history['test_loss'].append(test_loss)
 
+    def on_metrics(self, loop, metrics: dict):
+        for key, value in metrics.items():
+            self.history[key].append(value)
 
 class JSONLoggerCallback:
     """Save training results to a file."""
@@ -185,7 +184,7 @@ class MetricsCallback:
     updates should subscribe to the loop's metric messages to receive these updates.
     """
     def __init__(self, metrics: list[Metric]):
-        """Initalize a callback that ex"""
+        """Initalize a callback that executes metrics."""
         self.metrics = metrics
 
     def on_batch_end(self, loop, *, y_hat, y_true, **kwargs):
