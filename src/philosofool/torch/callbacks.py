@@ -178,23 +178,35 @@ class JSONLoggerCallback:
 
 
 class MetricsCallback:
+    """Handle the computation of metrics during training.
+
+    This callback is a publisher as well as a subscriber. At the end of each epoch,
+    it publishes to `metrics` on the loop's channel. Callbacks which require metric
+    updates should subscribe to the loop's metric messages to receive these updates.
+    """
     def __init__(self, metrics: list[Metric]):
+        """Initalize a callback that ex"""
         self.metrics = metrics
 
-    def on_batch_end(self, loop, **kwargs):
+    def on_batch_end(self, loop, *, y_hat, y_true, **kwargs):
+        """Update each metric with the inputs."""
         for metric in self.metrics:
-            metric.update(kwargs['y_hat'], kwargs['y_true'])
+            metric.update(y_hat, y_true)
 
-    def on_epoch_end(self, loop, **kwargs):
+    def on_epoch_end(self, loop, *, y_hat, y_true, **kwargs):
+        """Compute metrics over the training and validation predictions.
+
+        The metrics are published to the loop's channel as `metrics` and
+        the payload is a dictionary of the form:
+            {'metric': .01, 'metric_val': .02}
+        """
         metrics = {}
         for metric in self.metrics:
             name = getattr(metric, 'name', metric.__class__.__name__).lower()
             metrics[name] = metric.compute()
             metric.reset()
-            metric.update(kwargs['y_hat'], kwargs['y_true'])
+            metric.update(y_hat, y_true)
             metrics[name + "_val"] = metric.compute()
             metric.reset()
-
-        # assert isinstance(loop)
 
         loop.publish(loop.name, 'metrics', metrics=metrics)
