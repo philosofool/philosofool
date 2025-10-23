@@ -110,23 +110,32 @@ class VerboseTrainingCallback:
 class HistoryCallback:
     """Create a history of per-epoch results."""
 
-    def __init__(self, batch_end: Iterable[str] = tuple(), epoch_end: Iterable[str] = tuple()):
-        self.batch_end = batch_end
-        self.epoch_end = epoch_end
+    def __init__(self):
         self.history = defaultdict(list)
         self._batch_history = defaultdict(list) # list-defaultdict is created each epoch start.
 
     def on_epoch_start(self, loop, **kwargs):
         self._batch_history = defaultdict(list)
 
-    def on_batch_end(self, loop, batch: int, *, loss, **kwargs):
-        self._batch_history['loss'].append(loss)
+    def on_batch_end(self, loop, batch: int, **kwargs):
+        for key, value in kwargs.items():
+            if 'loss' not in key:
+                continue
+            self._batch_history[key].append(value)
         return None
 
-    def on_epoch_end(self, loop, *, test_loss, **kwargs):
-        mean_batch_loss = float(np.mean(self._batch_history['loss']))
-        self.history['loss'].append(mean_batch_loss)
-        self.history['test_loss'].append(test_loss)
+    def on_epoch_end(self, loop, **kwargs):
+        """Update history by aggregating the batch results other losses."""
+        for key, value in self._batch_history.items():
+            if 'loss' not in key:
+                continue
+            value_mean = float(np.mean(value))
+            self.history[key].append(value_mean)
+        for key, value in kwargs.items():
+            if 'loss' not in key:
+                continue
+            self.history[key].append(value)
+        pass
 
     def on_metrics(self, loop, metrics: dict):
         for key, value in metrics.items():

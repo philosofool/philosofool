@@ -47,7 +47,7 @@ class MessagesListener:
 
 def test_history_callback(training_loop):
     publisher = Publisher()
-    callback = HistoryCallback(batch_end=['loss'], epoch_end=['test_loss'])
+    callback = HistoryCallback()
     y_hat, y_hat_val = torch.tensor([.9, .1]), torch.tensor([.9, .1])
     y_true, y_true_val = torch.tensor([1, 0]), torch.tensor([1, 0])
     publisher.subscribe(training_loop.name, callback)
@@ -61,9 +61,20 @@ def test_history_callback(training_loop):
     publisher.publish(training_loop.name, 'epoch_end', training_loop, test_loss=.09, y_hat=y_hat_val, y_true=y_true_val)
     assert callback.history == {'loss': [.05, .04], 'test_loss': [.1, .09]}, "HistoryCallback should accumulate new losses."
 
+def test_history_callback__handles_GANLoop_kwargs(training_loop):
+    callback = HistoryCallback()
+    publisher = Publisher()
+
+    publisher.subscribe(training_loop.name, callback)
+    publisher.publish(training_loop.name, 'epoch_start', training_loop)
+    publisher.publish(training_loop.name, 'batch_end', training_loop, batch=1, gen_loss=.05, dis_loss=.5)
+    publisher.publish(training_loop.name, 'epoch_end', training_loop, epoch=1)
+    assert callback.history == {'gen_loss': [.05], 'dis_loss': [.5]}
+
+
 def test_history_callback__captures_metrics(training_loop):
     publisher = Publisher()
-    callback = HistoryCallback(batch_end=['loss'], epoch_end=['test_loss'])
+    callback = HistoryCallback()
     publisher.subscribe('training_loop', callback)
 
     publisher.publish('training_loop', 'metrics', training_loop, {'accuracy': .8, 'accuracy_val': .75})
@@ -222,9 +233,9 @@ class TestMetricsCallback():
         listener = MessagesListener()
         training_loop.subscribe('training_loop', listener)
 
-        training_loop.publish('training_loop', 'batch_end', batch=0,  y_hat=torch.tensor([1., 1., 0., 0]), y_true=torch.tensor([1., 0., 1., 0]))
-        training_loop.publish('training_loop', 'batch_end', batch=1,  y_hat=torch.tensor([1., 1., 0., 0]), y_true=torch.tensor([1., 1., 0., 0]))
-        training_loop.publish('training_loop', 'epoch_end', y_hat=torch.tensor([1., 1., 0., 0]), y_true=torch.tensor([1., 1., 0., 0]))
+        training_loop.publish('training_loop', 'batch_end', batch=0,  loss=.5, y_hat=torch.tensor([1., 1., 0., 0]), y_true=torch.tensor([1., 0., 1., 0]))
+        training_loop.publish('training_loop', 'batch_end', batch=1,  loss=.4, y_hat=torch.tensor([1., 1., 0., 0]), y_true=torch.tensor([1., 1., 0., 0]))
+        training_loop.publish('training_loop', 'epoch_end',  test_loss=.3, y_hat=torch.tensor([1., 1., 0., 0]), y_true=torch.tensor([1., 1., 0., 0]))
 
         assert listener.called('on_metrics')
         assert 'metrics' in listener.last_call('on_metrics').kwargs
