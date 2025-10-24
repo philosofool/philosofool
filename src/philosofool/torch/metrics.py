@@ -7,16 +7,19 @@ from typing import Literal
 class Metric(Protocol):
     """Describes a metric computed by an operation on model predictions."""
     def update(self, y_hat: ArrayLike, y_true: ArrayLike) -> None:
+        """Accumulates the predicted and correct values."""
         ...
 
     def compute(self) -> float | ArrayLike:
+        """Compute the values of the metric from the values update accumulates."""
         ...
 
     def reset(self) -> None:
+        """Set the values for the accumulators to their base state."""
         ...
 
 
-class Accuracy(Metric):
+class Accuracy:
     """Track accuracy of predictions.
 
     task:

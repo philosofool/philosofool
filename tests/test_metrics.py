@@ -23,7 +23,8 @@ def test_accuracy__multiclass():
     true = torch.tensor([0, 0, 1, 0])
     accuracy = Accuracy('multiclass')
     accuracy.update(pred, true)
-    assert accuracy.compute() == .75
+    assert accuracy.compute() == .75, \
+        "The returned value should be a number corresponding to accuracy."
 
     accuracy.reset()
     accuracy.compute() == .0, "After reseting, accuracy should be zero again."

@@ -81,7 +81,6 @@ class TrainingLoop():
                 test_loss += loss * y.shape[0]
                 y_values.append(y)
                 y_hat_values.append(y_hat)
-                # correct += (pred.argmax(1) == y).type(torch.float).sum().item()
         test_loss = test_loss / n_samples
         y_hat = torch.concat(y_hat_values)
         y = torch.concat(y_values)
@@ -109,6 +108,12 @@ class TrainingLoop():
         for epoch in range(self._epochs, self._epochs + epochs):
             self._emit_to_callbacks('epoch_start', epoch=epoch)
             for (batch, loss, y_hat, y) in self.train(train_data):
+                # NOTE: Forwarding of loss is unthrilling.
+                #       Losses have a dual funciton,
+                #       in being metrics (e.g., to control early stopping) and are part
+                #       of the gradient descent. We don't want redundant computations.
+                #       but the result feels a little convoluted in the separation of responsibilities.
+                #       This is the compromise currently.
                 self._emit_to_callbacks('batch_end', batch=batch, loss=loss, y_hat=y_hat, y_true=y)
                 if self._end_epoch:
                     break

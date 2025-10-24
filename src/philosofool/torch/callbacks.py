@@ -32,6 +32,7 @@ class EarlyStoppingCallabck:
     def on_epoch_end(self, loop, test_loss, **kwargs):
         if self.monitor in {'test_loss', 'val_loss'}:
             return self._determine_improvement(loop, test_loss)
+        # TODO: implement early stoping on metrics events.
         raise NotImplementedError("EarlyStopping is only configured to monitor test_loss or val_loss.")
 
     def _determine_improvement(self, loop, target_metric):
