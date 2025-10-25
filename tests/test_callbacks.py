@@ -10,6 +10,7 @@ from torch import nn
 from philosofool.torch.callbacks import (
     EarlyStoppingCallabck, EndOnBatchCallback, HistoryCallback, JSONLoggerCallback, SnapshotCallback, VerboseTrainingCallback
 )
+from philosofool.torch.experimental.nn_loop import GANLoop
 from philosofool.torch.nn_loop import (
     Publisher
 )

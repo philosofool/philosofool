@@ -4,8 +4,9 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 from philosofool.torch.callbacks import EndOnBatchCallback
+from philosofool.torch.experimental.nn_loop import GANLoop
 from philosofool.torch.nn_loop import (
-    GANLoop, TrainingLoop,
+    TrainingLoop,
     Publisher
 
 )
