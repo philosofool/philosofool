@@ -105,8 +105,8 @@ class TestTrainingLoop:
         assert callback.messages == expected, "Some callback received the wrong keywords."
 
 
-    def test_test(self, training_loop, data_loader):
-        loss_value, y_hat, y = training_loop.test(data_loader)
+    def test_process_val_data(self, training_loop: TrainingLoop, data_loader):
+        loss_value, y_hat, y = training_loop.process_val_data(data_loader)
         assert training_loop.model.training == False, "The model should be set to training."
         assert y_hat.requires_grad == False, "The results tensors should be deteched."
         assert y.requires_grad == False, "The results tensors should be deteched."
@@ -146,12 +146,12 @@ class TestTrainingLoop:
         assert counter.epochs == 3
 
 
-    def test_train(self, training_loop, data_loader):
+    def test_process_batches(self, training_loop: TrainingLoop, data_loader):
 
-        training_loop.test(data_loader)
-        assert training_loop.model.training == False, "Testing the model should set the model training to false."
+        training_loop.process_val_data(data_loader)
+        assert training_loop.model.training == False, "Processing val data the model should set the model training to false."
 
-        loop_iterator = training_loop.train(data_loader)
+        loop_iterator = training_loop.process_batches(data_loader)
         last_loss = np.inf
         for batch, loss_value, y_hat, y_true in loop_iterator:
             assert training_loop.model.training == True, "Training the model should set the model training to True."
@@ -165,7 +165,6 @@ class TestTrainingLoop:
 
             # update to test loss on next iteration.
             last_loss = loss_value
-
 
 
 @pytest.fixture
