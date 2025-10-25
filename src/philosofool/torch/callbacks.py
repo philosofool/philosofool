@@ -11,9 +11,10 @@ from torch.utils.data import DataLoader
 from torchvision.utils import make_grid
 
 from philosofool.torch.visualize import show_image
+from philosofool.torch.metrics import Metric
 
 if TYPE_CHECKING:
-    from philosofool.torch.nn_loop import GANLoop
+    from philosofool.torch.nn_loop import GANLoop, TrainingLoop
 
 
 class EarlyStoppingCallabck:
@@ -31,6 +32,7 @@ class EarlyStoppingCallabck:
     def on_epoch_end(self, loop, test_loss, **kwargs):
         if self.monitor in {'test_loss', 'val_loss'}:
             return self._determine_improvement(loop, test_loss)
+        # TODO: implement early stoping on metrics events.
         raise NotImplementedError("EarlyStopping is only configured to monitor test_loss or val_loss.")
 
     def _determine_improvement(self, loop, target_metric):
@@ -109,9 +111,7 @@ class VerboseTrainingCallback:
 class HistoryCallback:
     """Create a history of per-epoch results."""
 
-    def __init__(self, batch_end: Iterable[str] = tuple(), epoch_end: Iterable[str] = tuple()):
-        self.batch_end = batch_end
-        self.epoch_end = epoch_end
+    def __init__(self):
         self.history = defaultdict(list)
         self._batch_history = defaultdict(list) # list-defaultdict is created each epoch start.
 
@@ -119,18 +119,28 @@ class HistoryCallback:
         self._batch_history = defaultdict(list)
 
     def on_batch_end(self, loop, batch: int, **kwargs):
-        for key in self.batch_end:
-            value = kwargs.get(key)
+        for key, value in kwargs.items():
+            if 'loss' not in key:
+                continue
             self._batch_history[key].append(value)
         return None
 
     def on_epoch_end(self, loop, **kwargs):
-        for key, values in self._batch_history.items():
-            self.history[key].append(float(np.mean(values)))
-        for key in self.epoch_end:
-            value = kwargs.get(key)
+        """Update history by aggregating the batch results other losses."""
+        for key, value in self._batch_history.items():
+            if 'loss' not in key:
+                continue
+            value_mean = float(np.mean(value))
+            self.history[key].append(value_mean)
+        for key, value in kwargs.items():
+            if 'loss' not in key:
+                continue
             self.history[key].append(value)
+        pass
 
+    def on_metrics(self, loop, metrics: dict):
+        for key, value in metrics.items():
+            self.history[key].append(value)
 
 class JSONLoggerCallback:
     """Save training results to a file."""
@@ -174,3 +184,38 @@ class JSONLoggerCallback:
             mean = np.mean(self._batch_losses)
             self.logs['train_loss'].append(mean)
         self._batch_losses = []
+
+
+class MetricsCallback:
+    """Handle the computation of metrics during training.
+
+    This callback is a publisher as well as a subscriber. At the end of each epoch,
+    it publishes to `metrics` on the loop's channel. Callbacks which require metric
+    updates should subscribe to the loop's metric messages to receive these updates.
+    """
+    def __init__(self, metrics: list[Metric]):
+        """Initalize a callback that executes metrics."""
+        self.metrics = metrics
+
+    def on_batch_end(self, loop, *, y_hat, y_true, **kwargs):
+        """Update each metric with the inputs."""
+        for metric in self.metrics:
+            metric.update(y_hat, y_true)
+
+    def on_epoch_end(self, loop, *, y_hat, y_true, **kwargs):
+        """Compute metrics over the training and validation predictions.
+
+        The metrics are published to the loop's channel as `metrics` and
+        the payload is a dictionary of the form:
+            {'metric': .01, 'metric_val': .02}
+        """
+        metrics = {}
+        for metric in self.metrics:
+            name = getattr(metric, 'name', metric.__class__.__name__).lower()
+            metrics[name] = metric.compute()
+            metric.reset()
+            metric.update(y_hat, y_true)
+            metrics[name + "_val"] = metric.compute()
+            metric.reset()
+
+        loop.publish(loop.name, 'metrics', metrics=metrics)
