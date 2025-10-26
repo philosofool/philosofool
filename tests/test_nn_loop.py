@@ -1,13 +1,16 @@
+from tempfile import TemporaryDirectory
+import os
+import json
 
 import numpy as np
 import torch
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
-from philosofool.torch.callbacks import EndOnBatchCallback
-from philosofool.torch.experimental.nn_loop import GANLoop
 from philosofool.torch.nn_loop import (
-    TrainingLoop,
-    Publisher
+    GANLoop, JSONLoggerCallback, TrainingLoop,
+    Publisher, HistoryCallback,
+    JSONLoggerCallback,
+    EndOnBatchCallback, SnapshotCallback, VerboseTrainingCallback
 
 )
 from philosofool.torch.nn_models import Generator, Discriminator
@@ -36,7 +39,7 @@ class CountEpochsCallback:
 
 class EndAfterOneEpoch:
     def on_epoch_end(self, loop, **kwargs):
-        loop.publish(f"{loop.name}_control", 'end_fit')
+        return 'end_fit'
 
 def test_pub_sub(capsys):
 
@@ -60,6 +63,42 @@ def test_pub_sub(capsys):
         publisher.publish('test', 'test_message', y=False)
 
 
+@pytest.fixture
+def dataset() -> TensorDataset:
+    # 1 batch, 2 rows, three columns
+    data = torch.tensor(
+        [[1., 0., 0], [0., 1., .0]]
+    )
+    labels = torch.tensor(
+        [[1., 0.], [0., 1.]]
+    )
+    return TensorDataset(data, labels)
+
+
+@pytest.fixture
+def data_loader(dataset) -> DataLoader:
+    data_loader = DataLoader(dataset, batch_size=2)
+    return data_loader
+
+
+class SimpleModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.linear = nn.Linear(3, 2)
+
+    def forward(self, x):
+        logits = self.linear(x)
+        return logits
+
+
+@pytest.fixture
+def training_loop() -> TrainingLoop:
+    model = SimpleModel()
+    optimizer = torch.optim.SGD(model.parameters(), lr=.5)
+    loss = nn.CrossEntropyLoss()
+
+    training_loop = TrainingLoop(model, optimizer, loss)
+    return training_loop
 
 class TestTrainingLoop:
     def test_fit__callbacks(self, training_loop, data_loader):
@@ -81,18 +120,16 @@ class TestTrainingLoop:
                     self.messages.append('missing epoch in epoch start.')
 
             def on_batch_end(self, loop, **kwargs):
-                for expected_key in ['batch', 'loss', 'y_hat', 'y_true']:
-                    if expected_key not in kwargs:
-                        self.messages.append(f"missing keyword {expected_key}.")
-                        return
-                self.messages.append('batch_end')
+                if 'batch' in kwargs and 'loss' in kwargs:
+                    self.messages.append('batch_end')
+                else:
+                    self.messages.append("missing keyword argument loss or batch.")
 
             def on_epoch_end(self, loop, **kwargs):
-                for expected_key in ['test_loss', 'y_hat', 'y_true']:
-                    if expected_key not in kwargs:
-                        self.messages.append(f"missing keyword {expected_key}.")
-                        return
-                self.messages.append('epoch_end')
+                if 'correct' in kwargs and 'test_loss' in kwargs:
+                    self.messages.append('epoch_end')
+                else:
+                    self.messages.append('missing kwarg test_loss or correct')
 
             def on_fit_end(self, loop, **kwargs):
                 self.messages.append('fit_end')
@@ -105,13 +142,12 @@ class TestTrainingLoop:
         assert callback.messages == expected, "Some callback received the wrong keywords."
 
 
-    def test_process_val_data(self, training_loop: TrainingLoop, data_loader):
-        loss_value, y_hat, y = training_loop.process_val_data(data_loader)
-        assert training_loop.model.training == False, "The model should be set to training."
-        assert y_hat.requires_grad == False, "The results tensors should be deteched."
-        assert y.requires_grad == False, "The results tensors should be deteched."
-        assert y_hat.shape == y.shape, "These should be the same shape."
-        assert torch.all(y == torch.tensor([[1., 0.], [0., 1.]])), "y values should match labels in data."
+    def test_test(self, training_loop, data_loader):
+        correct, loss_value = training_loop.test(data_loader)
+        assert training_loop.model.training == False
+        assert type(correct) == float
+        assert type(loss_value) == float
+
 
     def test_fit(self, data_loader, training_loop):
 
@@ -146,26 +182,50 @@ class TestTrainingLoop:
         assert counter.epochs == 3
 
 
-    def test_process_batches(self, training_loop: TrainingLoop, data_loader):
+    def test_train(self, training_loop, data_loader):
 
-        training_loop.process_val_data(data_loader)
-        assert training_loop.model.training == False, "Processing val data the model should set the model training to false."
+        training_loop.test(data_loader)
+        assert training_loop.model.training == False, "Testing the model should set the model training to false."
 
-        loop_iterator = training_loop.process_batches(data_loader)
+        loop_iterator = training_loop.train(data_loader)
         last_loss = np.inf
-        for batch, loss_value, y_hat, y_true in loop_iterator:
+        for batch, loss_value in loop_iterator:
             assert training_loop.model.training == True, "Training the model should set the model training to True."
             assert type(batch) is int
             assert type(loss_value) is float
-            assert last_loss > loss_value, "The model loop should update the gradients to reduce to the loss."
-
-            assert y_hat.shape == y_true.shape, "The shape of the predictions and the labels should be the same."
-            assert y_hat.requires_grad == False
-            assert torch.all((y_true == 1) + (y_true == 0)), "The values in y_true should be 1 or 0."
-
-            # update to test loss on next iteration.
+            assert last_loss > loss_value
             last_loss = loss_value
 
+
+def test_history_callback():
+    publisher = Publisher()
+    callback = HistoryCallback()
+    publisher.subscribe('event', callback)
+    publisher.publish('event', 'epoch_start', None)
+    publisher.publish('event', 'batch_end', None, batch=1, val_loss=.1, test_loss=.05)
+    publisher.publish('event', 'epoch_end', None)
+    assert callback.history == {'val_loss': [.1], 'test_loss': [.05]}
+
+def test_json_logging_callback(data_loader):
+
+    directory = TemporaryDirectory().name
+    path = os.path.join(directory, 'logs', 'log.json')
+    publisher = Publisher()
+
+    callback = JSONLoggerCallback(path)
+    publisher.subscribe('events', callback)
+    publisher.publish('events', 'fit_start', None, data_loader, data_loader)
+    publisher.publish('events', 'epoch_start', None, epoch=1)
+    publisher.publish('events', 'batch_end', None, loss=.1)
+    publisher.publish('events', 'epoch_end', None, correct=1, test_loss=.2)
+    publisher.publish('events', 'fit_end', None)
+
+    with open(path, 'r') as f:
+        logs = json.loads(f.read())
+    assert callback.logs == logs
+    assert logs['train_loss'] == [.1]
+    assert logs['test_loss'] == [.2]
+    assert logs['test_accuracy'] == [1 / 2]
 
 @pytest.fixture
 def gan_loop() -> GANLoop:
@@ -220,7 +280,7 @@ class TestGANLoop:
         for original_weight, new_weight in zip(dis_params_initial.values(), discriminator.parameters()):
             assert torch.all(original_weight == new_weight.detach()), """Parameters of discriminator should not update."""
 
-    def test_train(self, gan_loop: GANLoop):
+    def test_step(self, gan_loop):
         images, fakes, gen_params_initial, dis_params_initial = self._make_images_fakes(gan_loop)
 
         generator = gan_loop.generator
@@ -229,7 +289,7 @@ class TestGANLoop:
         loader = DataLoader(TensorDataset(images), images.shape[0] // 4)
         n_iterations = 0
 
-        for losses in gan_loop.train(loader):
+        for losses in gan_loop.step(loader):
             n_iterations += 1
         assert n_iterations == 4, "There should be 1 step per batch and there are 4 batches."
 
@@ -281,7 +341,7 @@ class TestGANLoop:
         dataset = TensorDataset(images)
         data_loader = DataLoader(dataset, 2)
         gan_loop.fit(data_loader, epochs=2, callbacks=[end_on_batch, counter])
-        assert counter.batches == 2
+        assert counter.batches == 8
         assert counter.epochs == 2
 
     def test_fit__handles_end_fit(self, gan_loop: GANLoop):
@@ -293,3 +353,44 @@ class TestGANLoop:
         gan_loop.fit(data_loader, epochs=2, callbacks=[end_after_epoch, counter])
         assert counter.batches == 4
         assert counter.epochs == 1
+
+
+
+def test_end_on_batch():
+    end_on_batch = EndOnBatchCallback(2)
+    assert end_on_batch.on_batch_end(None, batch=2, gen_loss=.1) == 'end_epoch', "Should emit 'end_epoch' signal, gen_loss (unused) is accepeccted."
+    assert end_on_batch.on_batch_end(None, batch=1) is None, "Should not end on batch one. Missing gen_loss is accepted."
+
+def test_snapshot_callback():
+    generator = Generator(10, 10)
+    discriminator = Discriminator(10)
+
+    loss = nn.BCEWithLogitsLoss()
+    loop = GANLoop(
+        generator,
+        discriminator,
+        torch.optim.SGD(generator.parameters(), lr=.01, momentum=0),
+        torch.optim.SGD(discriminator.parameters(), lr=.01, momentum=0),
+        loss
+    )
+
+    loop.generator.eval()
+    snapshot_callback = SnapshotCallback(n_images=1, interval=2)
+    snapshot_callback.on_batch_end(loop, batch=2, gen_loss=.1, dis_loss=.1)
+    assert len(snapshot_callback.snapshots ) == 1, "Snapshots should update when called on batch interval."
+    snapshot_callback.on_batch_end(loop, batch=3, gen_loss=.1, dis_loss=.1)
+    assert len(snapshot_callback.snapshots ) == 1, "Snapshots should update only on interval."
+    snapshot_callback.on_batch_end(loop, batch=2, gen_loss=.1, dis_loss=.1)
+    assert len(snapshot_callback.snapshots) == 2, "Snapshots should update when called on batch interval."
+    snapshots = snapshot_callback.snapshots
+    assert torch.allclose(snapshots[0].detach(), snapshots[1].detach())
+
+    snapshot_callback.on_epoch_end(loop, epoch=1)
+    assert snapshot_callback.snapshots[0].shape[0] == snapshot_callback.n_images == 1
+
+def test_vebose_training_callback():
+
+    callback = VerboseTrainingCallback(batch_interval=2)
+    callback.on_batch_end(None, batch=1)
+    callback.on_batch_end(None, batch=2, gen_loss=.1, dis_loss=.2)
+    callback.on_epoch_start(None, epoch=12, unused_argument='ignored')
