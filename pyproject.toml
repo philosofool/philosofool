@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "philosofool"                   # Your package name (must match src/ dir if using src layout)
-version = "0.1.0"                    # Semantic version
+version = "0.1.1"                    # Semantic version
 description = "Tools for the sort of work I find myself doing."
 readme = "README.md"                 # Long description
 license = { text = "MIT" }
