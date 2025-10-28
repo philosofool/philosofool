@@ -15,10 +15,10 @@ def test_accuracy__binary():
 
 def test_accuracy__multiclass():
     pred = torch.tensor([
-        [.9, .1],
-        [.8, .2],
-        [.2, .8],
-        [.3, .7]
+        [.45, .35, .2],
+        [.8, .1, .1],
+        [.4, .49, .11],
+        [.3, .4, .3]
     ])
     true = torch.tensor([0, 0, 1, 0])
     accuracy = Accuracy('multiclass')

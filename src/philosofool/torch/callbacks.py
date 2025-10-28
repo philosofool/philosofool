@@ -151,7 +151,7 @@ class HistoryCallback:
             if 'loss' not in key:
                 continue
             value_mean = float(np.mean(value))
-            self.history[key].append(value_mean)
+            # self.history[key].append(value_mean)
         for key, value in kwargs.items():
             if 'loss' not in key:
                 continue

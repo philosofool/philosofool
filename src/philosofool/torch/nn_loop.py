@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 
-from typing import Any, TYPE_CHECKING, Iterator, Protocol, Callable
+from typing import Any, TYPE_CHECKING, Iterable, Iterator, Protocol, Callable
 
 import torch
 from torch import accelerator, nn
@@ -31,11 +31,12 @@ class TrainingLoop():
       from callbacks.
     """
 
-    def __init__(self, model: nn.Module, optimizer: Optimizer, loss: Loss, name='training_loop'):
+    def __init__(self, model: nn.Module, optimizer: Optimizer, loss: Loss, adapter: Callable | None = None, name='training_loop'):
         self.model = model
         self.optimizer = optimizer
         self.loss = loss
         self.name = name
+        self.adapter = adapter or FeatureLabelAdapter()
         self._epochs = 0
         self._device = accelerator.current_accelerator().type if accelerator.is_available() else "cpu"    # pyright: ignore [reportOptionalMemberAccess]
         self._history = HistoryCallback()
@@ -105,12 +106,8 @@ class TrainingLoop():
         test_loss = test_loss / n_samples if n_samples else 1.0
         return test_loss, y_hat, y
 
-    def process_batches(self, data: DataLoader, with_grad: bool = True, eval: bool | None = None) -> Iterator:
-        """Loop over batches in data and optimize model parameters.
-
-        The loss, predictions and label values are yielded on each batch.
-        """
-
+    def _set_train_state(self, with_grad, eval):
+        """Set model to `train=...` by eval, or infer from with grad."""
         if eval is None:
             # By default, assume that we want eval mode if and only if we're ignoring gradients.
             eval = not with_grad
@@ -119,26 +116,36 @@ class TrainingLoop():
         else:
             self.model.train()
 
-        for batch, (X, y) in enumerate(data):
-            X, y = X.to(self._device), y.to(self._device)
-            loss, pred = self._process_batch(X, y, with_grad)
+    def process_batches(self, data: DataLoader, with_grad: bool = True, eval: bool | None = None) -> Iterator:
+        """Loop over batches in data and optimize model parameters.
+
+        The loss, predictions and label values are yielded on each batch.
+        """
+        self._set_train_state(with_grad, eval)
+
+        for batch, batch_data in enumerate(data):
+            X = self.adapter.get_inputs(batch_data)
+            y = self.adapter.get_target(batch_data)
+            X, y = (x.to(self._device) for x in X), y.to(self._device)
+            if with_grad:
+                loss, pred = self._compute_loss_pred_optimize(X, y=y)
+            else:
+                loss, pred = self._compute_loss_pred(X, y=y)
             yield batch, loss.item(), pred.detach(), y
 
-    def _process_batch(self, X, y, with_grad: bool):
-        if with_grad:
-            pred = self.model(X)
-            loss = self.loss(pred, y)
-            loss.backward()
-            self.optimizer.step()
-            self.optimizer.zero_grad()
-        else:
-            with torch.no_grad():
-                X, y = X.to(self._device), y.to(self._device)
-                pred = self.model(X)
-                loss = self.loss(pred, y)
+    def _compute_loss_pred_optimize(self, X, y):
+        pred = self.model(*X)
+        loss = self.loss(pred, y)
+        loss.backward()
+        self.optimizer.step()
+        self.optimizer.zero_grad()
         return loss, pred
 
-
+    def _compute_loss_pred(self, X, y):
+        with torch.no_grad():
+            pred = self.model(*X)
+            loss = self.loss(pred, y)
+        return loss, pred
 
     def fit(self, train_data: DataLoader, test_data: DataLoader, epochs=1, callbacks: list | None = None) -> None:
         """Fit the model to the data.
@@ -204,3 +211,13 @@ class Publisher:
             if result is not None:
                 results.append(result)
         return results
+
+
+class FeatureLabelAdapter:
+    """Extract features and labels from data."""
+
+    def get_inputs(self, data: Sequence) -> list:
+        return [data[0]]
+
+    def get_target(self, data: Sequence):
+        return data[1]
