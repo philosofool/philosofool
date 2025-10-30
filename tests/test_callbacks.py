@@ -1,5 +1,6 @@
 from collections.abc import Callable
 from collections import namedtuple
+import numpy as np
 from tempfile import TemporaryDirectory
 import os
 import json
@@ -7,10 +8,13 @@ import json
 import matplotlib.pyplot as plt
 import torch
 from torch import nn
+import pytest
 from philosofool.torch.callbacks import (
-    EarlyStoppingCallabck, EndOnBatchCallback, HistoryCallback, JSONLoggerCallback, SnapshotCallback, VerboseTrainingCallback
+    EarlyStoppingCallabck, EndOnBatchCallback, HistoryCallback, JSONLoggerCallback, MetricsCallback, SnapshotCallback, VerboseTrainingCallback
 )
+
 from philosofool.torch.experimental.nn_loop import GANLoop
+from philosofool.torch.metrics import Accuracy
 from philosofool.torch.nn_loop import (
     Publisher
 )
@@ -56,6 +60,37 @@ class TestHistoryCallback:
         publisher.publish(training_loop.name, 'metrics', training_loop, metrics={'loss': .04, 'test_loss': .09})
 
         assert history.history == {'loss': [.05, .04], 'test_loss': [.1, .09]}, f"Got {history.history}."
+
+
+class TestVerboseTrainingCallback:
+    @pytest.mark.parametrize('value, expected', [
+        (3.1459, "3.146"),
+        (3145.926, "3145.9"),
+        (.000123, "1.230e-04"),
+        (1_000_000_000.1, "1.000e+09")
+    ])
+    def test__apply_numeric_formatting(self, value, expected):
+        callback = VerboseTrainingCallback(1)
+        assert callback._apply_numeric_formatting(value) == expected, f"Expecte {expected} for input {value}."
+
+    def test__metrics_as_strings(self):
+        callback = VerboseTrainingCallback(1)
+        metrics = {'a': np.array([[1, 0]]), 'x': 1.1, 'y': np.array([1, 1])}
+        callback._metrics = {'a': np.array([[1, 0], [0, 1]]), 'x': 1.1000014, 'y': np.array([1, 1]), "w": 12345.670}
+        result = callback._metrics_as_strings()
+        assert result.startswith("x: 1.100, w: 12345.7\n")
+        assert '\ny\n    [1 1]' in result
+        assert '\na\n    [[1 0]\n     [0 1]]' in result
+
+    def test_vebose_training_callback(self, training_loop, capsys):
+        callback = VerboseTrainingCallback(batch_interval=2)
+        callback.on_batch_end(training_loop, batch=1)
+        assert not capsys.readouterr().out, "Losses should not be printed off batch intervals."
+        callback.on_batch_end(training_loop, batch=2, gen_loss=.1, dis_loss=.2)
+        assert 'gen_loss' in capsys.readouterr().out, "Losses should be printed on batch intervals."
+        callback.on_metrics(training_loop, metrics={'a': 1.1})
+        callback.on_epoch_start(training_loop, epoch=12, unused_argument='ignored')
+        assert 'a: 1.1' in capsys.readouterr().out, 'Metrics should print each epoch start.'
 
 def test_json_logging_callback(data_loader):
 
