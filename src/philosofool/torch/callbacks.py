@@ -4,6 +4,7 @@ from collections.abc import Iterable
 import json
 import os
 import numpy as np
+import textwrap
 from typing import TYPE_CHECKING
 import warnings
 
@@ -21,13 +22,14 @@ if TYPE_CHECKING:
 
 class EarlyStoppingCallabck:
     """Handle early stopping of training loops."""
-
+    # TODO: allow early stopping to keep track of the best state and restore it
+    # on stopping? This is a little complex, probably involves checkpointing,
+    #  and I may be removing `loop` from the event calls in the future,
+    #  so holding off on this for now.
     def __init__(self, patience: int, monitor: str = 'test_loss', refresh_on_new_fit: bool = True):
         if monitor == 'test_loss':
             warnings.warn("The default value for monitor will switch to 'loss_val' in a future version.")
         self.patience = patience
-        if monitor not in {'loss_val', 'test_loss'}:
-            raise NotImplementedError("EarlyStopping currently only suppots stopping on validation loss.")
         self.monitor = monitor
         self._loops_since_improvement = 0
         self._best = None
@@ -38,23 +40,18 @@ class EarlyStoppingCallabck:
         if self.refresh_on_new_fit:
             self._loops_since_improvement = 0
             self._best = None
+        elif self._loops_since_improvement >= self.patience:
+            loop.publish(f"{loop.name}_control", 'end_fit')
 
-    def on_batch_end(self, loop, batch, loss, **kwargs):
-        ...
-
-    def on_epoch_end(self, loop, **kwargs):
-        """Emit 'end_fit' if there has been no improvement."""
-        test_loss = kwargs.get(self.monitor)
-
-        if test_loss is None:
-            raise KeyError("Monitored metric not in arguments.")
-        self._determine_improvement(loop, test_loss)
+    def on_metrics(self, loop, **kwargs):
+        metric = kwargs['metrics'].get(self.monitor)
+        if metric is None:
+            return
+        self._determine_improvement(metric)
         if self._loops_since_improvement >= self.patience:
             loop.publish(f"{loop.name}_control", 'end_fit')
 
-        # TODO: implement early stoping on metrics events.
-
-    def _determine_improvement(self, loop, target_metric):
+    def _determine_improvement(self, target_metric):
         if self._best is None:
             self._best = target_metric
             return
@@ -111,54 +108,71 @@ class VerboseTrainingCallback:
     """Provide training metrics to standard ouput during training."""
 
     # TODO: configure this with MetricsCallback to work with on_metrics.
-    def __init__(self, batch_interval: int):
+    def __init__(self, batch_interval: int, epoch_interval: int = 1):
         self.batch_interval = batch_interval
+        self.epoch_interval = epoch_interval
+        self._metrics = {}
 
     def on_epoch_start(self, loop, epoch: int, **kwargs):
-        print(f"Epoch: {epoch}")
+        if epoch % self.epoch_interval != 0:
+            return
+        print(f"Epoch: {epoch}", end='  ')
+        if epoch == 0:
+            return
+        report = self._metrics_as_strings()
+        print(report)
+
+    def _metrics_as_strings(self):
+        formatted_strings = []
+        formatted_arrays = []
+        for key, value in self._metrics.items():
+            if isinstance(value, np.ndarray):
+                arr_string = textwrap.indent(str(value), '    ')
+                formatted_arrays.append(f"{key}\n{arr_string}")
+            else:
+                string = f"{key}: {self._apply_numeric_formatting(value)}"
+                formatted_strings.append(string)
+        float_strings = ', '.join(formatted_strings) + '\n'
+        array_strings = '\n'.join(formatted_arrays)
+        return float_strings + array_strings
+
+    def on_metrics(self, loop, **kwargs):
+        metrics = kwargs.get('metrics')
+        if metrics is not None:
+            self._metrics = metrics
 
     def on_batch_end(self, loop, batch: int, **kwargs):
-        if batch % self.batch_interval != 0:
+        if self.batch_interval == 0 or batch % self.batch_interval != 0:
             return
         strings = []
         for key, value in kwargs.items():
-            strings.append(f"{key}: {value}")
+            if 'loss' in key:
+                report_value = self._apply_numeric_formatting(value)
+                loss_string = f"{key}: {report_value}"
+                strings.append(loss_string)
         print(', '.join(strings))
 
+    def _apply_numeric_formatting(self, value: float) -> str:
+        abs_val = abs(value)
+
+        # Use scientific notation for extreme magnitudes
+        if abs_val >= 1e6 or (abs_val != 0 and abs_val < 1e-3):
+            fmt = ".3e"
+        # use a few decimals for small numbers, one trailing decimal for large ones.
+        else:
+            digits_before = len(str(int(abs_val))) if abs_val >= 1 else 0
+            fmt = ".3f" if digits_before <= 2 else ".1f"
+
+        return format(value, fmt)
 
 class HistoryCallback:
     """Create a history of per-epoch results."""
 
     def __init__(self):
         self.history = defaultdict(list)
-        self._batch_history = defaultdict(list) # list-defaultdict is created each epoch start.
 
-    def on_epoch_start(self, loop, **kwargs):
-        self._batch_history = defaultdict(list)
-
-    def on_batch_end(self, loop, batch: int, **kwargs):
-        for key, value in kwargs.items():
-            if 'loss' not in key:
-                continue
-            if key != 'loss':
-                warnings.warn("Passing losses by names other than 'loss', e.g, by 'train_loss' is deprecated.")
-            self._batch_history[key].append(value)
-        return None
-
-    def on_epoch_end(self, loop, **kwargs):
-        """Update history by aggregating the batch results other losses."""
-        for key, value in self._batch_history.items():
-            if 'loss' not in key:
-                continue
-            value_mean = float(np.mean(value))
-            self.history[key].append(value_mean)
-        for key, value in kwargs.items():
-            if 'loss' not in key:
-                continue
-            self.history[key].append(value)
-        pass
-
-    def on_metrics(self, loop, metrics: dict):
+    def on_metrics(self, loop, **kwargs):
+        metrics = kwargs['metrics']
         for key, value in metrics.items():
             self.history[key].append(value)
 
