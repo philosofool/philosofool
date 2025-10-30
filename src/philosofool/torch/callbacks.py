@@ -127,34 +127,9 @@ class HistoryCallback:
 
     def __init__(self):
         self.history = defaultdict(list)
-        self._batch_history = defaultdict(list) # list-defaultdict is created each epoch start.
 
-    def on_epoch_start(self, loop, **kwargs):
-        self._batch_history = defaultdict(list)
-
-    def on_batch_end(self, loop, batch: int, **kwargs):
-        for key, value in kwargs.items():
-            if 'loss' not in key:
-                continue
-            if key != 'loss':
-                warnings.warn("Passing losses by names other than 'loss', e.g, by 'train_loss' is deprecated.")
-            self._batch_history[key].append(value)
-        return None
-
-    def on_epoch_end(self, loop, **kwargs):
-        """Update history by aggregating the batch results other losses."""
-        for key, value in self._batch_history.items():
-            if 'loss' not in key:
-                continue
-            value_mean = float(np.mean(value))
-            self.history[key].append(value_mean)
-        for key, value in kwargs.items():
-            if 'loss' not in key:
-                continue
-            self.history[key].append(value)
-        pass
-
-    def on_metrics(self, loop, metrics: dict):
+    def on_metrics(self, loop, **kwargs):
+        metrics = kwargs['metrics']
         for key, value in metrics.items():
             self.history[key].append(value)
 

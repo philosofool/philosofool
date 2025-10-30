@@ -38,20 +38,13 @@ class TrainingLoop():
         self.name = name
         self._epochs = 0
         self._device = accelerator.current_accelerator().type if accelerator.is_available() else "cpu"    # pyright: ignore [reportOptionalMemberAccess]
-        self._history = HistoryCallback()
         self._publisher = Publisher()
-
-        self.add_callbacks(self._history)
 
         self.model.to(self._device)
 
         self._end_epoch = False
         self._end_fit = False
         self._publisher.subscribe(f'{self.name}_control', self)
-
-    @property
-    def history(self) -> dict:
-        return self._history.history
 
     def add_callbacks(self, *callbacks):
         for callback in callbacks:
