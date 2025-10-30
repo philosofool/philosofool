@@ -21,13 +21,14 @@ if TYPE_CHECKING:
 
 class EarlyStoppingCallabck:
     """Handle early stopping of training loops."""
-
+    # TODO: allow early stopping to keep track of the best state and restore it
+    # on stopping? This is a little complex, probably involves checkpointing,
+    #  and I may be removing `loop` from the event calls in the future,
+    #  so holding off on this for now.
     def __init__(self, patience: int, monitor: str = 'test_loss', refresh_on_new_fit: bool = True):
         if monitor == 'test_loss':
             warnings.warn("The default value for monitor will switch to 'loss_val' in a future version.")
         self.patience = patience
-        if monitor not in {'loss_val', 'test_loss'}:
-            raise NotImplementedError("EarlyStopping currently only suppots stopping on validation loss.")
         self.monitor = monitor
         self._loops_since_improvement = 0
         self._best = None
@@ -38,23 +39,18 @@ class EarlyStoppingCallabck:
         if self.refresh_on_new_fit:
             self._loops_since_improvement = 0
             self._best = None
+        elif self._loops_since_improvement >= self.patience:
+            loop.publish(f"{loop.name}_control", 'end_fit')
 
-    def on_batch_end(self, loop, batch, loss, **kwargs):
-        ...
-
-    def on_epoch_end(self, loop, **kwargs):
-        """Emit 'end_fit' if there has been no improvement."""
-        test_loss = kwargs.get(self.monitor)
-
-        if test_loss is None:
-            raise KeyError("Monitored metric not in arguments.")
-        self._determine_improvement(loop, test_loss)
+    def on_metrics(self, loop, **kwargs):
+        metric = kwargs['metrics'].get(self.monitor)
+        if metric is None:
+            return
+        self._determine_improvement(metric)
         if self._loops_since_improvement >= self.patience:
             loop.publish(f"{loop.name}_control", 'end_fit')
 
-        # TODO: implement early stoping on metrics events.
-
-    def _determine_improvement(self, loop, target_metric):
+    def _determine_improvement(self, target_metric):
         if self._best is None:
             self._best = target_metric
             return

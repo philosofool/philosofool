@@ -148,18 +148,10 @@ def test_snapshot_callback(monkeypatch):
     snapshot_callback.on_epoch_end(loop, epoch=1)
     assert snapshot_callback.snapshots[0].shape[0] == snapshot_callback.n_images == 1
 
-
-def test_vebose_training_callback():
-
-    callback = VerboseTrainingCallback(batch_interval=2)
-    callback.on_batch_end(None, batch=1)
-    callback.on_batch_end(None, batch=2, gen_loss=.1, dis_loss=.2)
-    callback.on_epoch_start(None, epoch=12, unused_argument='ignored')
-
 class TestEarlyStopping:
     def test_emits_end_fit(self, training_loop):
         """Assure stops after number of expected turns."""
-        callback = EarlyStoppingCallabck(patience=2, monitor='test_loss')
+        callback = EarlyStoppingCallabck(patience=2, monitor='loss_val')
         training_loop.add_callbacks(callback)
 
         listener = MessagesListener()
@@ -171,61 +163,76 @@ class TestEarlyStopping:
         y_hat = torch.tensor([.5, .5])
         loss = torch.nn.functional.nll_loss(y_hat, y).mean().item()
 
-        training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss)
-        training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss)
+        training_loop.publish(training_loop.name, 'metrics', metrics={'loss_val': 2.})
+        training_loop.publish(training_loop.name, 'metrics', metrics={'loss_val': 2.})
         assert not control_listener.called('on_end_fit'), \
             "Loop should not emit end fit until patience number of turns without improvement. The first iteration alway improves."
 
-        training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss)
+        training_loop.publish(training_loop.name, 'metrics', metrics={'loss_val': 2.})
         assert control_listener.called('on_end_fit'), "The loops should stop after two iterations with no improvement."
 
     def test_resets_after_improvement(self, training_loop):
-        callback = EarlyStoppingCallabck(patience=1, monitor='test_loss')
+        callback = EarlyStoppingCallabck(patience=1, monitor='loss_val')
         training_loop.add_callbacks(callback)
 
         listener = MessagesListener()
         training_loop.subscribe('training_loop_control', listener)
 
-        y = torch.tensor([1, 1])
-        y_hat = torch.tensor([.5, .5])
-        loss = torch.nn.functional.nll_loss(y_hat, y).mean().item()
-
-        training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss)
-        training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss - 1)
-        training_loop.publish(training_loop.name, 'epoch_end', test_loss=loss)
+        training_loop.publish(training_loop.name, 'metrics', metrics={'loss_val': 2.})
+        training_loop.publish(training_loop.name, 'metrics', metrics={'loss_val': 1.})
+        training_loop.publish(training_loop.name, 'metrics', metrics={'loss_val': 2.})
         assert listener.called('on_end_fit'), "For patience == 1, loops should end after one step with no improvement."
 
         assert not listener.last_call('on_end_fit').kwargs, "kwargs should be empty."
 
     def test_on_fit_start(self, training_loop):
-        callback = EarlyStoppingCallabck(patience=1, monitor='test_loss')
+        callback = EarlyStoppingCallabck(patience=1, monitor='loss_val')
         training_loop.add_callbacks(callback)
 
-        training_loop.publish(training_loop.name, 'epoch_end', test_loss=1)
-        training_loop.publish(training_loop.name, 'epoch_end', test_loss=1)
+        training_loop.publish(training_loop.name, 'metrics', metrics={'loss_val': 2.})
+        training_loop.publish(training_loop.name, 'metrics', metrics={'loss_val': 2.})
 
         listener = MessagesListener()
         training_loop.subscribe('training_loop_control', listener)
 
         training_loop.publish(training_loop.name, 'fit_start')
-        training_loop.publish(training_loop.name, 'epoch_end', test_loss=1)
+        training_loop.publish(training_loop.name, 'metrics', metrics={'loss_val': 2.})
         assert not listener.called('on_end_fit')
         # training_
 
     def test_on_fit_start__no_refresh(self, training_loop):
-        callback = EarlyStoppingCallabck(patience=1, monitor='test_loss', refresh_on_new_fit=False)
+        callback = EarlyStoppingCallabck(patience=1, monitor='loss_val', refresh_on_new_fit=False)
         training_loop.add_callbacks(callback)
 
-        training_loop.publish(training_loop.name, 'epoch_end', test_loss=1)
-        training_loop.publish(training_loop.name, 'epoch_end', test_loss=1)
+        training_loop.publish(training_loop.name, 'metrics', metrics={'loss_val': 2.})
+        training_loop.publish(training_loop.name, 'metrics', metrics={'loss_val': 2.})
 
         listener = MessagesListener()
         training_loop.subscribe('training_loop_control', listener)
 
         training_loop.publish(training_loop.name, 'fit_start')
-        training_loop.publish(training_loop.name, 'epoch_end', test_loss=1)
         assert listener.called('on_end_fit')
 
+    def test_monitor_accuracy(self, training_loop):
+        callback = EarlyStoppingCallabck(patience=1, monitor='accuracy_val')
+        assert callback.monitor == 'accuracy_val'
+        metrics = MetricsCallback([Accuracy('binary')])
+        training_loop.add_callbacks(callback, metrics)
+
+        listener = MessagesListener()
+        training_loop.subscribe('training_loop_control', listener)
+
+        training_loop.publish(training_loop.name, 'fit_start')
+        training_loop.publish(training_loop.name, 'epoch_start', epoch=0)
+        training_loop.publish(training_loop.name, 'batch_end', batch=0, loss=.9, y_hat=np.array([[.3], [.3]]), y_true=np.array([[1], [1]]))
+        training_loop.publish(training_loop.name, 'epoch_end', loss=.9, y_hat=np.array([[.3], [.3]]), y_true=np.array([[1], [1]]))
+
+        assert not listener.called('on_end_fit'), 'With patience 1, the first epoch should always be an improvement'
+
+        training_loop.publish(training_loop.name, 'epoch_start', epoch=1)
+        training_loop.publish(training_loop.name, 'batch_end', batch=0, loss=.88, y_hat=np.array([[.3], [.4]]), y_true=np.array([[1], [1]]))
+        training_loop.publish(training_loop.name, 'epoch_end', loss=.88, y_hat=np.array([[.3], [.4]]), y_true=np.array([[1], [1]]))
+        assert listener.called('on_end_fit'), 'With patience 1, listerner should stop after epoch one when there is no improvement.'
 
 
 class TestMetricsCallback():
