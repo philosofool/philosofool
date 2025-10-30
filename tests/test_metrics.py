@@ -1,5 +1,6 @@
 import torch
 from philosofool.torch.metrics import Accuracy
+import pytest
 
 def test_accuracy__binary():
     pred = torch.tensor([.9, .8, .2, .1])
@@ -13,13 +14,21 @@ def test_accuracy__binary():
     result = accuracy.compute()
     assert result == 5/8
 
-def test_accuracy__multiclass():
-    pred = torch.tensor([
-        [.9, .1],
-        [.8, .2],
-        [.2, .8],
-        [.3, .7]
-    ])
+@pytest.mark.parametrize('pred', [
+        torch.tensor([
+            [.45, .35, .2],
+            [.8, .1, .1],
+            [.4, .49, .11],
+            [.3, .4, .3]
+        ]),
+        torch.tensor([
+            [.9, .1],
+            [.8, .2],
+            [.2, .8],
+            [.3, .7]
+        ])
+])
+def test_accuracy__multiclass(pred):
     true = torch.tensor([0, 0, 1, 0])
     accuracy = Accuracy('multiclass')
     accuracy.update(pred, true)

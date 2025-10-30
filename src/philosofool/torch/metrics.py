@@ -62,7 +62,7 @@ class Accuracy:
         if self.task == 'binary':
             correct = (y_hat > self.threshold) == y_true
         else:
-            correct = np.argmax(y_hat) == y_true
+            correct = np.argmax(y_hat, axis=1) == y_true
         return np.sum(correct)
 
     def compute(self):
